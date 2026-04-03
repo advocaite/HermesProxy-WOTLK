@@ -12,8 +12,8 @@ There are 4 major components to the application:
 
 | Modern Versions | Legacy Versions |
 |-----------------|-----------------|
-| 1.14.0          | 1.12.1          |
-| 2.5.2           | 2.4.3           |
+| 1.14.2          | 1.12.1          |
+| 2.5.3           | 2.4.3           |
 | 3.4.3           | 3.3.5a          |
 
 ## Ingame Settings
