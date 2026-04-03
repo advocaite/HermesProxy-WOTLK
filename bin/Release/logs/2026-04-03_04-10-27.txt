@@ -1,0 +1,1222 @@
+﻿=== HermesProxy Log Started 2026-04-03 04:10:27 ===
+04:10:27 | Server  | Server          | Starting Hermes Proxy...
+04:10:27 | Server  | Server          | Version 2026-03-21 0.1.0
+04:10:27 | Storage | Server          | Switching working directory
+04:10:27 | Storage | Server          | Old: F:\Ampps\HermesProxy-master
+04:10:27 | Storage | Server          | New: F:\Ampps\HermesProxy-master\HermesProxy\bin\Release
+04:10:29 | Debug   | Server          | Debug logging enabled
+04:10:29 | Server  | Server          | Modern (Client) Build: V3_4_3_54261
+04:10:29 | Server  | Server          | Legacy (Server) Build: V3_3_5a_12340
+04:10:29 | Storage | GameData        | Loading data files...
+04:10:29 | Server  | VersionChecker  | Loaded 1311 legacy opcodes.
+04:10:29 | Error   | VersionChecker  | Opcode SMSG_AUCTION_OWNER_LIST_RESULT is missing from the universal opcode enum!
+04:10:29 | Error   | VersionChecker  | Opcode SMSG_AUCTION_LIST_BIDDER_ITEMS_RESULT is missing from the universal opcode enum!
+04:10:29 | Server  | VersionChecker  | Loaded 772 modern opcodes.
+04:10:32 | Storage | GameData        | Finished loading data.
+04:10:32 | Network | Server          | External IP: 127.0.0.1
+04:10:32 | Server  | Server          | Starting BnetTcpSession service on 127.0.0.1:1119...
+04:10:32 | Network | NetworkThread   | Network Thread Starting
+04:10:32 | Server  | Server          | Starting BnetRestApiSession service on 127.0.0.1:8081...
+04:10:32 | Network | NetworkThread   | Network Thread Starting
+04:10:32 | Server  | Server          | Starting RealmSocket service on 127.0.0.1:8084...
+04:10:32 | Network | NetworkThread   | Network Thread Starting
+04:10:32 | Server  | Server          | Starting WorldSocket service on 127.0.0.1:8086...
+04:10:32 | Network | NetworkThread   | Network Thread Starting
+04:10:37 | Server  | BnetTcpSession  | Accepting connection from 127.0.0.1:58255.
+04:10:37 | Debug   | SSLSocket       | TLS handshake starting with 127.0.0.1:58255
+04:10:37 | Debug   | SSLSocket       | TLS handshake succeeded with 127.0.0.1:58255
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58255...
+04:10:37 | Debug   | BnetTcpSession  | BnetTcp received 77 bytes: 00-0D-08-00-10-01-18-00-28-3E-5D-91-69-44-65-18
+04:10:37 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255] Client requested service ConnectionService/m:1
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58255...
+04:10:37 | Debug   | BnetTcpSession  | BnetTcp received 522 bytes: 00-0E-08-00-10-01-18-01-28-FA-03-5D-01-FC-EC-0D
+04:10:37 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255] Client requested service AuthenticationService/m:1
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58255...
+04:10:37 | Debug   | SSLSocket       | TLS handshake starting with 127.0.0.1:58256
+04:10:37 | Debug   | SSLSocket       | TLS handshake succeeded with 127.0.0.1:58256
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58256...
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58256...
+04:10:37 | Debug   | SSLSocket       | SSLSocket: client 127.0.0.1:58256 sent 0 bytes (connection closed)
+04:10:37 | Debug   | SSLSocket       | TLS handshake starting with 127.0.0.1:58257
+04:10:37 | Debug   | SSLSocket       | TLS handshake succeeded with 127.0.0.1:58257
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58257...
+04:10:37 | Network | AuthClient      | C P>S | Connecting to auth server... (realmlist addr: 127.0.0.1:3724) (resolved as: 127.0.0.1:3724)
+04:10:37 | Debug   | AuthClient      | C P<S | Received opcode LOGON_CHALLENGE size 119.
+04:10:37 | Debug   | AuthClient      | C P<S | Received opcode LOGON_PROOF size 32.
+04:10:37 | Network | AuthClient      | Authentication succeeded!
+04:10:37 | Server  | AuthClient      | Requesting RealmList update for ADMIN
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58257...
+04:10:37 | Debug   | AuthClient      | C P<S | Received opcode REALM_LIST size 48.
+04:10:37 | Network | AuthClient      | Received 1 realms.
+04:10:37 | Server  | RealmManager    | Added realm "AzerothCore" at 127.0.0.1:8085
+04:10:37 | Debug   | SSLSocket       | SSLSocket: client 127.0.0.1:58257 sent 0 bytes (connection closed)
+04:10:37 | Debug   | BnetTcpSession  | BnetTcp received 60 bytes: 00-0D-08-00-10-07-18-02-28-2D-5D-01-FC-EC-0D-0A
+04:10:37 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255] Client requested service AuthenticationService/m:7
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58255...
+04:10:37 | Debug   | BnetTcpSession  | BnetTcp received 44 bytes: 00-0D-08-00-10-1E-18-03-28-1D-5D-91-08-DA-62-0A
+04:10:37 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255, Account: ADMIN] Client requested service AccountService/m:30
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58255...
+04:10:37 | Debug   | BnetTcpSession  | BnetTcp received 43 bytes: 00-0D-08-00-10-1F-18-04-28-1C-5D-91-08-DA-62-12
+04:10:37 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255, Account: ADMIN] Client requested service AccountService/m:31
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58255...
+04:10:37 | Debug   | BnetTcpSession  | BnetTcp received 737 bytes: 00-0E-08-00-10-01-18-05-28-D1-05-5D-4D-27-C1-3F
+04:10:37 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255, Account: ADMIN] Client requested service GameUtilitiesService/m:1
+04:10:37 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255, Account: ADMIN] GameUtilitiesService method: Command_RealmListTicketRequest_v1_wotlk1
+04:10:37 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58255...
+04:10:38 | Debug   | BnetTcpSession  | BnetTcp received 51 bytes: 00-0D-08-00-10-0A-18-06-28-24-5D-4D-27-C1-3F-0A
+04:10:38 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255, Account: ADMIN, Game account: ADMIN] Client requested service GameUtilitiesService/m:10
+04:10:38 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58255...
+04:10:38 | Debug   | BnetTcpSession  | BnetTcp received 115 bytes: 00-0D-08-00-10-01-18-07-28-64-5D-4D-27-C1-3F-0A
+04:10:38 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255, Account: ADMIN, Game account: ADMIN] Client requested service GameUtilitiesService/m:1
+04:10:38 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255, Account: ADMIN, Game account: ADMIN] GameUtilitiesService method: Command_LastCharPlayedRequest_v1_wotlk1
+04:10:38 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58255...
+04:10:38 | Debug   | BnetTcpSession  | BnetTcp received 232 bytes: 00-0E-08-00-10-01-18-08-28-D8-01-5D-4D-27-C1-3F
+04:10:38 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255, Account: ADMIN, Game account: ADMIN] Client requested service GameUtilitiesService/m:1
+04:10:38 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255, Account: ADMIN, Game account: ADMIN] GameUtilitiesService method: Command_RealmJoinRequest_v1_wotlk1
+04:10:38 | Debug   | RealmManager    | JoinRealm: realmAddress=0x01010001, decoded=Realm{Index=1,Region=1,Index=1}, realms count=1
+04:10:38 | Debug   | RealmManager    |   Available realm: Realm{Index=1,Region=1,Index=1} -> AzerothCore
+04:10:38 | Debug   | SSLSocket       | SSLSocket waiting for data from 127.0.0.1:58255...
+04:10:38 | Error   | WorldSocket     | Tried to override OpcodeHandler of HermesProxy.World.Server.WorldSocket+PacketHandler with HandleTutorialFlag (Opcode CMSG_TUTORIAL_FLAG)
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AUTH_CHALLENGE (12360), size=49.
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_AUTH_SESSION (14181).
+04:10:38 | Debug   | WorldSocket     | WorldSocket.HandleAuthSession: Fallback to static seed
+04:10:38 | Warning | WorldSocket     | WorldSocket.HandleAuthSession: Seed mismatch for account: 1 ('ADMIN') - BYPASSING for testing
+04:10:38 | Server  | WorldSocket     | WorldSocket:HandleAuthSession: Client 'ADMIN' authenticated successfully from 127.0.0.1:58259.
+04:10:38 | Network | WorldClient     | Connecting to world server...
+04:10:38 | Network | WorldClient     | World Server address 127.0.0.1:8085 resolved as 127.0.0.1:8085
+04:10:38 | Network | WorldClient     | Connection established!
+04:10:38 | Debug   | WorldClient     | C P<S | Raw header bytes: 00-2A-EC-01
+04:10:38 | Debug   | WorldClient     | C P<S | Decoded header: size=42, opcode=492 (0x01EC), crypt=OFF
+04:10:38 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AUTH_CHALLENGE (492).
+04:10:38 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_AUTH_SESSION (493) with size 244.
+04:10:38 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-F4-ED-01-00-00
+04:10:38 | Debug   | WorldClient     | C P>S | Total bytes on wire: 246, first 16: 00-F4-ED-01-00-00-34-30-00-00-01-00-00-00-41-44
+04:10:38 | Debug   | WorldClient     | C P<S | Raw header bytes: D1-24-C0-1F
+04:10:38 | Debug   | WorldClient     | C P<S | Decoded header: size=13, opcode=494 (0x01EE), crypt=ON
+04:10:38 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AUTH_RESPONSE (494).
+04:10:38 | Network | WorldClient     | Authentication succeeded!
+04:10:38 | Debug   | WorldClient     | C P<S | Raw header bytes: 08-B2-1A-1E
+04:10:38 | Debug   | WorldClient     | C P<S | Decoded header: size=134, opcode=751 (0x02EF), crypt=ON
+04:10:38 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ADDON_INFO (751).
+04:10:38 | Debug   | WorldClient     | C P<S | Raw header bytes: D4-FE-CB-93
+04:10:38 | Debug   | WorldClient     | C P<S | Decoded header: size=6, opcode=1195 (0x04AB), crypt=ON
+04:10:38 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CACHE_VERSION (1195).
+04:10:38 | Debug   | WorldClient     | C P<S | Raw header bytes: B6-98-54-82
+04:10:38 | Debug   | WorldClient     | C P<S | Decoded header: size=34, opcode=253 (0x00FD), crypt=ON
+04:10:38 | Debug   | WorldClient     | C P<S | Received opcode SMSG_TUTORIAL_FLAGS (253).
+04:10:38 | Debug   | AuthenticationPackets | EnterEncryptedMode Ed25519: toSign=7E-F5-AD-C4-52-0A-F1-B3-24-DF-79-8A-11-B7-FC-69...
+04:10:38 | Warning | WorldClient     | C<P S | Queuing SMSG_TUTORIAL_FLAGS - RealmSocket not ready yet
+04:10:38 | Debug   | AuthenticationPackets | EnterEncryptedMode Ed25519: signature=1F-B6-1A-92-6A-5A-80-A8-D1-72-A4-A3-69-D8-BB-C6... (64 bytes)
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ENTER_ENCRYPTED_MODE (12361), size=65.
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_ENTER_ENCRYPTED_MODE_ACK (14183).
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AUTH_RESPONSE (9581), size=333.
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SET_TIME_ZONE_INFORMATION (9847), size=37.
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN (9664), size=89.
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CACHE_VERSION (10524), size=4.
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AVAILABLE_HOTFIXES (10511), size=688.
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_BATTLE_NET_CONNECTION_STATUS (10249), size=1.
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_ENUM_CHARACTERS (13801).
+04:10:38 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_ENUM_CHARACTERS (55) with size 4.
+04:10:38 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-04-37-00-00-00
+04:10:38 | Debug   | WorldClient     | C P>S | Total bytes on wire: 6, first 16: C1-AA-5B-F1-B4-5D
+04:10:38 | Debug   | WorldClient     | C P<S | Raw header bytes: 00-5C-9F-F8
+04:10:38 | Debug   | WorldClient     | C P<S | Decoded header: size=1388, opcode=59 (0x003B), crypt=ON
+04:10:38 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ENUM_CHARACTERS_RESULT (59).
+04:10:38 | Debug   | CharacterPackets | CharacterInfo: name=TestHuman race=Human class=Warrior level=10 visItems=34 totalBytes=638
+04:10:38 | Debug   | CharacterPackets | CharacterInfo LAST 30 bytes: 00-00-0C-00-00-00-2E-43-00-00-0D-00-00-00-3C-43-00-00-24-00-00-54-65-73-74-48-75-6D-61-6E
+04:10:38 | Debug   | CharacterPackets | CharacterInfo: name=Fghdgfhf race=Human class=Mage level=1 visItems=34 totalBytes=637
+04:10:38 | Debug   | CharacterPackets | CharacterInfo LAST 30 bytes: 43-00-00-11-00-00-00-70-43-00-00-12-00-00-00-79-43-00-00-20-00-00-46-67-68-64-67-66-68-66
+04:10:38 | Debug   | CharacterPackets | CharacterInfo: name=Yuioy race=Human class=Warrior level=1 visItems=34 totalBytes=634
+04:10:38 | Debug   | CharacterPackets | CharacterInfo LAST 30 bytes: 00-00-25-43-00-00-0C-00-00-00-2D-43-00-00-0D-00-00-00-3A-43-00-00-14-00-00-59-75-69-6F-79
+04:10:38 | Debug   | CharacterPackets | CharacterInfo: name=Vivra race=Draenei class=Shaman level=1 visItems=34 totalBytes=634
+04:10:38 | Debug   | CharacterPackets | CharacterInfo LAST 30 bytes: 00-00-B5-46-00-00-88-00-00-00-BD-46-00-00-89-00-00-00-C2-46-00-00-14-00-00-56-69-76-72-61
+04:10:38 | Debug   | CharacterPackets | CharacterInfo: name=Gustavan race=Undead class=Warlock level=1 visItems=34 totalBytes=637
+04:10:38 | Debug   | CharacterPackets | CharacterInfo LAST 30 bytes: 44-00-00-3D-00-00-00-BE-44-00-00-3E-00-00-00-CB-44-00-00-20-00-00-47-75-73-74-61-76-61-6E
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ENUM_CHARACTERS_RESULT (9603), size=3251.
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_GET_UNDELETE_CHARACTER_COOLDOWN_STATUS (14055).
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_BATTLE_PAY_GET_PURCHASE_LIST (14021).
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_BATTLE_PAY_GET_PRODUCT_LIST (14020).
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_UPDATE_VAS_PURCHASE_STATES (14075).
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_SOCIAL_CONTRACT_REQUEST (14156).
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SOCIAL_CONTRACT_REQUEST_RESPONSE (10386), size=1.
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_SERVER_TIME_OFFSET_REQUEST (13980).
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SERVER_TIME_OFFSET (10004), size=8.
+04:10:38 | Debug   | BnetTcpSession  | BnetTcp received 17 bytes: 00-0D-08-00-10-07-18-09-28-02-5D-91-69-44-65-08
+04:10:38 | Debug   | BnetServices    | [BnetTcp][127.0.0.1:58255, Account: ADMIN, Game account: ADMIN] Client requested service ConnectionService/m:7
+04:10:38 | Error   | AuthClient      | C P<S | Socket Closed By Server
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_HOTFIX_REQUEST (13798).
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 2146 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 2416 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 2606 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 2608 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 3646 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 3647 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 3688 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 3948 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 3949 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4085 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4086 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4087 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4088 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4097 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4120 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4163 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4166 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4167 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4177 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4180 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4184 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4192 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4193 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4194 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4195 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4196 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4246 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4253 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4294 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4299 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4342 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4352 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4354 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4368 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4387 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4411 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4476 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4496 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4512 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4514 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4515 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4516 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4517 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4518 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4519 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4530 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4531 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4575 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4648 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4649 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4650 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4652 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4653 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4654 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4655 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4656 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4657 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4674 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4760 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4782 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 4794 from AreaTrigger.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 320003 from SpellMisc.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 14733 from CreatureDisplayInfo.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 20291 from CreatureDisplayInfo.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 100566 from CreatureDisplayInfo.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 5352 from CreatureDisplayInfoExtra.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 7463 from CreatureDisplayInfoExtra.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 10105 from CreatureDisplayInfoExtra.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 607827 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 607828 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 607829 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 607830 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 607831 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 634999 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 635000 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 635001 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 647170 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 647171 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 647172 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 647173 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 660250 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 660251 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 660252 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 660253 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | HotfixHandler   | Hotfix record 660254 from CreatureDisplayInfoOption.
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_HOTFIX_CONNECT (10513), size=5432.
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_BATTLENET_REQUEST (14077).
+04:10:38 | Warning | BnetServices    | [WorldSocket][127.0.0.1:58259, Account: ADMIN, Game account: ADMIN] Client requested service ResourcesService/m:1 but this service is not implemented - sending OK stub
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_BATTLENET_RESPONSE (10247), size=28.
+04:10:38 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_DB_QUERY_BULK (13797).
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #486
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #67
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #479
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7421
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7637
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #102
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #71
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #75
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7430
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #73
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7073
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #434
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7413
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7586
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #435
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #113
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #70
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #61
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7088
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #72
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7709
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7728
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #59
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #112
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #63
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #95
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #109
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #66
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #115
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #58
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7058
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #414
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7055
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7583
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7611
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #60
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #62
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #394
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #111
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #69
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #110
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7092
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7106
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7089
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #114
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7584
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #74
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #108
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7585
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7640
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7546
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #107
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #104
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #117
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #68
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #64
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:38 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #65
+04:10:38 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:39 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_LOADING_SCREEN_NOTIFY (13817).
+04:10:39 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_GET_ACCOUNT_CHARACTER_LIST (14015).
+04:10:39 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_GET_ACCOUNT_CHARACTER_LIST_RESULT (10085), size=199.
+04:10:40 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_QUERY_PLAYER_NAMES (14194).
+04:10:40 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_REQUEST_RATED_PVP_INFO (13796).
+04:10:40 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_BATTLE_PAY_GET_PURCHASE_LIST (14021).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_PLAYER_LOGIN (13803).
+04:10:41 | Debug   | AccountDataManager | Saved last selected char in 'F:\Ampps\HermesProxy-master\HermesProxy\bin\Release\AccountData\ADMIN\last_character.txt'
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CONNECT_TO (12365), size=276.
+04:10:41 | Error   | WorldSocket     | Tried to override OpcodeHandler of HermesProxy.World.Server.WorldSocket+PacketHandler with HandleTutorialFlag (Opcode CMSG_TUTORIAL_FLAG)
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AUTH_CHALLENGE (12360), size=49.
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_AUTH_CONTINUED_SESSION (14182).
+04:10:41 | Debug   | AuthenticationPackets | EnterEncryptedMode Ed25519: toSign=4F-A7-5E-CE-F1-58-FC-DB-ED-F0-3D-F8-3A-79-53-60...
+04:10:41 | Debug   | AuthenticationPackets | EnterEncryptedMode Ed25519: signature=E0-42-38-4D-08-55-1C-E0-63-44-F8-17-63-34-9B-11... (64 bytes)
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ENTER_ENCRYPTED_MODE (12361), size=65.
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_ENTER_ENCRYPTED_MODE_ACK (14183).
+04:10:41 | Server  | WorldSocket     | Client has connected to the instance server.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_RESUME_COMMS (12363), size=0.
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_OVERRIDE_SCREEN_FLASH (13598).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_VIOLENCE_LEVEL (12679).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_REQUEST_PVP_REWARDS (12694).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_QUEUED_MESSAGES_END (14188).
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_PLAYER_LOGIN (61) with size 12.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-0C-3D-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 14, first 16: E0-85-44-E5-00-79-03-00-00-00-00-00-00-00
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: B7-B7-01-EE
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=9, opcode=1152 (0x0480), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_POWER_UPDATE (1152).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_POWER_UPDATE (9938), size=14.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 3A-28-C3-2B
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=9, opcode=1152 (0x0480), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_POWER_UPDATE (1152).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_POWER_UPDATE (9938), size=14.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 95-9E-92-73
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=7, opcode=295 (0x0127), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_SET_PROFICIENCY (295).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_TUTORIAL_FLAGS (10174), size=32.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SET_PROFICIENCY (10037), size=5.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 2A-93-29-C4
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=7, opcode=295 (0x0127), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_SET_PROFICIENCY (295).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SET_PROFICIENCY (10037), size=5.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 6C-67-50-04
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=7, opcode=295 (0x0127), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_SET_PROFICIENCY (295).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SET_PROFICIENCY (10037), size=5.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: AC-4A-B7-47
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=7, opcode=295 (0x0127), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_SET_PROFICIENCY (295).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SET_PROFICIENCY (10037), size=5.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: FE-46-80-03
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=7, opcode=295 (0x0127), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_SET_PROFICIENCY (295).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SET_PROFICIENCY (10037), size=5.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: BD-E2-7D-AB
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=9, opcode=1152 (0x0480), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_POWER_UPDATE (1152).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_POWER_UPDATE (9938), size=14.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 67-CB-C4-B4
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=14, opcode=809 (0x0329), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode MSG_SET_DUNGEON_DIFFICULTY (809).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SET_DUNGEON_DIFFICULTY (9892), size=4.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 7C-8E-B9-92
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=22, opcode=566 (0x0236), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_LOGIN_VERIFY_WORLD (566).
+04:10:41 | Server  | CharacterHandler | [LoginVerifyWorld] Map=0 Pos=(-8949.95, -132.493, 83.5312) Orient=0
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_LOGIN_VERIFY_WORLD (9623), size=24.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_INIT_WORLD_STATES (10054), size=16.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_WORLD_SERVER_INFO (9645), size=5.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_INITIAL_SETUP (9600), size=2.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_LOAD_CUF_PROFILES (9660), size=30.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ALL_ACHIEVEMENT_DATA (9584), size=8.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ALL_ACCOUNT_CRITERIA (9585), size=4.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SETUP_CURRENCY (9587), size=4.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SEND_SPELL_HISTORY (11304), size=4.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SEND_SPELL_CHARGES (11306), size=4.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_TALENT_DATA (9687), size=21.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ACTIVE_GLYPHS (11345), size=5.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_LOAD_EQUIPMENT_SET (9998), size=4.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ACCOUNT_MOUNT_UPDATE (9646), size=5.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ACCOUNT_TOY_UPDATE (9648), size=13.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ACCOUNT_HEIRLOOM_UPDATE (9649), size=13.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED (9709), size=0.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_PHASE_SHIFT_CHANGE (9592), size=27.
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_NAME_QUERY (80) with size 12.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-0C-50-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 14, first 16: CB-6F-F0-A6-1D-E1-03-00-00-00-00-00-00-00
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 49-59-3B-64
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=31, opcode=521 (0x0209), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ACCOUNT_DATA_TIMES (521).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ACCOUNT_DATA_TIMES (9994), size=133.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 53-4B-A7-83
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=4, opcode=969 (0x03C9), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_FEATURE_SYSTEM_STATUS (969).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_FEATURE_SYSTEM_STATUS (9663), size=192.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 35-87-51-44
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=116, opcode=829 (0x033D), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_MOTD (829).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_MOTD (11183), size=111.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SET_TIME_ZONE_INFORMATION (9847), size=37.
+04:10:41 | Debug   | WorldSocket     | SeasonInfo opcode resolved to: 9665 (0x25C1)
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SEASON_INFO (9665), size=25.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: F2-E2-A0-FD
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=1109 (0x0455), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_LEARNED_DANCE_MOVES (1109).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 2E-91-B2-E4
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=103 (0x0067), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CONTACT_LIST (103).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CONTACT_LIST (10124), size=5.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 36-47-C1-6E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=22, opcode=341 (0x0155), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_BIND_POINT_UPDATE (341).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_BIND_POINT_UPDATE (9597), size=20.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: AC-B7-AD-4A
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=23, opcode=1216 (0x04C0), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_TALENT_DATA (1216).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: E1-FE-61-78
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=827 (0x033B), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_INSTANCE_DIFFICULTY (827).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 47-F7-B2-4E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=259, opcode=298 (0x012A), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_SEND_KNOWN_SPELLS (298).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SEND_KNOWN_SPELLS (11303), size=177.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 64-1C-52-FC
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=6, opcode=1054 (0x041E), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_SEND_UNLEARN_SPELLS (1054).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SEND_UNLEARN_SPELLS (11307), size=4.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: F7-46-72-47
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=579, opcode=297 (0x0129), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_ACTION_BUTTONS (297).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_ACTION_BUTTONS (9696), size=1441.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 7A-D4-F0-25
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=646, opcode=290 (0x0122), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_INITIALIZE_FACTIONS (290).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_INITIALIZE_FACTIONS (10020), size=6125.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: E3-88-54-81
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=466, opcode=1149 (0x047D), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ALL_ACHIEVEMENT_DATA (1149).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 4F-6A-E6-7A
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=6, opcode=1212 (0x04BC), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_LOAD_EQUIPMENT_SET (1212).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 86-76-52-A2
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=14, opcode=66 (0x0042), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_LOGIN_SET_TIME_SPEED (66).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_LOGIN_SET_TIME_SPEED (9997), size=20.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 2E-98-11-96
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=6, opcode=677 (0x02A5), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_SET_FORCED_REACTIONS (677).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SET_FORCED_REACTIONS (10013), size=4.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 4E-9B-81-FB
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=14, opcode=66 (0x0042), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_LOGIN_SET_TIME_SPEED (66).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_LOGIN_SET_TIME_SPEED (9997), size=20.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: F5-B6-6B-D2
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=218, opcode=502 (0x01F6), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_COMPRESSED_UPDATE_OBJECT (502).
+04:10:41 | Debug   | UpdatePackets   | [UpdateObject] Buffering 4 updates (total: 4)
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 0F-28-3F-BD
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=508, opcode=502 (0x01F6), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_COMPRESSED_UPDATE_OBJECT (502).
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_ITEM_QUERY_SINGLE (86) with size 8.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-08-56-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 10, first 16: 91-7E-08-81-FD-A8-D0-17-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_ITEM_QUERY_SINGLE (86) with size 8.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-08-56-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 10, first 16: F2-55-AA-DC-98-76-38-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_ITEM_QUERY_SINGLE (86) with size 8.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-08-56-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 10, first 16: 51-75-3B-AD-B0-EE-73-05-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_ITEM_QUERY_SINGLE (86) with size 8.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-08-56-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 10, first 16: 5A-8F-88-08-40-F0-37-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_ITEM_QUERY_SINGLE (86) with size 8.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-08-56-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 10, first 16: B1-E1-0D-F2-6F-B0-23-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_ITEM_QUERY_SINGLE (86) with size 8.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-08-56-00-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 10, first 16: 5D-B3-A8-8C-B2-81-24-1B-00-00
+04:10:41 | Debug   | UpdatePackets   | [UpdateObject] Merged 4 buffered + sending 11 total updates
+04:10:41 | Debug   | UpdatePackets   | [UpdateObject] Writing 7 updates, 0 destroyed, 0 OOR, map=0
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] Writing CreateObject2 for Full: 0x08000400000000000000000000000003 Player/0 R1/S0 Map: 0 Low: 3 objType=ActivePlayer typeMask=0x00E1
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] CreateBits: Move=True Stationary=False Vehicle=False ActivePlayer=True Transport=False Rotation=False
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ObjectData=12 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [PlayerUnitData] DisplayID=50 NativeDisplayID=50 Race=1 Class=8 Sex=1 Health=52/52 Level=1
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] UnitData=823 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [Customization] Option=14 Choice=17217
+04:10:41 | Debug   | ObjectUpdateBuilder | [Customization] Option=15 Choice=17227
+04:10:41 | Debug   | ObjectUpdateBuilder | [Customization] Option=16 Choice=17246
+04:10:41 | Debug   | ObjectUpdateBuilder | [Customization] Option=17 Choice=17264
+04:10:41 | Debug   | ObjectUpdateBuilder | [Customization] Option=18 Choice=17273
+04:10:41 | Debug   | ObjectUpdateBuilder | [Customization] Total count=5
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] PlayerData=403 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ActivePlayerData=14249 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [ValuesBlock] type=ActivePlayer totalValuesSize=15488 fieldFlags=0x01
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] Writing CreateObject1 for Full: 0x0C000400000000000000000000000D85 Item/0 R1/S0 Map: 0 Low: 3461 objType=Item typeMask=0x0003
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] CreateBits: Move=False Stationary=False Vehicle=False ActivePlayer=False Transport=False Rotation=False
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ObjectData=12 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ItemData=273 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [ValuesBlock] type=Item totalValuesSize=286 fieldFlags=0x01
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] Writing CreateObject1 for Full: 0x0C000400000000000000000000000D87 Item/0 R1/S0 Map: 0 Low: 3463 objType=Item typeMask=0x0003
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] CreateBits: Move=False Stationary=False Vehicle=False ActivePlayer=False Transport=False Rotation=False
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ObjectData=12 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ItemData=273 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [ValuesBlock] type=Item totalValuesSize=286 fieldFlags=0x01
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] Writing CreateObject1 for Full: 0x0C000400000000000000000000000D89 Item/0 R1/S0 Map: 0 Low: 3465 objType=Item typeMask=0x0003
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] CreateBits: Move=False Stationary=False Vehicle=False ActivePlayer=False Transport=False Rotation=False
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ObjectData=12 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ItemData=273 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [ValuesBlock] type=Item totalValuesSize=286 fieldFlags=0x01
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] Writing CreateObject1 for Full: 0x0C000400000000000000000000000D8B Item/0 R1/S0 Map: 0 Low: 3467 objType=Item typeMask=0x0003
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] CreateBits: Move=False Stationary=False Vehicle=False ActivePlayer=False Transport=False Rotation=False
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ObjectData=12 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ItemData=273 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [ValuesBlock] type=Item totalValuesSize=286 fieldFlags=0x01
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] Writing CreateObject1 for Full: 0x0C000400000000000000000000000D8F Item/0 R1/S0 Map: 0 Low: 3471 objType=Item typeMask=0x0003
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] CreateBits: Move=False Stationary=False Vehicle=False ActivePlayer=False Transport=False Rotation=False
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ObjectData=12 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ItemData=273 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [ValuesBlock] type=Item totalValuesSize=286 fieldFlags=0x01
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] Writing CreateObject1 for Full: 0x0C000400000000000000000000000D8D Item/0 R1/S0 Map: 0 Low: 3469 objType=Item typeMask=0x0003
+04:10:41 | Debug   | ObjectUpdateBuilder | [UpdateBuilder] CreateBits: Move=False Stationary=False Vehicle=False ActivePlayer=False Transport=False Rotation=False
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ObjectData=12 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [Sizes] ItemData=273 bytes
+04:10:41 | Debug   | ObjectUpdateBuilder | [ValuesBlock] type=Item totalValuesSize=286 fieldFlags=0x01
+04:10:41 | Debug   | UpdatePackets   | [UpdateObject] Data block size=18224, first 64 bytes: 02-01-A0-03-04-08-07-10-02-80-01-A0-03-04-08-00-00-00-00-00-02-00-00-00-00-00-00-01-F7-96-02-CD-D7-0B-C6-35-7E-04-C3-F9-0F-A7-42-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_OBJECT (10187), size=18235.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: D6-40-77-65
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=4, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 1D-70-56-EE
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=6, opcode=169 (0x00A9), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_OBJECT (169).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 69-86-C2-2D
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=846, opcode=502 (0x01F6), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_COMPRESSED_UPDATE_OBJECT (502).
+04:10:41 | Debug   | UpdatePackets   | [UpdateObject] Writing 0 updates, 0 destroyed, 0 OOR, map=0
+04:10:41 | Debug   | UpdatePackets   | [UpdateObject] Data block size=0, first 64 bytes: 
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_OBJECT (10187), size=11.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: F6-47-EC-A3
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=6, opcode=912 (0x0390), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_TIME_SYNC_REQUEST (912).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_TIME_SYNC_REQUEST (11730), size=4.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: EE-E4-7D-A4
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=34, opcode=306 (0x0132), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_SPELL_GO (306).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_REQUEST_PLAYED_TIME (12922).
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_REQUEST_PLAYED_TIME (460) with size 5.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-05-CC-01-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 7, first 16: 6A-3F-6B-AA-2C-D1-00
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_SPELL_GO (11318), size=89.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 11-53-14-88
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=80, opcode=706 (0x02C2), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_INIT_WORLD_STATES (706).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_INIT_WORLD_STATES (10054), size=408.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ALL_ACCOUNT_CRITERIA (9585), size=4.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 4F-A8-95-37
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 6C-BD-C3-4A
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 33-A2-D6-F9
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 3E-D0-B8-7E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 1C-8B-50-64
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 7C-A3-CC-0F
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 73-09-E4-72
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 00-DD-C5-03
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 9D-A1-74-4E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 79-9B-77-2E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 1E-18-38-6F
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 2D-5C-FC-C4
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 8E-9A-A8-4E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: A8-93-56-9C
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=707 (0x02C3), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_UPDATE_WORLD_STATE (707).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_WORLD_STATE (10056), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 7C-4E-34-34
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=11, opcode=756 (0x02F4), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_WEATHER (756).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_WEATHER (9894), size=9.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_START_LIGHTNING_STORM (9895), size=4.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 5A-BD-D8-CE
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=6, opcode=1048 (0x0418), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_QUEST_GIVER_STATUS_MULTIPLE (1048).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_MOVE_INIT_ACTIVE_MOVER_COMPLETE (14918).
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_SET_ACTIVE_MOVER (618) with size 12.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-0C-6A-02-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 14, first 16: 40-73-74-4E-8E-88-03-00-00-00-00-00-00-00
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_CHAT_UNREGISTER_ALL_ADDON_PREFIXES (14286).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_QUEST_GIVER_STATUS_MULTIPLE (10897), size=4.
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_QUERY_TIME (13525).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 06-FA-E7-B0
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=89, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_QUERY_TIME (462) with size 4.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-04-CE-01-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 6, first 16: 9C-EC-9F-CE-95-87
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=97.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 7D-10-3B-2C
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=91, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=99.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 8F-50-77-2A
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=93, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=101.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 11-DE-F6-55
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=96, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=104.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 1C-94-B5-B9
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=85, opcode=657 (0x0291), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT_SERVER_MESSAGE (657).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT_SERVER_MESSAGE (11205), size=84.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 3A-BA-73-50
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=94, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=102.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: C2-BE-D9-8A
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=96, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=104.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: C0-CF-56-E1
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=76, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=84.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: B9-D1-84-47
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=79, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=87.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: C0-BD-68-B0
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=94, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=102.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 08-26-D1-4D
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=103, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=111.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: C1-8C-D5-C0
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=92, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=100.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 47-B0-62-DB
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=89, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=97.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: EB-D8-C4-4C
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=92, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=100.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 7E-66-CB-68
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=90, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=98.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 6B-2F-38-E4
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=89, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=97.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: FE-72-3F-16
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=113, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=121.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 3C-08-4D-8E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=80, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=88.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: C6-9C-62-EE
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=116, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=124.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 4A-FF-A4-00
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=99, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=107.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: F6-8C-FC-43
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=89, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=97.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: FD-2D-3B-54
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=247, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=255.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: BA-95-CF-E2
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=92, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=100.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 31-BC-5C-B6
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=89, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=97.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 45-77-D9-1E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=98, opcode=150 (0x0096), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_CHAT (150).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CHAT (11181), size=106.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 97-26-8F-05
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=19, opcode=81 (0x0051), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_QUERY_PLAYER_NAME_RESPONSE (81).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_REQUEST_FORCED_REACTIONS (12805).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_QUERY_NEXT_MAIL_TIME (13625).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_REQUEST_BATTLEFIELD_STATUS (13789).
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode MSG_QUERY_NEXT_MAIL_TIME (644) with size 4.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-04-84-02-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 6, first 16: F1-8A-DA-30-99-26
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_QUERY_COUNTDOWN_TIMER (12714).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_REQUEST_CONQUEST_FORMULA_CONSTANTS (12980).
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_BATTLEFIELD_STATUS (723) with size 4.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-04-D3-02-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 6, first 16: 05-31-1A-59-AD-5C
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_LFG_LIST_GET_STATUS (13837).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_CONQUEST_FORMULA_CONSTANTS (10121), size=20.
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_REQUEST_LFG_LIST_BLACKLIST (12964).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY (12419).
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode MSG_GUILD_BANK_MONEY_WITHDRAWN (1022) with size 4.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-04-FE-03-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 6, first 16: E7-B0-35-68-5C-C1
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_BATTLE_PET_REQUEST_JOURNAL (13861).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_LFG_LIST_UPDATE_BLACKLIST (10794), size=748.
+04:10:41 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=50)
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 23-8C-C9-9D
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=441, opcode=88 (0x0058), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ITEM_QUERY_SINGLE_RESPONSE (88).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_ARENA_TEAM_ROSTER (14008).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ARENA_TEAM_ROSTER (10080), size=37.
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_ARENA_TEAM_ROSTER (14008).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ARENA_TEAM_ROSTER (10080), size=37.
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_ARENA_TEAM_ROSTER (14008).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_ARENA_TEAM_ROSTER (10080), size=37.
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_DF_GET_JOIN_STATUS (13846).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_DF_GET_SYSTEM_INFO (13845).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_CALENDAR_GET_NUM_PENDING (13948).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 67-27-1C-D6
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=440, opcode=88 (0x0058), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ITEM_QUERY_SINGLE_RESPONSE (88).
+04:10:41 | Storage | GameData        | ItemAppearance #44732 created for DisplayID #12647.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_HOTFIX_MESSAGE (10512), size=42.
+04:10:41 | Storage | GameData        | ItemModifiedAppearance #116899 for item #56 needs to be updated.
+04:10:41 | Storage | GameData        | DisplayID 10455 vs 12647
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_HOTFIX_MESSAGE (10512), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: FC-41-5F-2E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=441, opcode=88 (0x0058), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ITEM_QUERY_SINGLE_RESPONSE (88).
+04:10:41 | Storage | GameData        | ItemAppearance #44733 created for DisplayID #9924.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_HOTFIX_MESSAGE (10512), size=42.
+04:10:41 | Storage | GameData        | ItemModifiedAppearance #117292 for item #1395 needs to be updated.
+04:10:41 | Storage | GameData        | DisplayID 1882 vs 9924
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_HOTFIX_MESSAGE (10512), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: A9-A1-BA-BF
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=441, opcode=88 (0x0058), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ITEM_QUERY_SINGLE_RESPONSE (88).
+04:10:41 | Storage | GameData        | ItemAppearance #44734 created for DisplayID #9929.
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_HOTFIX_MESSAGE (10512), size=42.
+04:10:41 | Storage | GameData        | ItemModifiedAppearance #116898 for item #55 needs to be updated.
+04:10:41 | Storage | GameData        | DisplayID 6077 vs 9929
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_HOTFIX_MESSAGE (10512), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 6E-4D-7A-8D
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=433, opcode=88 (0x0058), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ITEM_QUERY_SINGLE_RESPONSE (88).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: C4-AE-1A-2B
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=434, opcode=88 (0x0058), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ITEM_QUERY_SINGLE_RESPONSE (88).
+04:10:41 | Storage | GameData        | ItemEffect for item #6948 slot #0 needs to be updated.
+04:10:41 | Storage | GameData        | CategoryCoolDownMSec -1 vs 1800000
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_HOTFIX_MESSAGE (10512), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: D9-F9-11-11
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=4049, opcode=502 (0x01F6), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_COMPRESSED_UPDATE_OBJECT (502).
+04:10:41 | Debug   | UpdatePackets   | [UpdateObject] Writing 0 updates, 0 destroyed, 0 OOR, map=0
+04:10:41 | Debug   | UpdatePackets   | [UpdateObject] Data block size=0, first 64 bytes: 
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_UPDATE_OBJECT (10187), size=11.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 0B-DC-25-04
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 14-CA-88-63
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: AE-A4-18-D3
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 60-E5-88-7E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 1A-79-13-B1
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 90-50-E1-7D
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 4C-6D-AD-A3
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 56-C3-10-6B
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 78-AE-9A-DA
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: B0-48-FF-8B
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: E8-CE-0C-86
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_SET_ACTION_BAR_TOGGLES (13618).
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: BE-72-5A-70
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 39-26-72-A2
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: C4-6C-50-04
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=55.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: E5-38-20-5D
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 68-8F-29-EA
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_SET_ACTION_BAR_TOGGLES (703) with size 5.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-05-BF-02-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 7, first 16: F1-AF-23-18-97-FF-00
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 44-6A-5F-88
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 5D-76-9D-94
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 59-E2-E0-47
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=16, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 53-6F-BB-E7
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=16, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 32-87-F5-F5
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 24-45-02-EB
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=16, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 49-FB-5B-4B
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=16, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: AF-C2-AE-AF
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=55.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: AE-17-0F-89
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: B9-1C-1D-32
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=55.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: CC-CE-D5-68
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=16, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 97-60-E8-D3
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=16, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 6E-C5-8C-8C
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 90-01-5A-1C
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=16, opcode=1173 (0x0495), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 18-65-A0-C9
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=11, opcode=461 (0x01CD), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_PLAYED_TIME (461).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_PLAYED_TIME (9941), size=9.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 3D-72-13-9E
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=463 (0x01CF), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_QUERY_TIME_RESPONSE (463).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_QUERY_TIME_RESPONSE (9956), size=8.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 30-4B-04-01
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=10, opcode=644 (0x0284), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode MSG_QUERY_NEXT_MAIL_TIME (644).
+04:10:41 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_MAIL_QUERY_NEXT_TIME_RESULT (10071), size=8.
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 35-48-6D-61
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=63, opcode=221 (0x00DD), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:41 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=86)
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 6B-31-DE-7A
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=63, opcode=221 (0x00DD), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:41 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=86)
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: AF-1A-16-86
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=59, opcode=221 (0x00DD), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:41 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=82)
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: A4-4B-C1-18
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=67, opcode=221 (0x00DD), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:41 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=90)
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_REQUEST_RAID_INFO (14034).
+04:10:41 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_REQUEST_RAID_INFO (717) with size 4.
+04:10:41 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-04-CD-02-00-00
+04:10:41 | Debug   | WorldClient     | C P>S | Total bytes on wire: 6, first 16: 6A-AC-98-5A-DE-31
+04:10:41 | Debug   | WorldClient     | C P<S | Raw header bytes: 8C-56-28-23
+04:10:41 | Debug   | WorldClient     | C P<S | Decoded header: size=6, opcode=716 (0x02CC), crypt=ON
+04:10:41 | Debug   | WorldClient     | C P<S | Received opcode SMSG_RAID_INSTANCE_INFO (716).
+04:10:41 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=4)
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_REQUEST_PVP_REWARDS (12694).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_GUILD_SET_ACHIEVEMENT_TRACKING (12399).
+04:10:41 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_LOADING_SCREEN_NOTIFY (13817).
+04:10:42 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_DB_QUERY_BULK (13797).
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (ItemSparse) #198647
+04:10:42 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_MOVE_TIME_SKIPPED (14875).
+04:10:42 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_ITEM_QUERY_SINGLE (86) with size 8.
+04:10:42 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-08-56-00-00-00
+04:10:42 | Debug   | WorldClient     | C P>S | Total bytes on wire: 10, first 16: 55-7E-64-27-5A-20-F7-07-03-00
+04:10:42 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_DB_QUERY_BULK (13797).
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (Creature) #200900
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_MOVE_TIME_SKIPPED (718) with size 10.
+04:10:42 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-0A-CE-02-00-00
+04:10:42 | Debug   | WorldClient     | C P>S | Total bytes on wire: 12, first 16: CA-B0-4B-57-A6-6B-01-03-C3-04-00-00
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (Creature) #194870
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (Creature) #196534
+04:10:42 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_TIME_SYNC_RESPONSE (14909).
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (Creature) #181485
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_DB_QUERY_BULK (13797).
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #486
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #67
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_TIME_SYNC_RESPONSE (913) with size 12.
+04:10:42 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-0C-91-03-00-00
+04:10:42 | Debug   | WorldClient     | C P>S | Total bytes on wire: 14, first 16: 56-B8-2D-66-BE-BB-00-00-00-00-25-65-A0-02
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #479
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7421
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_MOVE_HEARTBEAT (14864).
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7637
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #102
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #71
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #75
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7430
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #73
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7073
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #434
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7413
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7586
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #435
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #113
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #70
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #61
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7088
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #72
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7709
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7728
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #59
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #112
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #63
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #95
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #109
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #66
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #115
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #58
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7058
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #414
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7055
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7583
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7611
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #60
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #62
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #394
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #111
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #69
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #110
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7092
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | HotfixHandler   | C>P S | DB_QUERY_BULK requested (TactKey) #7106
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_GM_TICKET_GET_CASE_STATUS (13967).
+04:10:42 | Debug   | WorldClient     | C P>S | Sending opcode MSG_MOVE_HEARTBEAT (238) with size 52.
+04:10:42 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-34-EE-00-00-00
+04:10:42 | Debug   | WorldClient     | C P>S | Total bytes on wire: 54, first 16: B7-A3-BD-FC-91-E9-01-03-00-10-00-00-00-02-25-65
+04:10:42 | Debug   | WorldSocket     | C>P S | Received opcode CMSG_MOVE_TIME_SKIPPED (14875).
+04:10:42 | Debug   | WorldClient     | C P>S | Sending opcode CMSG_MOVE_TIME_SKIPPED (718) with size 10.
+04:10:42 | Debug   | WorldClient     | C P>S | Raw header (6 bytes): 00-0A-CE-02-00-00
+04:10:42 | Debug   | WorldClient     | C P>S | Total bytes on wire: 12, first 16: E1-63-2C-35-22-FB-01-03-FA-00-00-00
+04:10:42 | Debug   | WorldClient     | C P<S | Raw header bytes: 43-25-38-89
+04:10:42 | Debug   | WorldClient     | C P<S | Decoded header: size=6, opcode=88 (0x0058), crypt=ON
+04:10:42 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ITEM_QUERY_SINGLE_RESPONSE (88).
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_DB_REPLY (10510), size=17.
+04:10:42 | Debug   | WorldClient     | C P<S | Raw header bytes: BB-6D-AD-CF
+04:10:42 | Debug   | WorldClient     | C P<S | Decoded header: size=59, opcode=221 (0x00DD), crypt=ON
+04:10:42 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:42 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=82)
+04:10:42 | Debug   | WorldClient     | C P<S | Raw header bytes: F3-9A-41-83
+04:10:42 | Debug   | WorldClient     | C P<S | Decoded header: size=63, opcode=221 (0x00DD), crypt=ON
+04:10:42 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:42 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=86)
+04:10:42 | Debug   | WorldClient     | C P<S | Raw header bytes: CD-F0-A6-56
+04:10:42 | Debug   | WorldClient     | C P<S | Decoded header: size=282, opcode=502 (0x01F6), crypt=ON
+04:10:42 | Debug   | WorldClient     | C P<S | Received opcode SMSG_COMPRESSED_UPDATE_OBJECT (502).
+04:10:42 | Debug   | UpdatePackets   | [UpdateObject] Buffering 1 updates (total: 1)
+04:10:42 | Debug   | WorldClient     | C P<S | Raw header bytes: C8-23-B7-EB
+04:10:42 | Debug   | WorldClient     | C P<S | Decoded header: size=67, opcode=221 (0x00DD), crypt=ON
+04:10:42 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:42 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=91)
+04:10:42 | Debug   | WorldClient     | C P<S | Raw header bytes: 9B-E7-D8-45
+04:10:42 | Debug   | WorldClient     | C P<S | Decoded header: size=59, opcode=221 (0x00DD), crypt=ON
+04:10:42 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:42 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=82)
+04:10:42 | Debug   | WorldClient     | C P<S | Raw header bytes: 53-AB-2C-D0
+04:10:42 | Debug   | WorldClient     | C P<S | Decoded header: size=256, opcode=502 (0x01F6), crypt=ON
+04:10:42 | Debug   | WorldClient     | C P<S | Received opcode SMSG_COMPRESSED_UPDATE_OBJECT (502).
+04:10:42 | Debug   | UpdatePackets   | [UpdateObject] Buffering 1 updates (total: 2)
+04:10:42 | Debug   | WorldClient     | C P<S | Raw header bytes: 9E-B0-88-69
+04:10:42 | Debug   | WorldClient     | C P<S | Decoded header: size=17, opcode=1173 (0x0495), crypt=ON
+04:10:42 | Debug   | WorldClient     | C P<S | Received opcode SMSG_AURA_UPDATE_ALL (1173).
+04:10:42 | Debug   | WorldSocket     | C<P S | Sending opcode SMSG_AURA_UPDATE (11295), size=53.
+04:10:43 | Debug   | WorldClient     | C P<S | Raw header bytes: 06-E9-2A-C8
+04:10:43 | Debug   | WorldClient     | C P<S | Decoded header: size=63, opcode=221 (0x00DD), crypt=ON
+04:10:43 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:43 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=86)
+04:10:43 | Debug   | WorldClient     | C P<S | Raw header bytes: 0F-12-8F-23
+04:10:43 | Debug   | WorldClient     | C P<S | Decoded header: size=63, opcode=221 (0x00DD), crypt=ON
+04:10:43 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:43 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=86)
+04:10:43 | Debug   | WorldClient     | C P<S | Raw header bytes: 77-E0-07-17
+04:10:43 | Debug   | WorldClient     | C P<S | Decoded header: size=54, opcode=221 (0x00DD), crypt=ON
+04:10:43 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:43 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=78)
+04:10:43 | Debug   | WorldClient     | C P<S | Raw header bytes: B2-A9-25-04
+04:10:43 | Debug   | WorldClient     | C P<S | Decoded header: size=54, opcode=221 (0x00DD), crypt=ON
+04:10:43 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:43 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=78)
+04:10:44 | Debug   | WorldClient     | C P<S | Raw header bytes: 91-DF-9F-03
+04:10:44 | Debug   | WorldClient     | C P<S | Decoded header: size=59, opcode=221 (0x00DD), crypt=ON
+04:10:44 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:44 | Warning | WorldSocket     | C<P S | Dropping packet with opcode 0 (universal=MSG_NULL_ACTION, size=82)
+04:10:44 | Debug   | WorldClient     | C P<S | Raw header bytes: 17-A0-D9-45
+04:10:44 | Debug   | WorldClient     | C P<S | Decoded header: size=54, opcode=221 (0x00DD), crypt=ON
+04:10:44 | Debug   | WorldClient     | C P<S | Received opcode SMSG_ON_MONSTER_MOVE (221).
+04:10:44 | Error   | WorldSocket     | C<P S | Can't send MSG_NULL_ACTION, socket is closed!
+04:10:44 | Error   | WorldClient     | C P<S | Packet Read Error: A request to send or receive data was disallowed because the socket had already been shut down in that direction with a previous shutdown call.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.CreateException(SocketError error, Boolean forAsyncThrow)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ReceiveAsync(Socket socket, CancellationToken cancellationToken)
+   at HermesProxy.World.Client.WorldClient.ReceiveBufferFully(ArraySegment`1 bufferToFill) in F:\Ampps\HermesProxy-master\HermesProxy\World\Client\WorldClient.cs:line 154
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at HermesProxy.World.Client.WorldClient.ReceiveBufferFully(ArraySegment`1 bufferToFill)
+   at HermesProxy.World.Client.WorldClient.ReceiveLoop() in F:\Ampps\HermesProxy-master\HermesProxy\World\Client\WorldClient.cs:line 0
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecutionContextCallback(Object s)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext(Thread threadPoolThread)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction(IAsyncStateMachineBox box, Boolean allowInlining)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Threading.Tasks.Task`1.TrySetResult(TResult result)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.SetExistingTaskResult(Task`1 task, TResult result)
+   at HermesProxy.World.Client.WorldClient.ReceiveBufferFully(ArraySegment`1 bufferToFill) in F:\Ampps\HermesProxy-master\HermesProxy\World\Client\WorldClient.cs:line 161
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.ExecutionContextCallback(Object s)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext(Thread threadPoolThread)
+   at System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1.AsyncStateMachineBox`1.MoveNext()
+   at System.Threading.Tasks.AwaitTaskContinuation.RunOrScheduleAction(IAsyncStateMachineBox box, Boolean allowInlining)
+   at System.Threading.Tasks.Task.RunContinuations(Object continuationObject)
+   at System.Threading.Tasks.Task`1.TrySetResult(TResult result)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.InvokeContinuation(Action`1 continuation, Object state, Boolean forceAsync, Boolean requiresExecutionContextFlow)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.OnCompleted(SocketAsyncEventArgs _)
+   at System.Threading._IOCompletionCallback.PerformIOCompletionCallback(UInt32 errorCode, UInt32 numBytes, NativeOverlapped* pNativeOverlapped)
+--- End of stack trace from previous location ---
+   at HermesProxy.World.Client.WorldClient.ReceiveBufferFully(ArraySegment`1 bufferToFill) in F:\Ampps\HermesProxy-master\HermesProxy\World\Client\WorldClient.cs:line 154
+   at HermesProxy.World.Client.WorldClient.ReceiveLoop() in F:\Ampps\HermesProxy-master\HermesProxy\World\Client\WorldClient.cs:line 170

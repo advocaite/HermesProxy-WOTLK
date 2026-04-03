@@ -1,0 +1,35 @@
+﻿=== HermesProxy Log Started 2026-04-02 12:01:40 ===
+12:01:40 | Server  | Server          | Starting Hermes Proxy...
+12:01:40 | Server  | Server          | Version 2026-03-21 0.1.0
+12:01:40 | Storage | Server          | Switching working directory
+12:01:40 | Storage | Server          | Old: F:\Ampps\HermesProxy-master
+12:01:40 | Storage | Server          | New: F:\Ampps\HermesProxy-master\HermesProxy\bin\Release
+12:01:41 | Debug   | Server          | Debug logging enabled
+12:01:41 | Server  | Server          | Modern (Client) Build: V3_4_3_54261
+12:01:41 | Server  | Server          | Legacy (Server) Build: V3_3_5a_12340
+12:01:41 | Storage | GameData        | Loading data files...
+12:01:41 | Server  | VersionChecker  | Loaded 1311 legacy opcodes.
+12:01:41 | Error   | VersionChecker  | Opcode SMSG_AUCTION_OWNER_LIST_RESULT is missing from the universal opcode enum!
+12:01:41 | Error   | VersionChecker  | Opcode SMSG_AUCTION_LIST_BIDDER_ITEMS_RESULT is missing from the universal opcode enum!
+12:01:41 | Error   | VersionChecker  | Opcode CMSG_CHANNEL_ROSTER_INFO is missing from the universal opcode enum!
+12:01:41 | Error   | VersionChecker  | Opcode CMSG_CHANNEL_ROSTER_INFO is missing from the universal opcode enum!
+12:01:41 | Error   | VersionChecker  | Opcode CMSG_CHANNEL_UNSILENCE_ALL is missing from the universal opcode enum!
+12:01:41 | Error   | VersionChecker  | Opcode CMSG_CHANNEL_UNSILENCE_ALL is missing from the universal opcode enum!
+12:01:41 | Server  | VersionChecker  | Loaded 751 modern opcodes.
+12:01:44 | Storage | GameData        | Finished loading data.
+12:01:44 | Network | Server          | External IP: 127.0.0.1
+12:01:44 | Server  | Server          | Starting BnetTcpSession service on 127.0.0.1:1119...
+12:01:44 | Network | NetworkThread   | Network Thread Starting
+12:01:44 | Server  | Server          | Starting BnetRestApiSession service on 127.0.0.1:8081...
+12:01:44 | Network | NetworkThread   | Network Thread Starting
+12:01:44 | Server  | Server          | Starting RealmSocket service on 127.0.0.1:8084...
+12:01:44 | Network | NetworkThread   | Network Thread Starting
+12:01:44 | Server  | Server          | Starting WorldSocket service on 127.0.0.1:8086...
+12:01:44 | Error   | AsyncAcceptor   | System.Net.Sockets.SocketException (10013): An attempt was made to access a socket in a way forbidden by its access permissions.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at System.Net.Sockets.TcpListener.Start(Int32 backlog)
+   at System.Net.Sockets.TcpListener.Start()
+   at Framework.Networking.AsyncAcceptor.Start(String ip, Int32 port) in F:\Ampps\HermesProxy-master\Framework\Networking\AsyncAcceptor.cs:line 46
+12:01:44 | Network | SocketManager   | StartNetwork failed to Start AsyncAcceptor

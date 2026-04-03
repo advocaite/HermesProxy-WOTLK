@@ -1,0 +1,1119 @@
+﻿/*
+ * Copyright (C) 2012-2020 CypherCore <http://github.com/CypherCore>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+using Framework.Constants;
+using Framework.GameMath;
+using HermesProxy.World.Enums;
+using HermesProxy.World.Objects;
+using System.Collections.Generic;
+
+namespace HermesProxy.World.Server.Packets
+{
+    public class EmptyClientPacket : ClientPacket
+    {
+        public EmptyClientPacket(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            System.Diagnostics.Trace.Assert(!_worldPacket.CanRead());
+        }
+    }
+
+    public class BindPointUpdate : ServerPacket
+    {
+        public BindPointUpdate() : base(Opcode.SMSG_BIND_POINT_UPDATE, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteVector3(BindPosition);
+            _worldPacket.WriteUInt32(BindMapID);
+            _worldPacket.WriteUInt32(BindAreaID);
+        }
+
+        public uint BindMapID = 0xFFFFFFFF;
+        public Vector3 BindPosition;
+        public uint BindAreaID;
+    }
+
+    public class PlayerBound : ServerPacket
+    {
+        public PlayerBound() : base(Opcode.SMSG_PLAYER_BOUND) { }
+
+        public override void Write()
+        {
+            _worldPacket.WritePackedGuid128(BinderGUID);
+            _worldPacket.WriteUInt32(AreaID);
+        }
+
+        public WowGuid128 BinderGUID;
+        public uint AreaID;
+    }
+
+    public class ServerTimeOffset : ServerPacket
+    {
+        public ServerTimeOffset() : base(Opcode.SMSG_SERVER_TIME_OFFSET) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt64(Time);
+        }
+
+        public long Time;
+    }
+
+    public class SocialContractRequestResponse : ServerPacket
+    {
+        public SocialContractRequestResponse() : base(Opcode.SMSG_SOCIAL_CONTRACT_REQUEST_RESPONSE) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteBool(false); // ShowSocialContract = false
+        }
+    }
+
+    public class TutorialSetFlag : ClientPacket
+    {
+        public TutorialSetFlag(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            Action = (TutorialAction)_worldPacket.ReadBits<byte>(2);
+            if (Action == TutorialAction.Update)
+                TutorialBit = _worldPacket.ReadUInt32();
+        }
+
+        public TutorialAction Action;
+        public uint TutorialBit;
+    }
+
+    public class TutorialFlags : ServerPacket
+    {
+        public TutorialFlags() : base(Opcode.SMSG_TUTORIAL_FLAGS) { }
+
+        public override void Write()
+        {
+            for (byte i = 0; i < (int)Tutorials.Max; ++i)
+                _worldPacket.WriteUInt32(TutorialData[i]);
+        }
+
+        public uint[] TutorialData = new uint[(int)Tutorials.Max];
+    }
+
+    public class CorpseReclaimDelay : ServerPacket
+    {
+        public CorpseReclaimDelay() : base(Opcode.SMSG_CORPSE_RECLAIM_DELAY, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(Remaining);
+        }
+
+        public uint Remaining;
+    }
+
+    public class SetupCurrency : ServerPacket
+    {
+        public SetupCurrency() : base(Opcode.SMSG_SETUP_CURRENCY, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(Data.Count);
+
+            foreach (Record data in Data)
+            {
+                _worldPacket.WriteUInt32(data.Type);
+                _worldPacket.WriteUInt32(data.Quantity);
+
+                _worldPacket.WriteBit(data.WeeklyQuantity.HasValue);
+                _worldPacket.WriteBit(data.MaxWeeklyQuantity.HasValue);
+                _worldPacket.WriteBit(data.TrackedQuantity.HasValue);
+                _worldPacket.WriteBit(data.MaxQuantity.HasValue);
+                _worldPacket.WriteBit(data.Unused901.HasValue);
+                _worldPacket.WriteBits(data.Flags, 5);
+                _worldPacket.FlushBits();
+
+                if (data.WeeklyQuantity.HasValue)
+                    _worldPacket.WriteUInt32(data.WeeklyQuantity.Value);
+                if (data.MaxWeeklyQuantity.HasValue)
+                    _worldPacket.WriteUInt32(data.MaxWeeklyQuantity.Value);
+                if (data.TrackedQuantity.HasValue)
+                    _worldPacket.WriteUInt32(data.TrackedQuantity.Value);
+                if (data.MaxQuantity.HasValue)
+                    _worldPacket.WriteInt32(data.MaxQuantity.Value);
+                if (data.Unused901.HasValue)
+                    _worldPacket.WriteInt32(data.Unused901.Value);
+            }
+        }
+
+        public List<Record> Data = new();
+
+        public struct Record
+        {
+            public uint Type;
+            public uint Quantity;
+            public uint? WeeklyQuantity;       // Currency count obtained this Week.  
+            public uint? MaxWeeklyQuantity;    // Weekly Currency cap.
+            public uint? TrackedQuantity;
+            public int? MaxQuantity;
+            public int? Unused901;
+            public byte Flags;                      // 0 = none, 
+        }
+    }
+
+    class AllAccountCriteria : ServerPacket
+    {
+        public AllAccountCriteria() : base(Opcode.SMSG_ALL_ACCOUNT_CRITERIA, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(Progress.Count);
+            foreach (var progress in Progress)
+                progress.Write(_worldPacket);
+        }
+
+        public List<CriteriaProgressPkt> Progress = new();
+    }
+
+    public struct CriteriaProgressPkt
+    {
+        public void Write(WorldPacket data)
+        {
+            data.WriteUInt32(Id);
+            data.WriteUInt64(Quantity);
+            data.WritePackedGuid128(Player);
+            data.WritePackedTime(Date);
+            data.WriteUInt32(TimeFromStart);
+            data.WriteUInt32(TimeFromCreate);
+            data.WriteBits(Flags, 4);
+            data.WriteBit(RafAcceptanceID.HasValue);
+            data.FlushBits();
+
+            if (RafAcceptanceID.HasValue)
+                data.WriteUInt64(RafAcceptanceID.Value);
+        }
+
+        public uint Id;
+        public ulong Quantity;
+        public WowGuid128 Player;
+        public uint Flags;
+        public long Date;
+        public uint TimeFromStart;
+        public uint TimeFromCreate;
+        public ulong? RafAcceptanceID;
+    }
+
+    public class TimeSyncRequest : ServerPacket
+    {
+        public TimeSyncRequest() : base(Opcode.SMSG_TIME_SYNC_REQUEST, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(SequenceIndex);
+        }
+
+        public uint SequenceIndex;
+    }
+
+    public class TimeSyncResponse : ClientPacket
+    {
+        public TimeSyncResponse(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            SequenceIndex = _worldPacket.ReadUInt32();
+            ClientTime = _worldPacket.ReadUInt32();
+        }
+
+        public uint ClientTime; // Client ticks in ms
+        public uint SequenceIndex; // Same index as in request
+    }
+
+    public class WeatherPkt : ServerPacket
+    {
+        public WeatherPkt() : base(Opcode.SMSG_WEATHER, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32((uint)WeatherID);
+            _worldPacket.WriteFloat(Intensity);
+            _worldPacket.WriteBit(Abrupt);
+
+            _worldPacket.FlushBits();
+        }
+
+        public bool Abrupt;
+        public float Intensity;
+        public WeatherState WeatherID;
+    }
+
+    class StartLightningStorm : ServerPacket
+    {
+        public StartLightningStorm() : base(Opcode.SMSG_START_LIGHTNING_STORM, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(LightningStormId);
+        }
+
+        public uint LightningStormId;
+    }
+
+    public class LoginSetTimeSpeed : ServerPacket
+    {
+        public LoginSetTimeSpeed() : base(Opcode.SMSG_LOGIN_SET_TIME_SPEED, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(ServerTime);
+            _worldPacket.WriteUInt32(GameTime);
+            _worldPacket.WriteFloat(NewSpeed);
+            _worldPacket.WriteInt32(ServerTimeHolidayOffset);
+            _worldPacket.WriteInt32(GameTimeHolidayOffset);
+        }
+
+        public uint ServerTime;
+        public uint GameTime;
+        public float NewSpeed;
+        public int ServerTimeHolidayOffset;
+        public int GameTimeHolidayOffset;
+    }
+
+    class AreaTriggerPkt : ClientPacket
+    {
+        public AreaTriggerPkt(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            AreaTriggerID = _worldPacket.ReadUInt32();
+            Entered = _worldPacket.HasBit();
+            FromClient = _worldPacket.HasBit();
+        }
+
+        public uint AreaTriggerID;
+        public bool Entered;
+        public bool FromClient;
+    }
+
+    class AreaTriggerMessage : ServerPacket
+    {
+        public AreaTriggerMessage() : base(Opcode.SMSG_AREA_TRIGGER_MESSAGE) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(AreaTriggerID);
+        }
+
+        public uint AreaTriggerID = 0;
+    }
+
+    public class SetSelection : ClientPacket
+    {
+        public SetSelection(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            TargetGUID = _worldPacket.ReadPackedGuid128();
+        }
+
+        public WowGuid128 TargetGUID;
+    }
+
+    public class WorldServerInfo : ServerPacket
+    {
+        public WorldServerInfo() : base(Opcode.SMSG_WORLD_SERVER_INFO, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(DifficultyID);
+            if (ModernVersion.ExpansionVersion >= 3)
+                _worldPacket.WriteBit(IsTournamentRealm != 0);
+            else
+                _worldPacket.WriteUInt8(IsTournamentRealm);
+            _worldPacket.WriteBit(XRealmPvpAlert);
+            _worldPacket.WriteBit(RestrictedAccountMaxLevel.HasValue);
+            _worldPacket.WriteBit(RestrictedAccountMaxMoney.HasValue);
+            _worldPacket.WriteBit(InstanceGroupSize.HasValue);
+
+            if (RestrictedAccountMaxLevel.HasValue)
+                _worldPacket.WriteUInt32(RestrictedAccountMaxLevel.Value);
+
+            if (RestrictedAccountMaxMoney.HasValue)
+                _worldPacket.WriteUInt64(RestrictedAccountMaxMoney.Value);
+
+            if (InstanceGroupSize.HasValue)
+                _worldPacket.WriteUInt32(InstanceGroupSize.Value);
+
+            _worldPacket.FlushBits();
+        }
+
+        public uint DifficultyID;
+        public byte IsTournamentRealm;
+        public bool XRealmPvpAlert;
+        public uint? RestrictedAccountMaxLevel;
+        public ulong? RestrictedAccountMaxMoney;
+        public uint? InstanceGroupSize;
+    }
+
+    public class SetDungeonDifficulty : ClientPacket
+    {
+        public SetDungeonDifficulty(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            DifficultyID = _worldPacket.ReadUInt32();
+        }
+
+        public uint DifficultyID;
+    }
+
+    public class DungeonDifficultySet : ServerPacket
+    {
+        public DungeonDifficultySet() : base(Opcode.SMSG_SET_DUNGEON_DIFFICULTY) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(DifficultyID);
+        }
+
+        public int DifficultyID;
+    }
+
+    public class SetAllTaskProgress : ServerPacket
+    {
+        public SetAllTaskProgress() : base(Opcode.SMSG_SET_ALL_TASK_PROGRESS, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(Tasks.Count);
+            foreach (var task in Tasks)
+                task.Write(_worldPacket);
+        }
+
+        public List<TaskProgress> Tasks = new List<TaskProgress>();
+    }
+
+    public class TaskProgress
+    {
+        public void Write(WorldPacket data)
+        {
+            data.WriteUInt32(TaskID);
+            data.WriteUInt32(FailureTime);
+            data.WriteUInt32(Flags);
+            data.WriteUInt32(Unk);
+            data.WriteInt32(Progress.Count);
+            foreach (ushort progress in Progress)
+                data.WriteUInt16(progress);
+        }
+        public uint TaskID;
+        public uint FailureTime;
+        public uint Flags;
+        public uint Unk;
+        public List<ushort> Progress = new List<ushort>();
+    }
+
+    public class InitialSetup : ServerPacket
+    {
+        public InitialSetup() : base(Opcode.SMSG_INITIAL_SETUP, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt8(ServerExpansionLevel);
+            _worldPacket.WriteUInt8(ServerExpansionTier);
+        }
+
+        public byte ServerExpansionLevel;
+        public byte ServerExpansionTier;
+    }
+
+    public class RepopRequest : ClientPacket
+    {
+        public RepopRequest(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            CheckInstance = _worldPacket.HasBit();
+        }
+
+        public bool CheckInstance;
+    }
+
+    public class QueryCorpseLocationFromClient : ClientPacket
+    {
+        public QueryCorpseLocationFromClient(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            Player = _worldPacket.ReadPackedGuid128();
+        }
+
+        public WowGuid128 Player;
+    }
+
+    public class CorpseLocation : ServerPacket
+    {
+        public CorpseLocation() : base(Opcode.SMSG_CORPSE_LOCATION) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteBit(Valid);
+            _worldPacket.FlushBits();
+
+            _worldPacket.WritePackedGuid128(Player);
+            _worldPacket.WriteInt32(ActualMapID);
+            _worldPacket.WriteVector3(Position);
+            _worldPacket.WriteInt32(MapID);
+            _worldPacket.WritePackedGuid128(Transport);
+        }
+
+        public WowGuid128 Player;
+        public WowGuid128 Transport;
+        public Vector3 Position;
+        public int ActualMapID;
+        public int MapID;
+        public bool Valid;
+    }
+
+    public class DeathReleaseLoc : ServerPacket
+    {
+        public DeathReleaseLoc() : base(Opcode.SMSG_DEATH_RELEASE_LOC) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(MapID);
+            _worldPacket.WriteVector3(Location);
+        }
+
+        public int MapID;
+        public Vector3 Location;
+    }
+
+    public class ReclaimCorpse : ClientPacket
+    {
+        public ReclaimCorpse(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            CorpseGUID = _worldPacket.ReadPackedGuid128();
+        }
+
+        public WowGuid128 CorpseGUID;
+    }
+
+    public class StandStateChange : ClientPacket
+    {
+        public StandStateChange(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            StandState = _worldPacket.ReadUInt32();
+        }
+
+        public uint StandState;
+    }
+
+    public class StandStateUpdate : ServerPacket
+    {
+        public StandStateUpdate() : base(Opcode.SMSG_STAND_STATE_UPDATE) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(AnimKitID);
+            _worldPacket.WriteUInt8(StandState);
+        }
+
+        public uint AnimKitID;
+        public byte StandState;
+    }
+
+    public class ExplorationExperience : ServerPacket
+    {
+        public ExplorationExperience() : base(Opcode.SMSG_EXPLORATION_EXPERIENCE) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(AreaID);
+            _worldPacket.WriteUInt32(Experience);
+        }
+
+        public uint AreaID;
+        public uint Experience;
+    }
+
+    public class PlayMusic : ServerPacket
+    {
+        public PlayMusic() : base(Opcode.SMSG_PLAY_MUSIC) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(SoundEntryID);
+        }
+
+        public uint SoundEntryID;
+    }
+
+    class PlaySound : ServerPacket
+    {
+        public PlaySound() : base(Opcode.SMSG_PLAY_SOUND) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(SoundEntryID);
+            _worldPacket.WritePackedGuid128(SourceObjectGuid);
+            if (ModernVersion.AddedInVersion(9, 0, 1, 1, 14, 0, 2, 5, 1))
+                _worldPacket.WriteInt32(BroadcastTextId);
+        }
+
+        public uint SoundEntryID;
+        public WowGuid128 SourceObjectGuid;
+        public int BroadcastTextId;
+    }
+
+    class PlayObjectSound : ServerPacket
+    {
+        public PlayObjectSound() : base(Opcode.SMSG_PLAY_OBJECT_SOUND) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(SoundEntryID);
+            _worldPacket.WritePackedGuid128(SourceObjectGUID);
+            _worldPacket.WritePackedGuid128(TargetObjectGUID);
+            _worldPacket.WriteVector3(Position);
+            if (ModernVersion.AddedInVersion(9, 0, 1, 1, 14, 0, 2, 5, 1))
+                _worldPacket.WriteInt32(BroadcastTextID);
+        }
+
+        public uint SoundEntryID;
+        public WowGuid128 SourceObjectGUID;
+        public WowGuid128 TargetObjectGUID;
+        public Vector3 Position = new();
+        public int BroadcastTextID;
+    }
+
+    public class TriggerCinematic : ServerPacket
+    {
+        public TriggerCinematic() : base(Opcode.SMSG_TRIGGER_CINEMATIC) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(CinematicID);
+            if (ModernVersion.ExpansionVersion >= 3)
+                _worldPacket.WritePackedGuid128(ConversationGuid);
+        }
+
+        public uint CinematicID;
+        public WowGuid128 ConversationGuid = WowGuid128.Empty;
+    }
+
+    class ClientCinematicPkt : ClientPacket
+    {
+        public ClientCinematicPkt(WorldPacket packet) : base(packet) { }
+
+        public override void Read() { }
+    }
+
+    class FarSight : ClientPacket
+    {
+        public FarSight(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            Enable = _worldPacket.HasBit();
+        }
+
+        public bool Enable;
+    }
+
+    class MountSpecial : ClientPacket
+    {
+        public MountSpecial(WorldPacket packet) : base(packet) { }
+
+        public override void Read()
+        {
+            SpellVisualKitIDs = new int[_worldPacket.ReadUInt32()];
+            if (ModernVersion.AddedInVersion(9, 2, 0, 1, 14, 2, 2, 5, 3))
+                SequenceVariation = _worldPacket.ReadInt32();
+            for (var i = 0; i < SpellVisualKitIDs.Length; ++i)
+                SpellVisualKitIDs[i] = _worldPacket.ReadInt32();
+        }
+
+        public int[] SpellVisualKitIDs;
+        public int SequenceVariation;
+    }
+
+    class SpecialMountAnim : ServerPacket
+    {
+        public SpecialMountAnim() : base(Opcode.SMSG_SPECIAL_MOUNT_ANIM, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WritePackedGuid128(UnitGUID);
+            if (ModernVersion.AddedInVersion(9, 0, 5, 1, 14, 0, 2, 5, 1))
+            {
+                _worldPacket.WriteInt32(SpellVisualKitIDs.Count);
+                if (ModernVersion.AddedInVersion(9, 2, 0, 1, 14, 2, 2, 5, 3))
+                    _worldPacket.WriteInt32(SequenceVariation);
+                foreach (var id in SpellVisualKitIDs)
+                    _worldPacket.WriteInt32(id);
+            }
+        }
+
+        public WowGuid128 UnitGUID;
+        public List<int> SpellVisualKitIDs = new();
+        public int SequenceVariation;
+    }
+
+    public class StartMirrorTimer : ServerPacket
+    {
+        public StartMirrorTimer() : base(Opcode.SMSG_START_MIRROR_TIMER) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32((int)Timer);
+            _worldPacket.WriteInt32(Value);
+            _worldPacket.WriteInt32(MaxValue);
+            _worldPacket.WriteInt32(Scale);
+            _worldPacket.WriteInt32(SpellID);
+            _worldPacket.WriteBit(Paused);
+            _worldPacket.FlushBits();
+        }
+
+        public MirrorTimerType Timer;
+        public int Value;
+        public int MaxValue;
+        public int Scale;
+        public int SpellID;
+        public bool Paused;
+    }
+
+    public class PauseMirrorTimer : ServerPacket
+    {
+        public PauseMirrorTimer() : base(Opcode.SMSG_PAUSE_MIRROR_TIMER) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32((int)Timer);
+            _worldPacket.WriteBit(Paused);
+            _worldPacket.FlushBits();
+        }
+
+        public MirrorTimerType Timer;
+        public bool Paused;
+    }
+
+    public class StopMirrorTimer : ServerPacket
+    {
+        public StopMirrorTimer() : base(Opcode.SMSG_STOP_MIRROR_TIMER) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32((int)Timer);
+        }
+
+        public MirrorTimerType Timer;
+    }
+
+    public class LFGListUpdateBlacklist : ServerPacket
+    {
+        public LFGListUpdateBlacklist() : base(Opcode.SMSG_LFG_LIST_UPDATE_BLACKLIST, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(Blacklist.Count);
+            foreach (var entry in Blacklist)
+                entry.Write(_worldPacket);
+        }
+
+        public void AddBlacklist(int activity, int reason)
+        {
+            LFGListBlacklistEntry entry = new LFGListBlacklistEntry();
+            entry.ActivityID = activity;
+            entry.Reason = reason;
+            Blacklist.Add(entry);
+        }
+
+        public List<LFGListBlacklistEntry> Blacklist = new List<LFGListBlacklistEntry>();
+    }
+
+    public struct LFGListBlacklistEntry
+    {
+        public void Write(WorldPacket data)
+        {
+            data.WriteInt32(ActivityID);
+            data.WriteInt32(Reason);
+        }
+
+        public int ActivityID;
+        public int Reason;
+    }
+
+    public class ConquestFormulaConstants : ServerPacket
+    {
+        public ConquestFormulaConstants() : base(Opcode.SMSG_CONQUEST_FORMULA_CONSTANTS, ConnectionType.Instance) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(PvpMinCPPerWeek);
+            _worldPacket.WriteInt32(PvpMaxCPPerWeek);
+            _worldPacket.WriteFloat(PvpCPBaseCoefficient);
+            _worldPacket.WriteFloat(PvpCPExpCoefficient);
+            _worldPacket.WriteFloat(PvpCPNumerator);
+        }
+
+        public int PvpMinCPPerWeek;
+        public int PvpMaxCPPerWeek;
+        public float PvpCPBaseCoefficient;
+        public float PvpCPExpCoefficient;
+        public float PvpCPNumerator;
+    }
+
+    public class SeasonInfo : ServerPacket
+    {
+        public SeasonInfo() : base(Opcode.SMSG_SEASON_INFO) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(MythicPlusSeasonID);
+            if (ModernVersion.ExpansionVersion >= 3)
+                _worldPacket.WriteInt32(MythicPlusMilestoneSeasonID);
+            _worldPacket.WriteInt32(CurrentSeason);
+            _worldPacket.WriteInt32(PreviousSeason);
+            _worldPacket.WriteInt32(ConquestWeeklyProgressCurrencyID);
+            _worldPacket.WriteInt32(PvpSeasonID);
+            _worldPacket.WriteBit(WeeklyRewardChestsEnabled);
+            _worldPacket.FlushBits();
+        }
+
+        public int MythicPlusSeasonID;
+        public int MythicPlusMilestoneSeasonID;
+        public int PreviousSeason;
+        public int CurrentSeason;
+        public int PvpSeasonID;
+        public int ConquestWeeklyProgressCurrencyID;
+        public bool WeeklyRewardChestsEnabled;
+    }
+
+    public class InvalidatePlayer : ServerPacket
+    {
+        public InvalidatePlayer() : base(Opcode.SMSG_INVALIDATE_PLAYER) { }
+
+        public override void Write()
+        {
+            _worldPacket.WritePackedGuid128(Guid);
+        }
+
+        public WowGuid128 Guid;
+    }
+
+    public class ZoneUnderAttack : ServerPacket
+    {
+        public ZoneUnderAttack() : base(Opcode.SMSG_ZONE_UNDER_ATTACK) { }
+
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(AreaID);
+        }
+
+        public int AreaID;
+    }
+
+    // Stub packets for WotLK Classic 3.4.3 login requirements
+    public class EmptyAllAchievementData : ServerPacket
+    {
+        public EmptyAllAchievementData() : base(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(0); // earned count
+            _worldPacket.WriteInt32(0); // progress count
+        }
+    }
+
+    public class EmptyAllAccountCriteria : ServerPacket
+    {
+        public EmptyAllAccountCriteria() : base(Opcode.SMSG_ALL_ACCOUNT_CRITERIA, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(0); // progress count
+        }
+    }
+
+    public class EmptySetupCurrency : ServerPacket
+    {
+        public EmptySetupCurrency() : base(Opcode.SMSG_SETUP_CURRENCY, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(0); // count
+        }
+    }
+
+    public class EmptyTalentData : ServerPacket
+    {
+        public EmptyTalentData() : base(Opcode.SMSG_UPDATE_TALENT_DATA, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(0); // UnspentTalentPoints
+            _worldPacket.WriteUInt8(0);  // ActiveGroup
+            _worldPacket.WriteUInt32(1); // GroupCount = 1
+            // TalentGroupInfo[0]:
+            _worldPacket.WriteUInt8(0);  // Talents.size (uint8)
+            _worldPacket.WriteUInt32(0); // Talents.size (uint32)
+            _worldPacket.WriteUInt8(0);  // GlyphIDs.size (uint8)
+            _worldPacket.WriteUInt32(0); // GlyphIDs.size (uint32)
+            _worldPacket.WriteUInt8(0);  // SpecID
+            // No talent entries, no glyph entries
+            _worldPacket.WriteBit(false); // IsPetTalents
+            _worldPacket.FlushBits();
+        }
+    }
+
+    public class EmptyInitWorldStates : ServerPacket
+    {
+        public EmptyInitWorldStates() : base(Opcode.SMSG_INIT_WORLD_STATES, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(MapId);
+            _worldPacket.WriteInt32(ZoneId);
+            _worldPacket.WriteInt32(AreaId);
+            _worldPacket.WriteInt32(0); // count of world state values
+        }
+        public uint MapId;
+        public int ZoneId;
+        public int AreaId;
+    }
+
+    public class BattlePetJournalLockAcquired : ServerPacket
+    {
+        public BattlePetJournalLockAcquired() : base(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED, ConnectionType.Instance) { }
+        public override void Write() { } // empty packet
+    }
+
+    public class EmptyActiveGlyphs : ServerPacket
+    {
+        public EmptyActiveGlyphs() : base(Opcode.SMSG_ACTIVE_GLYPHS, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(0); // Glyphs count
+            _worldPacket.WriteBit(true); // IsFullUpdate
+            _worldPacket.FlushBits();
+        }
+    }
+
+    public class EmptyAccountMountUpdate : ServerPacket
+    {
+        public EmptyAccountMountUpdate() : base(Opcode.SMSG_ACCOUNT_MOUNT_UPDATE, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteBit(true); // IsFullUpdate
+            _worldPacket.WriteUInt32(0); // Mounts count (WriteUInt32 calls FlushBits internally)
+            _worldPacket.FlushBits();    // Final flush
+        }
+    }
+
+    public class EmptyAccountToyUpdate : ServerPacket
+    {
+        public EmptyAccountToyUpdate() : base(Opcode.SMSG_ACCOUNT_TOY_UPDATE, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteBit(true); // IsFullUpdate
+            _worldPacket.FlushBits();
+            _worldPacket.WriteInt32(0); // ToyIDs size
+            _worldPacket.WriteInt32(0); // Favorites size
+            _worldPacket.WriteInt32(0); // Fanfare size
+        }
+    }
+
+    public class EmptyAccountHeirloomUpdate : ServerPacket
+    {
+        public EmptyAccountHeirloomUpdate() : base(Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteBit(true); // IsFullUpdate
+            _worldPacket.FlushBits();
+            _worldPacket.WriteInt32(0); // Unk
+            _worldPacket.WriteUInt32(0); // Heirlooms size
+            _worldPacket.WriteUInt32(0); // Heirlooms size (again)
+        }
+    }
+
+    public class EmptyEquipmentSetList : ServerPacket
+    {
+        public EmptyEquipmentSetList() : base(Opcode.SMSG_LOAD_EQUIPMENT_SET, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteUInt32(0); // count
+        }
+    }
+
+    public class UpdateActionButtons : ServerPacket
+    {
+        public UpdateActionButtons() : base(Opcode.SMSG_UPDATE_ACTION_BUTTONS, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            for (int i = 0; i < 180; i++)
+                _worldPacket.WriteInt64(i < ActionButtons.Count ? ActionButtons[i] : 0);
+            _worldPacket.WriteUInt8(Reason); // 0 = initial, 1 = spec switch, 2 = talent/pet
+        }
+        public List<int> ActionButtons = new();
+        public byte Reason;
+    }
+
+    public class EmptySpellHistory : ServerPacket
+    {
+        public EmptySpellHistory() : base(Opcode.SMSG_SEND_SPELL_HISTORY, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(0); // count
+        }
+    }
+
+    public class EmptySpellCharges : ServerPacket
+    {
+        public EmptySpellCharges() : base(Opcode.SMSG_SEND_SPELL_CHARGES, ConnectionType.Instance) { }
+        public override void Write()
+        {
+            _worldPacket.WriteInt32(0); // count
+        }
+    }
+
+    // Empty ClientPacket stubs for modern client requests
+    public class ViolenceLevelPkt : ClientPacket
+    {
+        public ViolenceLevelPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class RequestPvpRewardsPkt : ClientPacket
+    {
+        public RequestPvpRewardsPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class RequestRatedPvpInfoPkt : ClientPacket
+    {
+        public RequestRatedPvpInfoPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class OverrideScreenFlashPkt : ClientPacket
+    {
+        public OverrideScreenFlashPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class QueuedMessagesEndPkt : ClientPacket
+    {
+        public QueuedMessagesEndPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class BattlePayGetProductListPkt : ClientPacket
+    {
+        public BattlePayGetProductListPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class BattlePayGetPurchaseListPkt : ClientPacket
+    {
+        public BattlePayGetPurchaseListPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class GetUndeleteCharCooldownPkt : ClientPacket
+    {
+        public GetUndeleteCharCooldownPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class UpdateVasPurchaseStatesPkt : ClientPacket
+    {
+        public UpdateVasPurchaseStatesPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class DfGetSystemInfoPkt : ClientPacket
+    {
+        public DfGetSystemInfoPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class DfGetJoinStatusPkt : ClientPacket
+    {
+        public DfGetJoinStatusPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class CalendarGetNumPendingPkt : ClientPacket
+    {
+        public CalendarGetNumPendingPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class PhaseShiftChange : ServerPacket
+    {
+        public PhaseShiftChange() : base(Opcode.SMSG_PHASE_SHIFT_CHANGE) { }
+        public override void Write()
+        {
+            _worldPacket.WritePackedGuid128(Client);
+            // PhaseShiftData
+            _worldPacket.WriteUInt32(PhaseShiftFlags);
+            _worldPacket.WriteUInt32(0); // Phases.size()
+            _worldPacket.WritePackedGuid128(WowGuid128.Empty); // PersonalGUID
+            // VisibleMapIDs
+            _worldPacket.WriteUInt32(0); // size in bytes
+            // PreloadMapIDs
+            _worldPacket.WriteUInt32(0); // size in bytes
+            // UiMapPhaseIDs
+            _worldPacket.WriteUInt32(0); // size in bytes
+        }
+        public WowGuid128 Client;
+        public uint PhaseShiftFlags = 0x08; // PHASE_SHIFT_UNPHASED
+    }
+
+    public class GuildSetAchievementTrackingPkt : ClientPacket
+    {
+        public GuildSetAchievementTrackingPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class QueryCountdownTimerPkt : ClientPacket
+    {
+        public QueryCountdownTimerPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class RequestForcedReactionsPkt : ClientPacket
+    {
+        public RequestForcedReactionsPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class LfgListGetStatusPkt : ClientPacket
+    {
+        public LfgListGetStatusPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class RequestCemeteryListPkt : ClientPacket
+    {
+        public RequestCemeteryListPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class CloseInteractionPkt : ClientPacket
+    {
+        public CloseInteractionPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class BattlePetRequestJournalPkt : ClientPacket
+    {
+        public BattlePetRequestJournalPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class GmTicketGetCaseStatusPkt : ClientPacket
+    {
+        public GmTicketGetCaseStatusPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+    public class TutorialPkt : ClientPacket
+    {
+        public TutorialPkt(WorldPacket packet) : base(packet) { }
+        public override void Read() { }
+    }
+}
