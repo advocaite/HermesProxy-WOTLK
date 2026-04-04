@@ -303,6 +303,13 @@ public class ObjectUpdateBuilder
 		{
 			changedMask |= 0x20;
 		}
+		// For player objects, always include empty PlayerData block (0x40)
+		// The 3.4.3 client may require it when Unit data is present
+		bool isPlayer = this.m_objectTypeMask.HasAnyFlag(ObjectTypeMask.Player);
+		if (isPlayer && (hasObjectChanges || hasUnitChanges))
+		{
+			changedMask |= 0x40;
+		}
 		data.WriteUInt32(changedMask);
 		if (hasObjectChanges)
 		{
@@ -315,6 +322,13 @@ public class ObjectUpdateBuilder
 		if (hasUnitChanges)
 		{
 			this.WriteUpdateUnitData(data);
+		}
+		if (isPlayer && (changedMask & 0x40) != 0)
+		{
+			// Empty PlayerData: blocksMask=0 (4 bits), IsQuestLogChangesMaskSkipped=false (1 bit), FlushBits
+			data.WriteBits(0, 4);
+			data.WriteBit(false);
+			data.FlushBits();
 		}
 	}
 
@@ -852,13 +866,12 @@ public class ObjectUpdateBuilder
 				}
 			}
 		}
-		if (blockMasks[0] != 0)
+		for (int bi = 0; bi < 8; bi++)
 		{
-			blockMasks[0] |= 1u;
-		}
-		if (blockMasks[1] != 0)
-		{
-			blockMasks[1] |= 1u;
+			if (blockMasks[bi] != 0)
+			{
+				blockMasks[bi] |= 1u;
+			}
 		}
 		byte blocksMask = 0;
 		for (int l = 0; l < 8; l++)

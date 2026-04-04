@@ -8712,10 +8712,41 @@ public class WorldClient
 				}
 				if (guid3 == this.GetSession().GameState.CurrentPlayerGuid)
 				{
+					// TODO: Player Unit blocks 0+1 crash the client. Blocks 0+1 need fixing.
+					// When ready to fix: investigate WriteUpdateUnitData format for player objects.
+					// Currently: strip Object/Player/ActivePlayer, keep Unit block 4 (Power) only
 					updateData2.ObjectData = new ObjectData();
-					updateData2.UnitData = null;
 					updateData2.PlayerData = null;
 					updateData2.ActivePlayerData = null;
+					if (updateData2.UnitData != null)
+					{
+						updateData2.UnitData.Health = null;
+						updateData2.UnitData.MaxHealth = null;
+						updateData2.UnitData.DisplayID = null;
+						updateData2.UnitData.Charm = null;
+						updateData2.UnitData.Summon = null;
+						updateData2.UnitData.CharmedBy = null;
+						updateData2.UnitData.SummonedBy = null;
+						updateData2.UnitData.CreatedBy = null;
+						updateData2.UnitData.Target = null;
+						updateData2.UnitData.ChannelData = null;
+						updateData2.UnitData.RaceId = null;
+						updateData2.UnitData.ClassId = null;
+						updateData2.UnitData.SexId = null;
+						updateData2.UnitData.Level = null;
+						updateData2.UnitData.EffectiveLevel = null;
+						updateData2.UnitData.FactionTemplate = null;
+						updateData2.UnitData.Flags = null;
+						updateData2.UnitData.Flags2 = null;
+						updateData2.UnitData.AuraState = null;
+						updateData2.UnitData.BoundingRadius = null;
+						updateData2.UnitData.CombatReach = null;
+						updateData2.UnitData.NativeDisplayID = null;
+						updateData2.UnitData.MountDisplayID = null;
+						updateData2.UnitData.HoverHeight = null;
+						updateData2.UnitData.GuildGUID = null;
+						updateData2.UnitData.NpcFlags = null;
+					}
 				}
 				updateObject.ObjectUpdates.Add(updateData2);
 				if (auraUpdate2.Auras.Count != 0)

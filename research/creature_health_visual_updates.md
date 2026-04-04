@@ -30,6 +30,39 @@
 - Client reads changedMask, sees Unit bit (0x20)
 - Reads Unit block, finds Health field, updates the health bar
 
+## CONFIRMED: hasAny Bit Bug (FIXED)
+
+The original decompiled code only set the hasAny bit (bit 0) for blocks 0 and 1 in `WriteUpdateUnitData`:
+```csharp
+if (blockMasks[0] != 0) blockMasks[0] |= 1u;
+if (blockMasks[1] != 0) blockMasks[1] |= 1u;
+// MISSING: blocks 2-7!
+```
+
+**Fix:** Loop all 8 blocks:
+```csharp
+for (int bi = 0; bi < 8; bi++)
+    if (blockMasks[bi] != 0) blockMasks[bi] |= 1u;
+```
+
+This fixed creature death and player combat (Health in block 0, Power in block 4).
+
+## CONFIRMED: Player ObjectData.DynamicFlags Crashes on Loot
+
+Sending ObjectData (DynamicFlags) for the player during loot causes DC. Emptying ObjectData for the player prevents this. The server sends DynamicFlags=0 for the player during loot state changes.
+
+## Current Working State
+- Player Unit data (Health, Power, Flags): works with hasAny fix
+- Player ObjectData: must be emptied (crashes on loot)
+- Player PlayerData: must be nulled (format not implemented)
+- Player ActivePlayerData: must be nulled (crashes)
+- Creature Object+Unit: fully works
+
+## Remaining Issues
+- XP, gold, bags need ActivePlayerData/PlayerData
+- Intermittent loot DC (first body works, second sometimes DCs)
+- Block 1 (Flags/Flags2/AuraState) for the player may have legacy values that crash
+
 ## Root Cause Theory: Player Values Updates Corrupt Client State
 
 The ObjectUpdate constructor creates `UnitData = new UnitData()` for BOTH creatures AND the player (ObjectType.Player/ActivePlayer). This means:
