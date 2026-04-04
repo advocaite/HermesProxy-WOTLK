@@ -4651,7 +4651,8 @@ public class WorldSocket : SocketBase, BnetServices.INetwork
 			this._sendMutex.ReleaseMutex();
 			return;
 		}
-		Log.PrintNet(LogType.Debug, LogNetDir.P2C, $"Sending opcode {universalOpcode} ({opcode}), size={data.Length}.", "SendPacket", "F:\\Ampps\\HermesProxy-master\\HermesProxy\\World\\Server\\WorldSocket.cs");
+		if (universalOpcode != Opcode.SMSG_ON_MONSTER_MOVE)
+			Log.PrintNet(LogType.Debug, LogNetDir.P2C, $"Sending opcode {universalOpcode} ({opcode}), size={data.Length}.", "SendPacket", "F:\\Ampps\\HermesProxy-master\\HermesProxy\\World\\Server\\WorldSocket.cs");
 		ByteBuffer buffer = new ByteBuffer();
 		int packetSize = data.Length;
 		if (packetSize > 1024 && this._worldCrypt.IsInitialized && ModernVersion.ExpansionVersion < 3)

@@ -255,11 +255,38 @@ public class ObjectUpdateBuilder
 		}
 	}
 
+	private bool HasAnyUnitFieldSet()
+	{
+		UnitData u = this.m_updateData.UnitData;
+		if (u == null) return false;
+		if (u.Health.HasValue || u.MaxHealth.HasValue || u.DisplayID.HasValue) return true;
+		if (u.Charm != null || u.Summon != null || u.CharmedBy != null) return true;
+		if (u.SummonedBy != null || u.CreatedBy != null || u.Target != null) return true;
+		if (u.ChannelData != null) return true;
+		if (u.RaceId.HasValue || u.ClassId.HasValue || u.SexId.HasValue) return true;
+		if (u.Level.HasValue || u.EffectiveLevel.HasValue) return true;
+		if (u.FactionTemplate.HasValue || u.Flags.HasValue || u.Flags2.HasValue) return true;
+		if (u.AuraState.HasValue) return true;
+		if (u.BoundingRadius.HasValue || u.CombatReach.HasValue) return true;
+		if (u.NativeDisplayID.HasValue || u.MountDisplayID.HasValue) return true;
+		if (u.HoverHeight.HasValue || u.GuildGUID != null) return true;
+		if (u.NpcFlags != null)
+			for (int i = 0; i < u.NpcFlags.Length; i++)
+				if (u.NpcFlags[i].HasValue && u.NpcFlags[i] != 0) return true;
+		if (u.Power != null)
+			for (int i = 0; i < u.Power.Length; i++)
+				if (u.Power[i].HasValue) return true;
+		if (u.MaxPower != null)
+			for (int i = 0; i < u.MaxPower.Length; i++)
+				if (u.MaxPower[i].HasValue) return true;
+		return false;
+	}
+
 	private void WriteValuesUpdate(WorldPacket data)
 	{
 		uint changedMask = 0u;
 		bool hasObjectChanges = this.m_objectTypeMask.HasAnyFlag(ObjectTypeMask.Object) && this.m_updateData.ObjectData != null && (this.m_updateData.ObjectData.EntryID.HasValue || this.m_updateData.ObjectData.DynamicFlags.HasValue || this.m_updateData.ObjectData.Scale.HasValue);
-		bool hasUnitChanges = this.m_objectTypeMask.HasAnyFlag(ObjectTypeMask.Unit) && this.m_updateData.UnitData != null;
+		bool hasUnitChanges = this.m_objectTypeMask.HasAnyFlag(ObjectTypeMask.Unit) && this.m_updateData.UnitData != null && this.HasAnyUnitFieldSet();
 		bool hasItemChanges = this.m_objectTypeMask.HasAnyFlag(ObjectTypeMask.Item) && this.m_updateData.ItemData != null;
 		if (hasObjectChanges)
 		{

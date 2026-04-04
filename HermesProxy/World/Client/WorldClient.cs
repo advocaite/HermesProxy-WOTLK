@@ -8710,6 +8710,13 @@ public class WorldClient
 				{
 					this.SendPacketToClient(powerUpdate);
 				}
+				if (guid3 == this.GetSession().GameState.CurrentPlayerGuid)
+				{
+					updateData2.ObjectData = new ObjectData();
+					updateData2.UnitData = null;
+					updateData2.PlayerData = null;
+					updateData2.ActivePlayerData = null;
+				}
 				updateObject.ObjectUpdates.Add(updateData2);
 				if (auraUpdate2.Auras.Count != 0)
 				{
@@ -11800,7 +11807,6 @@ public class WorldClient
 					}
 					return;
 				}
-				Log.PrintNet(LogType.Debug, LogNetDir.S2P, "Raw header bytes: " + BitConverter.ToString(headerBuffer), "ReceiveLoop", "F:\\Ampps\\HermesProxy-master\\HermesProxy\\World\\Client\\WorldClient.cs");
 				if (this._worldCrypt != null)
 				{
 					this._worldCrypt.Decrypt(headerBuffer, 4);
@@ -11808,7 +11814,10 @@ public class WorldClient
 				LegacyServerPacketHeader header = new LegacyServerPacketHeader();
 				header.Read(headerBuffer);
 				ushort packetSize = header.Size;
-				Log.PrintNet(LogType.Debug, LogNetDir.S2P, $"Decoded header: size={packetSize}, opcode={header.Opcode} (0x{header.Opcode:X4}), crypt={((this._worldCrypt != null) ? "ON" : "OFF")}", "ReceiveLoop", "F:\\Ampps\\HermesProxy-master\\HermesProxy\\World\\Client\\WorldClient.cs");
+				if (header.Opcode != 221)
+				{
+					Log.PrintNet(LogType.Debug, LogNetDir.S2P, $"Decoded header: size={packetSize}, opcode={header.Opcode} (0x{header.Opcode:X4}), crypt={((this._worldCrypt != null) ? "ON" : "OFF")}", "ReceiveLoop", "F:\\Ampps\\HermesProxy-master\\HermesProxy\\World\\Client\\WorldClient.cs");
+				}
 				if (packetSize != 0)
 				{
 					byte[] buffer = new byte[packetSize];
@@ -12004,10 +12013,20 @@ public class WorldClient
 		}
 	}
 
+	private static readonly HashSet<Opcode> _suppressedLogOpcodes = new HashSet<Opcode>
+	{
+		Opcode.SMSG_ON_MONSTER_MOVE,
+		Opcode.MSG_MOVE_HEARTBEAT,
+		Opcode.MSG_MOVE_START_FORWARD,
+		Opcode.MSG_MOVE_STOP,
+		Opcode.MSG_MOVE_SET_FACING,
+	};
+
 	private void HandlePacket(WorldPacket packet)
 	{
 		Opcode universalOpcode = packet.GetUniversalOpcode(isModern: false);
-		Log.PrintNet(LogType.Debug, LogNetDir.S2P, $"Received opcode {universalOpcode} ({packet.GetOpcode()}).", "HandlePacket", "F:\\Ampps\\HermesProxy-master\\HermesProxy\\World\\Client\\WorldClient.cs");
+		if (!_suppressedLogOpcodes.Contains(universalOpcode))
+			Log.PrintNet(LogType.Debug, LogNetDir.S2P, $"Received opcode {universalOpcode} ({packet.GetOpcode()}).", "HandlePacket", "F:\\Ampps\\HermesProxy-master\\HermesProxy\\World\\Client\\WorldClient.cs");
 		switch (universalOpcode)
 		{
 		case Opcode.SMSG_AUTH_CHALLENGE:
