@@ -976,57 +976,102 @@ public class WorldClient
 	[PacketHandler(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
 	private void HandleQueryPlayerNameResponse(WorldPacket packet)
 	{
-		QueryPlayerNameResponse response = new QueryPlayerNameResponse();
+		WowGuid128 playerGuid;
+		byte result = 0;
 		if (LegacyVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
 		{
-			response.Player = (response.Data.GuidActual = packet.ReadPackedGuid().To128(this.GetSession().GameState));
+			playerGuid = packet.ReadPackedGuid().To128(this.GetSession().GameState);
 			if (packet.ReadBool())
-			{
-				response.Result = 1;
-				this.SendPacketToClient(response);
-				return;
-			}
+				result = 1;
 		}
 		else
 		{
-			response.Player = (response.Data.GuidActual = packet.ReadGuid().To128(this.GetSession().GameState));
+			playerGuid = packet.ReadGuid().To128(this.GetSession().GameState);
 		}
+
+		PlayerGuidLookupData data = new PlayerGuidLookupData();
+		data.GuidActual = playerGuid;
+
+		if (result != 0)
+		{
+			// Player not found - send error response
+			if (ModernVersion.GetCurrentOpcode(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE) != 0)
+			{
+				QueryPlayerNameResponse response = new QueryPlayerNameResponse();
+				response.Player = playerGuid;
+				response.Result = 1;
+				this.SendPacketToClient(response);
+			}
+			else
+			{
+				QueryPlayerNamesResponse response = new QueryPlayerNamesResponse();
+				response.Players.Add(new QueryPlayerNamesResponse.NameCacheLookupResult
+				{
+					Player = playerGuid,
+					Result = 1,
+					Data = null
+				});
+				this.SendPacketToClient(response);
+			}
+			return;
+		}
+
 		PlayerCache cache = new PlayerCache();
-		response.Data.Name = (cache.Name = packet.ReadCString());
+		data.Name = (cache.Name = packet.ReadCString());
 		packet.ReadCString();
 		if (LegacyVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
 		{
-			response.Data.RaceID = (cache.RaceId = (Race)packet.ReadUInt8());
-			response.Data.Sex = (cache.SexId = (Gender)packet.ReadUInt8());
-			response.Data.ClassID = (cache.ClassId = (Class)packet.ReadUInt8());
+			data.RaceID = (cache.RaceId = (Race)packet.ReadUInt8());
+			data.Sex = (cache.SexId = (Gender)packet.ReadUInt8());
+			data.ClassID = (cache.ClassId = (Class)packet.ReadUInt8());
 		}
 		else
 		{
-			response.Data.RaceID = (cache.RaceId = (Race)packet.ReadUInt32());
-			response.Data.Sex = (cache.SexId = (Gender)packet.ReadUInt32());
-			response.Data.ClassID = (cache.ClassId = (Class)packet.ReadInt32());
+			data.RaceID = (cache.RaceId = (Race)packet.ReadUInt32());
+			data.Sex = (cache.SexId = (Gender)packet.ReadUInt32());
+			data.ClassID = (cache.ClassId = (Class)packet.ReadInt32());
 		}
-		if (this.GetSession().GameState.CachedPlayers.ContainsKey(response.Player))
+		if (this.GetSession().GameState.CachedPlayers.ContainsKey(playerGuid))
 		{
-			response.Data.Level = this.GetSession().GameState.CachedPlayers[response.Player].Level;
+			data.Level = this.GetSession().GameState.CachedPlayers[playerGuid].Level;
 		}
-		if (response.Data.Level == 0)
+		if (data.Level == 0)
 		{
-			response.Data.Level = 1;
+			data.Level = 1;
 		}
-		this.GetSession().GameState.UpdatePlayerCache(response.Player, cache);
+		this.GetSession().GameState.UpdatePlayerCache(playerGuid, cache);
 		if (LegacyVersion.AddedInVersion(ClientVersionBuild.V2_0_1_6180) && packet.ReadBool())
 		{
 			for (int i = 0; i < 5; i++)
 			{
-				response.Data.DeclinedNames.name[i] = packet.ReadCString();
+				data.DeclinedNames.name[i] = packet.ReadCString();
 			}
 		}
-		response.Data.IsDeleted = false;
-		response.Data.AccountID = this.GetSession().GetGameAccountGuidForPlayer(response.Player);
-		response.Data.BnetAccountID = this.GetSession().GetBnetAccountGuidForPlayer(response.Player);
-		response.Data.VirtualRealmAddress = this.GetSession().RealmId.GetAddress();
-		this.SendPacketToClient(response);
+		data.IsDeleted = false;
+		data.AccountID = this.GetSession().GetGameAccountGuidForPlayer(playerGuid);
+		data.BnetAccountID = this.GetSession().GetBnetAccountGuidForPlayer(playerGuid);
+		data.VirtualRealmAddress = this.GetSession().RealmId.GetAddress();
+
+		// Use plural format for 3.4.3 (singular opcode doesn't exist)
+		if (ModernVersion.GetCurrentOpcode(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE) != 0)
+		{
+			QueryPlayerNameResponse response = new QueryPlayerNameResponse();
+			response.Player = playerGuid;
+			response.Result = 0;
+			response.Data = data;
+			this.SendPacketToClient(response);
+		}
+		else
+		{
+			QueryPlayerNamesResponse response = new QueryPlayerNamesResponse();
+			response.Players.Add(new QueryPlayerNamesResponse.NameCacheLookupResult
+			{
+				Player = playerGuid,
+				Result = 0,
+				Data = data
+			});
+			this.SendPacketToClient(response);
+		}
 	}
 
 	[PacketHandler(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
@@ -8713,11 +8758,40 @@ public class WorldClient
 				}
 				if (guid3 == this.GetSession().GameState.CurrentPlayerGuid)
 				{
-					// Player Unit/Player blocks crash the 3.4.3 client - strip all UnitData
-					// Power/MaxPower are already sent via SMSG_POWER_UPDATE so safe to remove
+					// PlayerData must be null - empty Player block (0x40) corrupts the packet
+					// Keep useful UnitData fields; strip the rest + Power (sent via SMSG_POWER_UPDATE)
 					updateData2.ObjectData = new ObjectData();
 					updateData2.PlayerData = null;
-					updateData2.UnitData = null;
+					if (updateData2.UnitData != null)
+					{
+						// Keep: Health, MaxHealth, Level, EffectiveLevel, DisplayID, Target, Flags, Flags2
+						// Strip everything else to avoid unknown block issues
+						updateData2.UnitData.Charm = null;
+						updateData2.UnitData.Summon = null;
+						updateData2.UnitData.CharmedBy = null;
+						updateData2.UnitData.SummonedBy = null;
+						updateData2.UnitData.CreatedBy = null;
+						updateData2.UnitData.ChannelData = null;
+						updateData2.UnitData.RaceId = null;
+						updateData2.UnitData.ClassId = null;
+						updateData2.UnitData.SexId = null;
+						updateData2.UnitData.FactionTemplate = null;
+						updateData2.UnitData.AuraState = null;
+						updateData2.UnitData.BoundingRadius = null;
+						updateData2.UnitData.CombatReach = null;
+						updateData2.UnitData.NativeDisplayID = null;
+						updateData2.UnitData.MountDisplayID = null;
+						updateData2.UnitData.HoverHeight = null;
+						updateData2.UnitData.GuildGUID = null;
+						updateData2.UnitData.NpcFlags = null;
+						// Power/MaxPower already sent via SMSG_POWER_UPDATE
+						if (updateData2.UnitData.Power != null)
+							for (int p = 0; p < updateData2.UnitData.Power.Length; p++)
+								updateData2.UnitData.Power[p] = null;
+						if (updateData2.UnitData.MaxPower != null)
+							for (int p = 0; p < updateData2.UnitData.MaxPower.Length; p++)
+								updateData2.UnitData.MaxPower[p] = null;
+					}
 				}
 				// Check if the update has any actual data to send.
 				// Empty Values updates (changedMask=0) crash the 3.4.3 client.
