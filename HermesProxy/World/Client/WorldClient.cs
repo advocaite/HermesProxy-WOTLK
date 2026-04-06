@@ -9106,7 +9106,7 @@ public class WorldClient
 						updateData2.UnitData.BoundingRadius = null;
 						updateData2.UnitData.CombatReach = null;
 						updateData2.UnitData.NativeDisplayID = null;
-						updateData2.UnitData.MountDisplayID = null;
+						// Keep MountDisplayID — needed for taxi/mount visuals
 						// Also strip block 1 continued fields (bits 52-63)
 						updateData2.UnitData.MinDamage = null;
 						updateData2.UnitData.MaxDamage = null;

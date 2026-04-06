@@ -21,11 +21,11 @@ public class ShowTaxiNodes : ServerPacket
 		base._worldPacket.WriteBit(this.WindowInfo != null);
 		base._worldPacket.FlushBits();
 		List<byte> canLandNodes = new List<byte>(this.CanLandNodes);
-		this.CleanupNodes(canLandNodes);
-		base._worldPacket.WriteInt32(canLandNodes.Count);
+		this.PadToUInt64Alignment(canLandNodes);
+		base._worldPacket.WriteInt32(canLandNodes.Count / 8);
 		List<byte> canUseNodes = new List<byte>(this.CanUseNodes);
-		this.CleanupNodes(canUseNodes);
-		base._worldPacket.WriteInt32(canUseNodes.Count);
+		this.PadToUInt64Alignment(canUseNodes);
+		base._worldPacket.WriteInt32(canUseNodes.Count / 8);
 		if (this.WindowInfo != null)
 		{
 			base._worldPacket.WritePackedGuid128(this.WindowInfo.UnitGUID);
@@ -41,25 +41,14 @@ public class ShowTaxiNodes : ServerPacket
 		}
 	}
 
-	private void CleanupNodes(List<byte> nodes)
+	private void PadToUInt64Alignment(List<byte> nodes)
 	{
-		int lastIndex = -1;
-		for (int i = 0; i < nodes.Count; i++)
+		int remainder = nodes.Count % 8;
+		if (remainder != 0)
 		{
-			if (nodes[i] != 0)
+			for (int i = 0; i < 8 - remainder; i++)
 			{
-				lastIndex = i;
-			}
-		}
-		if (lastIndex + 1 != nodes.Count)
-		{
-			if (lastIndex == -1)
-			{
-				nodes.Clear();
-			}
-			else
-			{
-				nodes.RemoveRange(lastIndex + 1, nodes.Count - (lastIndex + 1));
+				nodes.Add(0);
 			}
 		}
 	}
