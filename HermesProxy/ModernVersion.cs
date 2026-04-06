@@ -502,6 +502,10 @@ public static class ModernVersion
 		{
 			return 1672u;
 		}
+		if (ModernVersion.IsVersion(3, 4, 3))
+		{
+			return 1772u;
+		}
 		return 0u;
 	}
 

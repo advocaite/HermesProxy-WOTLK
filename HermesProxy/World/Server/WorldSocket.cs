@@ -3379,6 +3379,17 @@ public class WorldSocket : SocketBase, BnetServices.INetwork
 	[PacketHandler(Opcode.CMSG_QUERY_GAME_OBJECT)]
 	private void HandleQueryGameObject(QueryGameObject queryGo)
 	{
+		// Respond from cache immediately if available (avoids round-trip for transports)
+		if (GetSession().GameState.GameObjectQueryCache.TryGetValue(queryGo.GameObjectID, out var cached))
+		{
+			var response = new HermesProxy.World.Server.Packets.QueryGameObjectResponse();
+			response.GameObjectID = cached.GameObjectID;
+			response.Guid = WowGuid128.Empty;
+			response.Allow = cached.Allow;
+			response.Stats = cached.Stats;
+			SendPacket(response);
+			return;
+		}
 		WorldPacket packet = new WorldPacket(Opcode.CMSG_QUERY_GAME_OBJECT);
 		packet.WriteUInt32(queryGo.GameObjectID);
 		packet.WriteGuid(queryGo.Guid.To64());

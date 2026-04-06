@@ -57,6 +57,9 @@ public static class GameData
 
 	public static Dictionary<uint, uint> TransportPeriods = new Dictionary<uint, uint>();
 
+	// Entries from TransportAnimation DB2 — elevators the 3.4.3 client knows about
+	public static HashSet<uint> TransportAnimationEntries = new HashSet<uint>();
+
 	public static Dictionary<uint, string> AreaNames = new Dictionary<uint, string>();
 
 	public static Dictionary<uint, uint> RaceFaction = new Dictionary<uint, uint>();
@@ -1228,6 +1231,24 @@ public static class GameData
 			uint entry = uint.Parse(fields[0]);
 			uint period = uint.Parse(fields[1]);
 			GameData.TransportPeriods.Add(entry, period);
+		}
+
+		// Load TransportAnimation DB2 entries (elevators the client knows about)
+		string animPath = Path.Combine("CSV", "TransportAnimation.3.4.3.54261.csv");
+		if (System.IO.File.Exists(animPath))
+		{
+			using TextFieldParser animParser = new TextFieldParser(animPath);
+			animParser.CommentTokens = new string[1] { "#" };
+			animParser.SetDelimiters(",");
+			animParser.HasFieldsEnclosedInQuotes = false;
+			animParser.ReadLine();
+			while (!animParser.EndOfData)
+			{
+				string[] fields = animParser.ReadFields();
+				uint transportId = uint.Parse(fields[6]); // TransportID column
+				GameData.TransportAnimationEntries.Add(transportId);
+			}
+			Framework.Logging.Log.Print(Framework.Logging.LogType.Network, $"Loaded {GameData.TransportAnimationEntries.Count} TransportAnimation entries");
 		}
 	}
 

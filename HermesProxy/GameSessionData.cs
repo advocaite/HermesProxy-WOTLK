@@ -41,6 +41,9 @@ public class GameSessionData
 
 	public uint? CurrentMapId;
 
+	// Cached QueryGameObjectResponse data for pre-sending before transport CreateObjects
+	public Dictionary<uint, HermesProxy.World.Server.Packets.QueryGameObjectResponse> GameObjectQueryCache = new Dictionary<uint, HermesProxy.World.Server.Packets.QueryGameObjectResponse>();
+
 	public uint CurrentZoneId;
 
 	public uint CurrentTaxiNode;

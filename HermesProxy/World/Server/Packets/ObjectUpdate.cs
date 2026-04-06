@@ -146,7 +146,21 @@ public class ObjectUpdate
 			}
 			if (this.Guid.GetHighType() == HighGuidType.Transport)
 			{
-				uint period = GameData.GetTransportPeriod((uint)this.ObjectData.EntryID.Value);
+				// Map legacy GOState to 3.4.3 transport states for GAMEOBJECT_TYPE_TRANSPORT (elevators)
+				// 3.3.5a: 0=active, 1=ready/stopped
+				// 3.4.3:  24=GO_STATE_TRANSPORT_ACTIVE, 25=GO_STATE_TRANSPORT_STOPPED
+				if (this.GameObjectData.TypeID.HasValue && this.GameObjectData.TypeID.Value == 11)
+				{
+					sbyte legacyState = this.GameObjectData.State.GetValueOrDefault();
+					if (legacyState == 0)
+						this.GameObjectData.State = 24; // GO_STATE_TRANSPORT_ACTIVE
+					else if (legacyState == 1)
+						this.GameObjectData.State = 25; // GO_STATE_TRANSPORT_STOPPED
+				}
+
+				uint entry = this.ObjectData.EntryID.HasValue ? (uint)this.ObjectData.EntryID.Value : 0;
+				uint period = GameData.GetTransportPeriod(entry);
+				Framework.Logging.Log.Print(Framework.Logging.LogType.Debug, $"[TransportFixup] Entry={entry} Period={period} DynFlagsSet={this.ObjectData.DynamicFlags.HasValue} DynFlags=0x{this.ObjectData.DynamicFlags.GetValueOrDefault():X8} Level={this.GameObjectData.Level} State={this.GameObjectData.State} TypeID={this.GameObjectData.TypeID} HasCreateData={this.CreateData != null} HasMoveInfo={this.CreateData?.MoveInfo != null}");
 				if (period != 0)
 				{
 					if (!this.GameObjectData.Level.HasValue)
@@ -155,13 +169,16 @@ public class ObjectUpdate
 					}
 					if (!this.ObjectData.DynamicFlags.HasValue)
 					{
-						this.ObjectData.DynamicFlags = (uint)((float)(this.CreateData.MoveInfo.TransportPathTimer % period) / (float)period * 65535f) << 16;
+						uint pathTimer = this.CreateData.MoveInfo.TransportPathTimer;
+						uint progress = pathTimer % period;
+						uint dynFlags = (uint)((float)progress / (float)period * 65535f) << 16;
+						this.ObjectData.DynamicFlags = dynFlags;
 					}
 					this.GameObjectData.Flags = 1048616u;
 				}
 				else if (!this.ObjectData.DynamicFlags.HasValue)
 				{
-					this.ObjectData.DynamicFlags = this.CreateData.MoveInfo.TransportPathTimer % 65535 << 16;
+					this.ObjectData.DynamicFlags = 0u;
 				}
 			}
 		}

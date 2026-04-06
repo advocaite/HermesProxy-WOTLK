@@ -310,21 +310,32 @@ public sealed class MovementInfo
 			this.Flags = data.ReadBits<uint>(30);
 			this.FlagsExtra = data.ReadBits<uint>(18);
 		}
+		bool hasStandingOnGameObjectGUID = ModernVersion.AddedInVersion(9, 2, 0, 1, 14, 1, 2, 5, 3) && data.HasBit();
 		bool hasTransport = data.HasBit();
 		bool hasFall = data.HasBit();
 		bool hasSpline = data.HasBit();
-		data.ReadBit();
-		data.ReadBit();
+		data.ReadBit(); // HeightChangeFailed
+		data.ReadBit(); // RemoteTimeValid
 		bool hasInertia = ModernVersion.AddedInVersion(9, 2, 0, 1, 14, 1, 2, 5, 3) && data.HasBit();
+		bool hasAdvFlying = ModernVersion.AddedInVersion(9, 2, 0, 1, 14, 1, 2, 5, 3) && data.HasBit();
 		if (hasTransport)
 		{
 			this.ReadTransportInfoModern(data);
 		}
-		if (ModernVersion.AddedInVersion(9, 2, 0, 1, 14, 1, 2, 5, 3) && hasInertia)
+		if (hasStandingOnGameObjectGUID)
+		{
+			data.ReadPackedGuid128(); // StandingOnGameObjectGUID
+		}
+		if (hasInertia)
 		{
 			data.ReadPackedGuid128();
 			data.ReadVector3();
 			data.ReadUInt32();
+		}
+		if (hasAdvFlying)
+		{
+			data.ReadFloat(); // forwardVelocity
+			data.ReadFloat(); // upVelocity
 		}
 		if (hasFall)
 		{

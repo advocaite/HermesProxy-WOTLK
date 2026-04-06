@@ -6726,6 +6726,10 @@ public class WorldClient
 				}
 			}
 		}
+		// Cache for pre-sending before transport CreateObjects
+		GetSession().GameState.GameObjectQueryCache[response.GameObjectID] = response;
+		if (gameObject.Type == 15) // MO_TRANSPORT — log template data for debugging
+			Log.Print(LogType.Debug, $"[GOQuery] Entry={response.GameObjectID} Type={gameObject.Type} DisplayID={gameObject.DisplayID} Name={gameObject.Name[0]} data0(pathID)={gameObject.Data[0]} data1(speed)={gameObject.Data[1]} data2(accel)={gameObject.Data[2]} Size={gameObject.Size}");
 		this.SendPacketToClient(response);
 	}
 
@@ -12027,6 +12031,16 @@ public class WorldClient
 			{
 				updateData.GameObjectData.ArtKit = (byte)updates[GAMEOBJECT_ARTKIT].UInt32Value;
 			}
+			// 3.3.5a packs State, TypeID, ArtKit, AnimProgress into GAMEOBJECT_BYTES_1
+			int GAMEOBJECT_BYTES_1 = LegacyVersion.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1);
+			if (GAMEOBJECT_BYTES_1 >= 0 && updateMaskArray[GAMEOBJECT_BYTES_1])
+			{
+				uint packed = updates[GAMEOBJECT_BYTES_1].UInt32Value;
+				updateData.GameObjectData.State = (sbyte)(packed & 0xFF);
+				updateData.GameObjectData.TypeID = (sbyte)((packed >> 8) & 0xFF);
+				updateData.GameObjectData.ArtKit = (byte)((packed >> 16) & 0xFF);
+				updateData.GameObjectData.PercentHealth = (byte)((packed >> 24) & 0xFF);
+			}
 		}
 		if (objectType == ObjectType.DynamicObject)
 		{
@@ -12682,6 +12696,15 @@ public class WorldClient
 				this._queuePosition = 0u;
 				this.GetSession().RealmSocket.SendAuthWaitQue(this._queuePosition);
 			}
+			// Proactively query all transport entries so cache is populated before CreateObjects
+			foreach (uint transportEntry in GameData.TransportPeriods.Keys)
+			{
+				WorldPacket goQuery = new WorldPacket(Opcode.CMSG_QUERY_GAME_OBJECT);
+				goQuery.WriteUInt32(transportEntry);
+				goQuery.WriteUInt64(0); // empty guid
+				SendPacket(goQuery);
+			}
+			Log.Print(LogType.Network, $"Pre-queried {GameData.TransportPeriods.Count} transport entries");
 			this._isSuccessful = true;
 			break;
 		case AuthResult.AUTH_WAIT_QUEUE:

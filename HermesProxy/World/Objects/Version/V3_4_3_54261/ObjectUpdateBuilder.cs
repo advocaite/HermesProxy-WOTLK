@@ -2162,10 +2162,9 @@ public class ObjectUpdateBuilder
 		this.m_createBits.Clear();
 		this.m_createBits.PlayHoverAnim = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && this.m_updateData.CreateData.MoveInfo.Hover;
 		this.m_createBits.MovementUpdate = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && this.m_objectTypeMask.HasAnyFlag(ObjectTypeMask.Unit);
+		this.m_createBits.MovementTransport = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && this.m_updateData.CreateData.MoveInfo.TransportGuid != null && this.m_objectType == ObjectTypeBCC.GameObject;
 		this.m_createBits.Stationary = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && !this.m_objectTypeMask.HasAnyFlag(ObjectTypeMask.Unit);
-		this.m_createBits.MovementTransport = false;
-		this.m_createBits.Stationary = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && !this.m_objectTypeMask.HasAnyFlag(ObjectTypeMask.Unit);
-		this.m_createBits.ServerTime = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && this.m_updateData.Guid.GetHighType() == HighGuidType.Transport;
+		this.m_createBits.ServerTime = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && (this.m_updateData.Guid.GetHighType() == HighGuidType.Transport || this.m_updateData.Guid.GetHighType() == HighGuidType.MOTransport);
 		this.m_createBits.CombatVictim = this.m_updateData.CreateData != null && this.m_updateData.CreateData.AutoAttackVictim != null;
 		this.m_createBits.Vehicle = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && this.m_updateData.CreateData.MoveInfo.VehicleId != 0;
 		this.m_createBits.Rotation = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && this.m_objectType == ObjectTypeBCC.GameObject;
@@ -2252,14 +2251,10 @@ public class ObjectUpdateBuilder
 		}
 		if (this.m_createBits.ServerTime)
 		{
-			if (this.m_updateData.CreateData.MoveInfo.TransportPathTimer != 0)
-			{
-				data.WriteUInt32(this.m_updateData.CreateData.MoveInfo.TransportPathTimer);
-			}
-			else
-			{
-				data.WriteUInt32((uint)Time.UnixTime);
-			}
+			// TC343 writes GameTime::GetGameTimeMS() = server uptime in ms
+			// Legacy 3.3.5a sends PathProgress (transport-specific counter), NOT game time
+			// The 3.4.3 client expects server uptime for transport animation sync
+			data.WriteUInt32((uint)Environment.TickCount);
 		}
 		if (this.m_createBits.Vehicle)
 		{

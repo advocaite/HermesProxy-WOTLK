@@ -97,9 +97,38 @@ public class UpdateObject : ServerPacket
 		{
 			this.ObjectUpdates.RemoveAll((ObjectUpdate u) => u.Guid.GetObjectType() == ObjectType.GameObject);
 		}
+		// Transport debug logging + selective filter to isolate crash
 		if (ModernVersion.ExpansionVersion >= 3)
 		{
-			this.ObjectUpdates.RemoveAll((ObjectUpdate u) => u.Guid.GetHighType() == HighGuidType.Transport);
+			foreach (var upd in this.ObjectUpdates)
+			{
+				if (upd.Guid.GetHighType() == HighGuidType.Transport || upd.Guid.GetHighType() == HighGuidType.MOTransport)
+				{
+					var go = upd.GameObjectData;
+					var mi = upd.CreateData?.MoveInfo;
+					var od = upd.ObjectData;
+					Log.Print(LogType.Debug, $"[Transport] {upd.Guid} Type={upd.Type} Entry={od?.EntryID} GO: DisplayID={go?.DisplayID} TypeID={go?.TypeID} State={go?.State} Flags={go?.Flags} Level={go?.Level} MoveInfo: Pos={mi?.Position} Rot={mi?.Rotation} PathTimer={mi?.TransportPathTimer}", "Write", "");
+				}
+			}
+			// Allow known elevators + boats with known periods; filter unknown entries
+			this.ObjectUpdates.RemoveAll((ObjectUpdate u) =>
+			{
+				if (u.Guid.GetHighType() != HighGuidType.Transport && u.Guid.GetHighType() != HighGuidType.MOTransport)
+					return false;
+				sbyte typeId = u.GameObjectData?.TypeID ?? 0;
+				uint entry = u.ObjectData?.EntryID.HasValue == true ? (uint)u.ObjectData.EntryID.Value : 0;
+				if (typeId == 11 && !GameData.TransportAnimationEntries.Contains(entry))
+				{
+					Log.Print(LogType.Debug, $"[Transport] FILTERED elevator entry {entry} — not in TransportAnimation DB2", "Write", "");
+					return true;
+				}
+				if (typeId == 15 && GameData.GetTransportPeriod(entry) == 0)
+				{
+					Log.Print(LogType.Debug, $"[Transport] FILTERED boat entry {entry} — not in Transports CSV", "Write", "");
+					return true;
+				}
+				return false;
+			});
 		}
 		this.NumObjUpdates = (uint)this.ObjectUpdates.Count;
 		base._worldPacket.WriteUInt32(this.NumObjUpdates);
