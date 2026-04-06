@@ -7594,11 +7594,15 @@ public class WorldClient
 		ushort spellCount = packet.ReadUInt16();
 		for (ushort i = 0; i < spellCount; i++)
 		{
+			if (!packet.CanRead()) break;
 			uint spellId = ((!LegacyVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) ? packet.ReadUInt16() : packet.ReadUInt32());
 			spells.KnownSpells.Add(spellId);
+			if (!packet.CanRead()) break;
 			packet.ReadInt16();
 		}
 		this.SendPacketToClient(spells);
+		if (!packet.CanRead())
+			return;
 		ushort cooldownCount = packet.ReadUInt16();
 		if (cooldownCount != 0)
 		{
@@ -9068,17 +9072,12 @@ public class WorldClient
 				}
 				if (guid3 == this.GetSession().GameState.CurrentPlayerGuid)
 				{
-					// Strip Object (DynamicFlags crashes on loot)
-					// Keep PlayerData + ActivePlayerData for flags/bags/gold/XP
-					// Strip Object + UnitData for player — blocks 0+1 crash in batch with creatures
-					// Health from combat packets, Power from SMSG_POWER_UPDATE
-					// Keep PlayerData + ActivePlayerData for flags/bags/gold/XP
+					// Strip ObjectData for player (DynamicFlags=0 clears important flags during loot)
 					updateData2.ObjectData = new ObjectData();
 					if (updateData2.UnitData != null)
 					{
-						// Strip blocks 0-3 (crash when in batch with creatures)
-						// Keep blocks 4+ (Power, Stats) — these work fine
-						// Block 0: Health/MaxHealth/DisplayID/Charm/Summon/etc
+						// Block 0: STRIP ALL — player block 0 causes DC even in isolated packet
+						// Health comes from combat packets (SMSG_ATTACKER_STATE_UPDATE etc.)
 						updateData2.UnitData.Health = null;
 						updateData2.UnitData.MaxHealth = null;
 						updateData2.UnitData.DisplayID = null;
@@ -9094,7 +9093,8 @@ public class WorldClient
 						updateData2.UnitData.SexId = null;
 						updateData2.UnitData.Level = null;
 						updateData2.UnitData.EffectiveLevel = null;
-						// Block 1: FactionTemplate/Flags/AuraState/etc
+						// Block 1: STRIP ALL — block 1 causes silent client state corruption
+						// (visual updates freeze: bags, health bar, sheath all stop updating)
 						updateData2.UnitData.FactionTemplate = null;
 						updateData2.UnitData.Flags = null;
 						updateData2.UnitData.Flags2 = null;
@@ -9103,12 +9103,22 @@ public class WorldClient
 						updateData2.UnitData.CombatReach = null;
 						updateData2.UnitData.NativeDisplayID = null;
 						updateData2.UnitData.MountDisplayID = null;
-						// Block 2: HoverHeight
+						// Also strip block 1 continued fields (bits 52-63)
+						updateData2.UnitData.MinDamage = null;
+						updateData2.UnitData.MaxDamage = null;
+						updateData2.UnitData.MinOffHandDamage = null;
+						updateData2.UnitData.MaxOffHandDamage = null;
+						updateData2.UnitData.StandState = null;
+						updateData2.UnitData.VisFlags = null;
+						updateData2.UnitData.AnimTier = null;
+						updateData2.UnitData.PetNumber = null;
+						updateData2.UnitData.PetNameTimestamp = null;
+						updateData2.UnitData.PetExperience = null;
+						updateData2.UnitData.PetNextLevelExperience = null;
+						// Block 2+: Keep all (combat stats, stats, resistances)
 						updateData2.UnitData.HoverHeight = null;
-						// Block 3: GuildGUID/NpcFlags
 						updateData2.UnitData.GuildGUID = null;
 						updateData2.UnitData.NpcFlags = null;
-						// Keep blocks 4+ (Power at 137+, Stats at 174+)
 					}
 				}
 				// Check if the update has any actual data to send.
@@ -9403,9 +9413,32 @@ public class WorldClient
 				this.SendPacketToClient(bglist);
 			}
 		}
-		if (updateObject.ObjectUpdates.Count != 0 || updateObject.DestroyedGuids.Count != 0 || updateObject.OutOfRangeGuids.Count != 0)
+		// Split player Values updates into a separate packet from creature updates
+		// to prevent batch corruption between player and creature update parsing.
+		WowGuid128 playerGuid = this.GetSession().GameState.CurrentPlayerGuid;
+		List<ObjectUpdate> playerValuesUpdates = new List<ObjectUpdate>();
+		List<ObjectUpdate> otherUpdates = new List<ObjectUpdate>();
+		foreach (var upd in updateObject.ObjectUpdates)
 		{
+			if (upd.Guid == playerGuid && upd.Type == UpdateTypeModern.Values)
+				playerValuesUpdates.Add(upd);
+			else
+				otherUpdates.Add(upd);
+		}
+		// Send creature/other updates (including CreateObjects, destroys, OOR)
+		if (otherUpdates.Count != 0 || updateObject.DestroyedGuids.Count != 0 || updateObject.OutOfRangeGuids.Count != 0)
+		{
+			updateObject.ObjectUpdates.Clear();
+			updateObject.ObjectUpdates.AddRange(otherUpdates);
 			this.SendPacketToClient(updateObject);
+		}
+		// Send player Values in its own packet (won't trigger login buffer since
+		// login buffer only buffers packets WITHOUT the player GUID)
+		if (playerValuesUpdates.Count != 0)
+		{
+			UpdateObject playerUpdateObject = new UpdateObject(this.GetSession().GameState);
+			playerUpdateObject.ObjectUpdates.AddRange(playerValuesUpdates);
+			this.SendPacketToClient(playerUpdateObject);
 		}
 		foreach (AuraUpdate auraUpdate4 in auraUpdates)
 		{

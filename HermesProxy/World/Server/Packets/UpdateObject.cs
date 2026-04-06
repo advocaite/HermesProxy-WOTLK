@@ -24,6 +24,8 @@ public class UpdateObject : ServerPacket
 	[ThreadStatic]
 	private static bool _playerObjectSent;
 
+	public static bool IsPlayerObjectSent => _playerObjectSent;
+
 	private GameSessionData _gameState;
 
 	public uint NumObjUpdates;
