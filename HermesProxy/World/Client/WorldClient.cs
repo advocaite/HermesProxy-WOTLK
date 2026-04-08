@@ -5186,7 +5186,17 @@ public class WorldClient
 		DeathReleaseLoc death = new DeathReleaseLoc();
 		death.MapID = packet.ReadInt32();
 		death.Location = packet.ReadVector3();
+		Log.Print(LogType.Debug, $"[DeathReleaseLoc] MapID={death.MapID} Pos={death.Location}", "HandleDeathReleaseLoc", "");
 		this.SendPacketToClient(death);
+	}
+
+	[PacketHandler(Opcode.SMSG_PRE_RESSURECT)]
+	private void HandlePreResurrect(WorldPacket packet)
+	{
+		WowGuid128 playerGuid = packet.ReadPackedGuid().To128(this.GetSession().GameState);
+		PreRessurect preRes = new PreRessurect();
+		preRes.PlayerGUID = playerGuid;
+		this.SendPacketToClient(preRes);
 	}
 
 	[PacketHandler(Opcode.SMSG_CORPSE_RECLAIM_DELAY)]
@@ -9066,8 +9076,12 @@ public class WorldClient
 		{
 			aura.AuraData = null;
 			update.Auras.Add(aura);
+			if (guid == this.GetSession().GameState.CurrentPlayerGuid)
+				Log.Print(LogType.Debug, $"[AuraUpdate] REMOVE slot={slot} for player", "ReadSingleAura", "");
 			return;
 		}
+		if (guid == this.GetSession().GameState.CurrentPlayerGuid)
+			Log.Print(LogType.Debug, $"[AuraUpdate] SET slot={slot} spellId={spellId} for player", "ReadSingleAura", "");
 		AuraDataInfo data = new AuraDataInfo();
 		data.SpellID = spellId;
 		data.CastID = WowGuid128.Create(HighGuidType703.Cast, SpellCastSource.Aura, this.GetSession().GameState.CurrentMapId.Value, spellId, guid.GetCounter());
@@ -9456,54 +9470,8 @@ public class WorldClient
 				}
 				if (guid3 == this.GetSession().GameState.CurrentPlayerGuid)
 				{
-					// Strip ObjectData for player (DynamicFlags=0 clears important flags during loot)
-					updateData2.ObjectData = new ObjectData();
-					if (updateData2.UnitData != null)
-					{
-						// Block 0: STRIP ALL — player block 0 causes DC even in isolated packet
-						// Health comes from combat packets (SMSG_ATTACKER_STATE_UPDATE etc.)
-						updateData2.UnitData.Health = null;
-						updateData2.UnitData.MaxHealth = null;
-						updateData2.UnitData.DisplayID = null;
-						updateData2.UnitData.Charm = null;
-						updateData2.UnitData.Summon = null;
-						updateData2.UnitData.CharmedBy = null;
-						updateData2.UnitData.SummonedBy = null;
-						updateData2.UnitData.CreatedBy = null;
-						updateData2.UnitData.Target = null;
-						updateData2.UnitData.ChannelData = null;
-						updateData2.UnitData.RaceId = null;
-						updateData2.UnitData.ClassId = null;
-						updateData2.UnitData.SexId = null;
-						updateData2.UnitData.Level = null;
-						updateData2.UnitData.EffectiveLevel = null;
-						// Block 1: STRIP ALL — block 1 causes silent client state corruption
-						// (visual updates freeze: bags, health bar, sheath all stop updating)
-						updateData2.UnitData.FactionTemplate = null;
-						updateData2.UnitData.Flags = null;
-						updateData2.UnitData.Flags2 = null;
-						updateData2.UnitData.AuraState = null;
-						updateData2.UnitData.BoundingRadius = null;
-						updateData2.UnitData.CombatReach = null;
-						updateData2.UnitData.NativeDisplayID = null;
-						// Keep MountDisplayID — needed for taxi/mount visuals
-						// Also strip block 1 continued fields (bits 52-63)
-						updateData2.UnitData.MinDamage = null;
-						updateData2.UnitData.MaxDamage = null;
-						updateData2.UnitData.MinOffHandDamage = null;
-						updateData2.UnitData.MaxOffHandDamage = null;
-						updateData2.UnitData.StandState = null;
-						updateData2.UnitData.VisFlags = null;
-						updateData2.UnitData.AnimTier = null;
-						updateData2.UnitData.PetNumber = null;
-						updateData2.UnitData.PetNameTimestamp = null;
-						updateData2.UnitData.PetExperience = null;
-						updateData2.UnitData.PetNextLevelExperience = null;
-						// Block 2+: Keep all (combat stats, stats, resistances)
-						updateData2.UnitData.HoverHeight = null;
-						updateData2.UnitData.GuildGUID = null;
-						updateData2.UnitData.NpcFlags = null;
-					}
+					// No stripping — packet splitting + ThreadStatic fix prevent corruption.
+					// Let ALL data through including ObjectData DynamicFlags.
 				}
 				// Check if the update has any actual data to send.
 				// Empty Values updates (changedMask=0) crash the 3.4.3 client.
@@ -9803,7 +9771,6 @@ public class WorldClient
 			}
 		}
 		// Split player Values updates into a separate packet from creature updates
-		// to prevent batch corruption between player and creature update parsing.
 		WowGuid128 playerGuid = this.GetSession().GameState.CurrentPlayerGuid;
 		List<ObjectUpdate> playerValuesUpdates = new List<ObjectUpdate>();
 		List<ObjectUpdate> otherUpdates = new List<ObjectUpdate>();
@@ -9814,15 +9781,12 @@ public class WorldClient
 			else
 				otherUpdates.Add(upd);
 		}
-		// Send creature/other updates (including CreateObjects, destroys, OOR)
 		if (otherUpdates.Count != 0 || updateObject.DestroyedGuids.Count != 0 || updateObject.OutOfRangeGuids.Count != 0)
 		{
 			updateObject.ObjectUpdates.Clear();
 			updateObject.ObjectUpdates.AddRange(otherUpdates);
 			this.SendPacketToClient(updateObject);
 		}
-		// Send player Values in its own packet (won't trigger login buffer since
-		// login buffer only buffers packets WITHOUT the player GUID)
 		if (playerValuesUpdates.Count != 0)
 		{
 			UpdateObject playerUpdateObject = new UpdateObject(this.GetSession().GameState);
@@ -11566,10 +11530,22 @@ public class WorldClient
 				{
 					this.GetSession().GameState.CurrentPlayerStorage.Settings.PatchFlags(ref flags2);
 				}
+				// Strip Ghost flag (0x10) — grey overlay can't be cleared via Values update
+				// Ghost wisp model still works via aura 8326 and clears on revive
+				flags2 &= ~PlayerFlags.Ghost;
 				updateData.PlayerData.PlayerFlags = (uint)flags2;
 				if (!updateData.PlayerData.PlayerFlagsEx.HasValue)
 				{
 					updateData.PlayerData.PlayerFlagsEx = 0u;
+				}
+				// 3.4.3 uses ActivePlayerData.LocalFlags for death UI (RELEASE_TIMER=0x08)
+				// 3.3.5a doesn't have this — inject it based on Ghost flag
+				if (updateData.Guid == this.GetSession().GameState.CurrentPlayerGuid)
+				{
+					if (legacyFlags.HasAnyFlag(PlayerFlagsLegacy.Ghost))
+						updateData.ActivePlayerData.LocalFlags = 0x08u; // PLAYER_LOCAL_FLAG_RELEASE_TIMER
+					else
+						updateData.ActivePlayerData.LocalFlags = 0u;
 				}
 				if (legacyFlags.HasAnyFlag(PlayerFlagsLegacy.HideHelm))
 				{

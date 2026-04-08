@@ -330,6 +330,7 @@ public class ObjectUpdateBuilder
 		ActivePlayerData a = this.m_updateData.ActivePlayerData;
 		if (a == null) return false;
 		if (a.Coinage.HasValue || a.XP.HasValue || a.NextLevelXP.HasValue) return true;
+		if (a.LocalFlags.HasValue) return true;
 		// Check if any InvSlots changed
 		for (int i = 0; i < 141; i++)
 		{
@@ -364,6 +365,8 @@ public class ObjectUpdateBuilder
 		if (a.Coinage.HasValue) { SetBit(0); SetBit(28); }
 		if (a.XP.HasValue) { SetBit(0); SetBit(29); }
 		if (a.NextLevelXP.HasValue) { SetBit(0); SetBit(30); }
+		// Group 1 scalar fields (bits 38-69)
+		if (a.LocalFlags.HasValue) { SetBit(38); SetBit(69); }
 
 		// InvSlots: bit 124 = group bit, bits 125-265 = individual slots
 		int invSlotsChanged = 0;
@@ -432,6 +435,10 @@ public class ObjectUpdateBuilder
 			if ((blocks[0] & (1u << 30)) != 0)
 				data.WriteInt32(a.NextLevelXP.Value);
 		}
+
+		// Group 1 scalar fields (bits 38-69)
+		if (a.LocalFlags.HasValue && (blocks[69 / 32] & (1u << (69 % 32))) != 0)
+			data.WriteUInt32(a.LocalFlags.Value);
 
 		// InvSlots (after all scalar groups, per TC343 write order)
 		if ((blocks[124 / 32] & (1u << (124 % 32))) != 0)
