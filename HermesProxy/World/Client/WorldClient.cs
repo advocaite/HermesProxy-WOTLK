@@ -56,7 +56,11 @@ public class WorldClient
 
 	private Dictionary<Opcode, List<ServerPacket>> _delayedPacketsToClient;
 
-	public GlobalSessionData Session => this._globalSession;
+    private Framework.GameMath.Vector3 _lastPlayerPosition = Framework.GameMath.Vector3.Zero;
+
+    private float _lastPlayerOrientation = 0f;
+
+    public GlobalSessionData Session => this._globalSession;
 
 	[PacketHandler(Opcode.SMSG_ARENA_TEAM_QUERY_RESPONSE)]
 	private void HandleArenaTeamQueryResponse(WorldPacket packet)
@@ -1091,7 +1095,10 @@ public class WorldClient
 		verify.Pos.Z = packet.ReadFloat();
 		verify.Pos.Orientation = packet.ReadFloat();
 		Log.Print(LogType.Server, $"[LoginVerifyWorld] Map={verify.MapID} Pos=({verify.Pos.X}, {verify.Pos.Y}, {verify.Pos.Z}) Orient={verify.Pos.Orientation}", "HandleLoginVerifyWorld", "F:\\Ampps\\HermesProxy-master\\HermesProxy\\World\\Client\\PacketHandlers\\CharacterHandler.cs");
-		this.SendPacketToClient(verify);
+        // Player tracking
+        this._lastPlayerPosition = new Framework.GameMath.Vector3(verify.Pos.X, verify.Pos.Y, verify.Pos.Z);
+        this._lastPlayerOrientation = verify.Pos.Orientation;
+        this.SendPacketToClient(verify);
 		this.GetSession().GameState.IsInWorld = true;
 		if (ModernVersion.ExpansionVersion >= 3)
 		{
@@ -5788,7 +5795,13 @@ public class WorldClient
 		moveUpdate.MoveInfo.ReadMovementInfoLegacy(packet, this.GetSession().GameState);
 		moveUpdate.MoveInfo.Flags = (uint)((MovementFlagWotLK)moveUpdate.MoveInfo.Flags).CastFlags<MovementFlagModern>();
 		moveUpdate.MoveInfo.ValidateMovementInfo();
-		this.SendPacketToClient(moveUpdate);
+        // Player tracking
+        if (moveUpdate.MoverGUID == this.GetSession().GameState.CurrentPlayerGuid)
+        {
+            this._lastPlayerPosition = moveUpdate.MoveInfo.Position;
+            this._lastPlayerOrientation = moveUpdate.MoveInfo.Orientation;
+        }
+        this.SendPacketToClient(moveUpdate);
 	}
 
 	[PacketHandler(Opcode.MSG_MOVE_KNOCK_BACK)]
@@ -5804,7 +5817,13 @@ public class WorldClient
 		knockback.MoveInfo.JumpHorizontalSpeed = packet.ReadFloat();
 		knockback.MoveInfo.JumpVerticalSpeed = packet.ReadFloat();
 		knockback.MoveInfo.ValidateMovementInfo();
-		this.SendPacketToClient(knockback);
+        // Player tracking
+        if (knockback.MoverGUID == this.GetSession().GameState.CurrentPlayerGuid)
+        {
+            this._lastPlayerPosition = knockback.MoveInfo.Position;
+            this._lastPlayerOrientation = knockback.MoveInfo.Orientation;
+        }
+        this.SendPacketToClient(knockback);
 	}
 
 	[PacketHandler(Opcode.SMSG_MOVE_KNOCK_BACK)]
@@ -5855,7 +5874,14 @@ public class WorldClient
 			teleport.Vehicle = new VehicleTeleport();
 			teleport.Vehicle.VehicleSeatIndex = moveInfo.TransportSeat;
 		}
-		this.SendPacketToClient(teleport);
+        // Player tracking
+        if (teleport.MoverGUID == this.GetSession().GameState.CurrentPlayerGuid)
+        {
+            this._lastPlayerPosition = teleport.Position;
+            this._lastPlayerOrientation = teleport.Orientation;
+        }
+
+        this.SendPacketToClient(teleport);
 	}
 
 	[PacketHandler(Opcode.SMSG_TRANSFER_PENDING)]
@@ -5915,7 +5941,10 @@ public class WorldClient
 		teleport.Position = packet.ReadVector3();
 		teleport.Orientation = packet.ReadFloat();
 		teleport.Reason = 4u;
-		this.GetSession().GameState.IsFirstEnterWorld = false;
+        // Player tracking
+        this._lastPlayerPosition = teleport.Position;
+        this._lastPlayerOrientation = teleport.Orientation;
+        this.GetSession().GameState.IsFirstEnterWorld = false;
 		if (!this.GetSession().GameState.IsWaitingForNewWorld)
 		{
 			return;
@@ -9488,10 +9517,70 @@ public class WorldClient
 			{
 				WowGuid128 guid3 = packet.ReadPackedGuid().To128(this.GetSession().GameState);
 				this.PrintString("Guid = " + guid3.ToString(), i);
+				// Ghost fix: Track old ghost state
+				bool playerWasGhost = false;
+				if (guid3 == this.GetSession().GameState.CurrentPlayerGuid)
+				{
+					uint oldFlags = this.GetSession().GameState.GetLegacyFieldValueUInt32(guid3, PlayerField.PLAYER_FLAGS);
+					playerWasGhost = ((PlayerFlagsLegacy)oldFlags).HasAnyFlag(PlayerFlagsLegacy.Ghost);
+				}
 				ObjectUpdate updateData2 = new ObjectUpdate(guid3, UpdateTypeModern.Values, this.GetSession());
 				AuraUpdate auraUpdate2 = new AuraUpdate(guid3, all: false);
 				PowerUpdate powerUpdate = new PowerUpdate(guid3);
 				this.ReadValuesUpdateBlock(packet, guid3, updateData2, auraUpdate2, powerUpdate, i);
+				// Ghost fix: Detect state transition
+				bool triggeredRevive = false;
+				if (guid3 == this.GetSession().GameState.CurrentPlayerGuid)
+				{
+					uint newFlags = this.GetSession().GameState.GetLegacyFieldValueUInt32(guid3, PlayerField.PLAYER_FLAGS);
+					bool playerIsGhost = ((PlayerFlagsLegacy)newFlags).HasAnyFlag(PlayerFlagsLegacy.Ghost);
+					triggeredRevive = playerWasGhost && !playerIsGhost;
+				}
+				if (triggeredRevive)
+				{
+					Log.Print(LogType.Debug, "[Revive Fix] Player resurrected! Triggering DestroyObject + CreateObject2", "HandleUpdateObject", "");
+					UpdateObject destroyPacket = new UpdateObject(this.GetSession().GameState);
+					destroyPacket.DestroyedGuids.Add(guid3);
+					this.SendPacketToClient(destroyPacket);
+					updateData2.Type = UpdateTypeModern.CreateObject2;
+					updateData2.CreateData = new CreateObjectData();
+					updateData2.CreateData.ThisIsYou = true;
+					updateData2.CreateData.ObjectType = ObjectType.ActivePlayer;
+					updateData2.CreateData.MoveInfo = new MovementInfo();
+					updateData2.CreateData.MoveInfo.Position = this._lastPlayerPosition;
+					updateData2.CreateData.MoveInfo.Orientation = this._lastPlayerOrientation;
+					updateData2.CreateData.MoveInfo.WalkSpeed = 2.5f;
+					updateData2.CreateData.MoveInfo.RunSpeed = 7.0f;
+					updateData2.CreateData.MoveInfo.RunBackSpeed = 4.5f;
+					updateData2.CreateData.MoveInfo.SwimSpeed = 4.722222f;
+					updateData2.CreateData.MoveInfo.SwimBackSpeed = 2.5f;
+					updateData2.CreateData.MoveInfo.FlightSpeed = 7.0f;
+					updateData2.CreateData.MoveInfo.FlightBackSpeed = 4.5f;
+					updateData2.CreateData.MoveInfo.TurnRate = 3.141593f;
+					updateData2.CreateData.MoveInfo.PitchRate = 3.141593f;
+					updateData2.CreateData.MoveInfo.Flags = 0;
+					// Repopulate with cache to simulate relog
+					Dictionary<int, UpdateField> cachedFields = this.GetSession().GameState.GetCachedObjectFieldsLegacy(guid3);
+                    if (cachedFields != null && cachedFields.Count > 0)
+                    {
+						int maxField = cachedFields.Keys.Max();
+						BitArray fullMask = new BitArray(maxField + 1, false);
+						BitArray dummyChangedMask = new BitArray(maxField + 1, false);
+						foreach (int key in cachedFields.Keys)
+						{
+							fullMask.Set(key, true);
+                            dummyChangedMask.Set(key, true);
+                        }
+						updateData2.ObjectData = new ObjectData();
+						updateData2.UnitData = new UnitData();
+						updateData2.PlayerData = new PlayerData();
+						updateData2.ActivePlayerData = new ActivePlayerData();
+						auraUpdate2 = new AuraUpdate(guid3, all: true);
+						powerUpdate = new PowerUpdate(guid3);
+						// Force update from cache
+						this.StoreObjectUpdate(guid3, ObjectType.ActivePlayer, fullMask, cachedFields, auraUpdate2, powerUpdate, true, updateData2, dummyChangedMask);
+					}
+				}
 				if (powerUpdate.Powers.Count != 0)
 				{
 					this.SendPacketToClient(powerUpdate);
@@ -11590,9 +11679,6 @@ public class WorldClient
 				{
 					this.GetSession().GameState.CurrentPlayerStorage.Settings.PatchFlags(ref flags2);
 				}
-				// Strip Ghost flag (0x10) — grey overlay can't be cleared via Values update
-				// Ghost wisp model still works via aura 8326 and clears on revive
-				flags2 &= ~PlayerFlags.Ghost;
 				updateData.PlayerData.PlayerFlags = (uint)flags2;
 				if (!updateData.PlayerData.PlayerFlagsEx.HasValue)
 				{
