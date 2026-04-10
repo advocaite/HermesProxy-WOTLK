@@ -12,15 +12,15 @@ public class EmptyTalentData : ServerPacket
 
 	public override void Write()
 	{
-		base._worldPacket.WriteUInt32(0u);
-		base._worldPacket.WriteUInt8(0);
-		base._worldPacket.WriteUInt32(1u);
-		base._worldPacket.WriteUInt8(0);
-		base._worldPacket.WriteUInt32(0u);
-		base._worldPacket.WriteUInt8(0);
-		base._worldPacket.WriteUInt32(0u);
-		base._worldPacket.WriteUInt8(0);
-		base._worldPacket.WriteBit(bit: false);
+		base._worldPacket.WriteUInt32(0u);        // UnspentTalentPoints
+		base._worldPacket.WriteUInt8(0);          // ActiveGroup
+		base._worldPacket.WriteUInt32(1u);        // GroupCount = 1
+		base._worldPacket.WriteUInt8(0);          // TalentCount (byte)
+		base._worldPacket.WriteUInt32(0u);        // TalentCount (dword)
+		base._worldPacket.WriteUInt8(0);          // GlyphCount (byte)
+		base._worldPacket.WriteUInt32(0u);        // GlyphCount (dword)
+		base._worldPacket.WriteUInt8(4);          // SpecID = MAX_SPECIALIZATIONS (no spec)
+		base._worldPacket.WriteBit(bit: false);   // IsPetTalents
 		base._worldPacket.FlushBits();
 	}
 }

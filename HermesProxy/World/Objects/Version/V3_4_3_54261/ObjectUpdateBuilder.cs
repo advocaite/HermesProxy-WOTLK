@@ -1929,8 +1929,8 @@ public class ObjectUpdateBuilder
 			data.WriteUInt16((ushort)((skill != null) ? skill.SkillTempBonus[j] : ((short?)null)).GetValueOrDefault());
 			data.WriteUInt16(((skill != null) ? skill.SkillPermBonus[j] : ((ushort?)null)).GetValueOrDefault());
 		}
-		data.WriteInt32(0);
-		data.WriteInt32(0);
+		data.WriteInt32(active.CharacterPoints.GetValueOrDefault()); // CharacterPoints (unspent talent points)
+		data.WriteInt32(active.MaxTalentTiers.GetValueOrDefault());  // MaxTalentTiers (total talent points)
 		data.WriteUInt32(0u);
 		data.WriteUInt32(0u);
 		data.WriteUInt32(0u);
@@ -2077,13 +2077,15 @@ public class ObjectUpdateBuilder
 		data.WriteInt32(0);
 		data.WriteUInt32(0u);
 		data.WriteUInt32(0u);
+		// GlyphSlots[6] and Glyphs[6] - interleaved
+		uint[] glyphSlotIds = { 21, 22, 23, 24, 25, 26 }; // WotLK GlyphSlot.db2 IDs
 		for (int num8 = 0; num8 < 6; num8++)
 		{
-			data.WriteUInt32(0u);
-			data.WriteUInt32(0u);
+			data.WriteUInt32(glyphSlotIds[num8]); // GlyphSlots[i]
+			data.WriteUInt32((uint)(this.m_gameState.ActiveGlyphs[num8])); // Glyphs[i]
 		}
-		data.WriteUInt8(0);
-		data.WriteUInt8(0);
+		data.WriteUInt8(this.m_gameState.GlyphsEnabled); // GlyphsEnabled
+		data.WriteUInt8(0); // LfgRoles
 		data.WriteUInt32(0u);
 		data.WriteUInt32(0u);
 		data.WriteUInt8(0);

@@ -2,11 +2,11 @@ namespace HermesProxy.World.Server.Packets;
 
 internal class PartyInviteResponse : ClientPacket
 {
-	public byte PartyIndex;
+	public byte? PartyIndex;
 
 	public bool Accept;
 
-	public uint? RolesDesired;
+	public byte? RolesDesired;
 
 	public PartyInviteResponse(WorldPacket packet)
 		: base(packet)
@@ -15,11 +15,14 @@ internal class PartyInviteResponse : ClientPacket
 
 	public override void Read()
 	{
-		this.PartyIndex = base._worldPacket.ReadUInt8();
+		bool hasPartyIndex = base._worldPacket.HasBit();
 		this.Accept = base._worldPacket.HasBit();
-		if (base._worldPacket.HasBit())
-		{
-			this.RolesDesired = base._worldPacket.ReadUInt32();
-		}
+		bool hasRolesDesired = base._worldPacket.HasBit();
+
+		if (hasPartyIndex)
+			this.PartyIndex = base._worldPacket.ReadUInt8();
+
+		if (hasRolesDesired)
+			this.RolesDesired = base._worldPacket.ReadUInt8();
 	}
 }

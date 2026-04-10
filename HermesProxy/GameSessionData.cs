@@ -39,6 +39,14 @@ public class GameSessionData
 
 	public bool IsInWorld;
 
+	// Talent points tracking for 3.4.3 client
+	public int TotalTalentPoints;
+
+	// Glyph tracking for 3.4.3 client
+	public byte GlyphsEnabled;
+	public ushort[] ActiveGlyphs = new ushort[6];
+
+
 	// Login update buffering (moved from UpdateObject [ThreadStatic] to fix thread-switching issues)
 	public bool PlayerObjectSent;
 	public List<ObjectUpdate> PendingLoginUpdates;

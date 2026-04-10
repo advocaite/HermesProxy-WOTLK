@@ -4,11 +4,16 @@ using HermesProxy.World.Enums;
 
 namespace HermesProxy.World.Server.Packets;
 
+public class LearnedSpellInfo
+{
+	public int SpellID;
+	public bool IsFavorite;
+	public int? Superceded;
+}
+
 public class LearnedSpells : ServerPacket
 {
-	public List<uint> Spells = new List<uint>();
-
-	public List<int> FavoriteSpellID = new List<int>();
+	public List<LearnedSpellInfo> ClientLearnedSpellData = new List<LearnedSpellInfo>();
 
 	public uint SpecializationID;
 
@@ -21,18 +26,20 @@ public class LearnedSpells : ServerPacket
 
 	public override void Write()
 	{
-		base._worldPacket.WriteInt32(this.Spells.Count);
-		base._worldPacket.WriteInt32(this.FavoriteSpellID.Count);
+		base._worldPacket.WriteInt32(this.ClientLearnedSpellData.Count);
 		base._worldPacket.WriteUInt32(this.SpecializationID);
-		foreach (uint spell in this.Spells)
-		{
-			base._worldPacket.WriteUInt32(spell);
-		}
-		foreach (int spell2 in this.FavoriteSpellID)
-		{
-			base._worldPacket.WriteInt32(spell2);
-		}
 		base._worldPacket.WriteBit(this.SuppressMessaging);
 		base._worldPacket.FlushBits();
+		foreach (var info in this.ClientLearnedSpellData)
+		{
+			base._worldPacket.WriteInt32(info.SpellID);
+			base._worldPacket.WriteBit(info.IsFavorite);
+			base._worldPacket.WriteBit(false); // field_8
+			base._worldPacket.WriteBit(info.Superceded.HasValue); // Superceded
+			base._worldPacket.WriteBit(false); // TraitDefinitionID
+			base._worldPacket.FlushBits();
+			if (info.Superceded.HasValue)
+				base._worldPacket.WriteInt32(info.Superceded.Value);
+		}
 	}
 }

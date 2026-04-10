@@ -5468,6 +5468,69 @@ public class WorldClient
 	{
 		if (LegacyVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
 		{
+			byte isPet = packet.ReadUInt8();
+			if (isPet != 0)
+			{
+				// Pet talents - skip for now
+				return;
+			}
+
+			UpdateTalentData talentData = new UpdateTalentData();
+			talentData.IsPetTalents = false;
+			talentData.UnspentTalentPoints = packet.ReadUInt32();
+			byte specsCount = packet.ReadUInt8();
+			talentData.ActiveGroup = packet.ReadUInt8();
+
+			for (byte spec = 0; spec < specsCount; spec++)
+			{
+				TalentGroupInfoData group = new TalentGroupInfoData();
+				group.SpecID = 4; // MAX_SPECIALIZATIONS - sentinel for "no spec" in WotLK
+
+				byte talentCount = packet.ReadUInt8();
+				for (byte t = 0; t < talentCount; t++)
+				{
+					TalentInfoData talent = new TalentInfoData();
+					talent.TalentID = packet.ReadUInt32();
+					talent.Rank = packet.ReadUInt8();
+					group.Talents.Add(talent);
+				}
+
+				byte glyphCount = packet.ReadUInt8();
+				for (byte g = 0; g < glyphCount; g++)
+				{
+					group.GlyphIDs.Add(packet.ReadUInt16());
+				}
+
+				talentData.TalentGroups.Add(group);
+			}
+
+			// Compute total talent points (unspent + spent) and store for update fields
+			int spentPoints = 0;
+			foreach (var group2 in talentData.TalentGroups)
+				foreach (var talent in group2.Talents)
+					spentPoints += talent.Rank + 1; // rank is 0-based
+			int totalPoints = (int)talentData.UnspentTalentPoints + spentPoints;
+			this.GetSession().GameState.TotalTalentPoints = totalPoints;
+
+			// Compute GlyphsEnabled from level (level = totalPoints + 9)
+			int level = totalPoints + 9;
+			byte glyphsEnabled = 0;
+			if (level >= 15) glyphsEnabled |= 0x01 | 0x02; // Major slot 0 + Minor slot 1
+			if (level >= 30) glyphsEnabled |= 0x08;         // Major slot 3
+			if (level >= 50) glyphsEnabled |= 0x04;         // Major slot 2
+			if (level >= 70) glyphsEnabled |= 0x10;         // Minor slot 4
+			if (level >= 80) glyphsEnabled |= 0x20;         // Minor slot 5
+			this.GetSession().GameState.GlyphsEnabled = glyphsEnabled;
+
+			// Store active glyphs from active spec
+			if (talentData.TalentGroups.Count > talentData.ActiveGroup)
+			{
+				var activeGroup = talentData.TalentGroups[talentData.ActiveGroup];
+				for (int g = 0; g < activeGroup.GlyphIDs.Count && g < 6; g++)
+					this.GetSession().GameState.ActiveGlyphs[g] = activeGroup.GlyphIDs[g];
+			}
+
+			this.SendPacketToClient(talentData);
 		}
 	}
 
@@ -7237,6 +7300,12 @@ public class WorldClient
 
 	private void SendItemUpdatesIfNeeded(ItemTemplate item)
 	{
+		// Skip hotfix for glyph items (class=16) - the 3.4.3 client already has correct
+		// data for these in CASC. Our hotfix would override it with incomplete data,
+		// breaking the icon and preventing the item from being used.
+		if (item.Class == 16)
+			return;
+
 		HotFixMessage reply = GameData.GenerateItemUpdateIfNeeded(item);
 		if (reply != null)
 		{
@@ -8084,7 +8153,12 @@ public class WorldClient
 	{
 		LearnedSpells spells = new LearnedSpells();
 		uint spellId = packet.ReadUInt32();
-		spells.Spells.Add(spellId);
+		spells.ClientLearnedSpellData.Add(new LearnedSpellInfo
+		{
+			SpellID = (int)spellId,
+			IsFavorite = false,
+			Superceded = null
+		});
 		this.SendPacketToClient(spells);
 	}
 
@@ -8995,6 +9069,15 @@ public class WorldClient
 		this.SendPacketToClient(spell);
 	}
 
+	[PacketHandler(Opcode.SMSG_PLAY_SPELL_IMPACT)]
+	private void HandlePlaySpellImpact(WorldPacket packet)
+	{
+		PlaySpellVisualKit spell = new PlaySpellVisualKit();
+		spell.Unit = packet.ReadGuid().To128(this.GetSession().GameState);
+		spell.KitRecID = packet.ReadUInt32();
+		this.SendPacketToClient(spell);
+	}
+
 	[PacketHandler(Opcode.SMSG_UPDATE_AURA_DURATION)]
 	private void HandleUpdateAuraDuration(WorldPacket packet)
 	{
@@ -9619,7 +9702,7 @@ public class WorldClient
 						for (int r = 0; r < 7; r++)
 							if (u.ResistanceBuffModsNegative[r].HasValue) { hasAnythingToSend = true; break; }
 				}
-				// Skip all Item-only Values updates - WriteUpdateItemData crashes client
+				// Skip Item-only Values updates - sends corrupt data that breaks client state
 				if (guid3.IsItem())
 					hasAnythingToSend = false;
 				if (updateData2.ActivePlayerData != null)
@@ -11136,6 +11219,18 @@ public class WorldClient
 			if (UNIT_FIELD_LEVEL >= 0 && updateMaskArray[UNIT_FIELD_LEVEL])
 			{
 				updateData.UnitData.Level = updates[UNIT_FIELD_LEVEL].Int32Value;
+				// Compute GlyphsEnabled for current player based on level
+				if (guid == this.GetSession().GameState.CurrentPlayerGuid)
+				{
+					int lvl = updates[UNIT_FIELD_LEVEL].Int32Value;
+					byte ge = 0;
+					if (lvl >= 15) ge |= 0x01 | 0x02;
+					if (lvl >= 30) ge |= 0x08;
+					if (lvl >= 50) ge |= 0x04;
+					if (lvl >= 70) ge |= 0x10;
+					if (lvl >= 80) ge |= 0x20;
+					this.GetSession().GameState.GlyphsEnabled = ge;
+				}
 			}
 			int UNIT_FIELD_FACTIONTEMPLATE = LegacyVersion.GetUpdateField(UnitField.UNIT_FIELD_FACTIONTEMPLATE);
 			if (UNIT_FIELD_FACTIONTEMPLATE >= 0 && updateMaskArray[UNIT_FIELD_FACTIONTEMPLATE])
@@ -11713,13 +11808,12 @@ public class WorldClient
 					updateData.PlayerData.PlayerFlagsEx = 0u;
 				}
 				// 3.4.3 uses ActivePlayerData.LocalFlags for death UI (RELEASE_TIMER=0x08)
-				// 3.3.5a doesn't have this — inject it based on Ghost flag
-				if (updateData.Guid == this.GetSession().GameState.CurrentPlayerGuid)
+				// 3.3.5a doesn't have this — only inject when actually ghost
+				// Setting LocalFlags=0 on every update floods ActivePlayerData and may break bag updates
+				if (updateData.Guid == this.GetSession().GameState.CurrentPlayerGuid
+					&& legacyFlags.HasAnyFlag(PlayerFlagsLegacy.Ghost))
 				{
-					if (legacyFlags.HasAnyFlag(PlayerFlagsLegacy.Ghost))
-						updateData.ActivePlayerData.LocalFlags = 0x08u; // PLAYER_LOCAL_FLAG_RELEASE_TIMER
-					else
-						updateData.ActivePlayerData.LocalFlags = 0u;
+					updateData.ActivePlayerData.LocalFlags = 0x08u; // PLAYER_LOCAL_FLAG_RELEASE_TIMER
 				}
 				if (legacyFlags.HasAnyFlag(PlayerFlagsLegacy.HideHelm))
 				{
@@ -12028,6 +12122,12 @@ public class WorldClient
 			if (PLAYER_CHARACTER_POINTS1 >= 0 && updateMaskArray[PLAYER_CHARACTER_POINTS1])
 			{
 				updateData.ActivePlayerData.CharacterPoints = updates[PLAYER_CHARACTER_POINTS1].Int32Value;
+				// MaxTalentTiers = total talent points (from SMSG_UPDATE_TALENT_DATA)
+				int totalTalentPoints = this.GetSession().GameState.TotalTalentPoints;
+				if (totalTalentPoints > 0)
+					updateData.ActivePlayerData.MaxTalentTiers = totalTalentPoints;
+				else
+					updateData.ActivePlayerData.MaxTalentTiers = updates[PLAYER_CHARACTER_POINTS1].Int32Value;
 			}
 			int PLAYER_TRACK_CREATURES = LegacyVersion.GetUpdateField(PlayerField.PLAYER_TRACK_CREATURES);
 			if (PLAYER_TRACK_CREATURES >= 0 && updateMaskArray[PLAYER_TRACK_CREATURES])
