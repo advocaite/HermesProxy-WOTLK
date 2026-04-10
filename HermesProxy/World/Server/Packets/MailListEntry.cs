@@ -34,19 +34,43 @@ public class MailListEntry
 
 	public List<MailAttachedItem> Attachments = new List<MailAttachedItem>();
 
+	/// <summary>
+	/// TC343 MailListEntry write format:
+	///   uint64 MailID, uint32 SenderType, uint64 Cod, int32 StationeryID,
+	///   uint64 SentMoney, int32 Flags, float DaysLeft, int32 MailTemplateID,
+	///   uint32 AttachmentCount,
+	///   THEN based on SenderType: PackedGuid128 OR int32 AltSenderID,
+	///   WriteBits Subject(8), WriteBits Body(13), FlushBits,
+	///   Attachments[], Subject string, Body string
+	/// </summary>
 	public void Write(WorldPacket data)
 	{
-		data.WriteInt32(this.MailID);
-		data.WriteUInt8((byte)this.SenderType);
+		data.WriteUInt64((ulong)this.MailID);
+		data.WriteUInt32((uint)this.SenderType);
 		data.WriteUInt64(this.Cod);
 		data.WriteInt32(this.StationeryID);
 		data.WriteUInt64(this.SentMoney);
-		data.WriteUInt32(this.Flags);
+		data.WriteInt32((int)this.Flags);
 		data.WriteFloat(this.DaysLeft);
 		data.WriteInt32(this.MailTemplateID);
 		data.WriteInt32(this.Attachments.Count);
-		data.WriteBit(this.SenderCharacter != null);
-		data.WriteBit(this.AltSenderID.HasValue);
+
+		// TC343: sender written unconditionally based on type (not optional bits)
+		switch (this.SenderType)
+		{
+		case MailType.Normal:
+			data.WritePackedGuid128(this.SenderCharacter ?? WowGuid128.Empty);
+			break;
+		case MailType.Auction:
+		case MailType.Item:
+		case MailType.Creature:
+		case MailType.GameObject:
+			data.WriteInt32((int)this.AltSenderID.GetValueOrDefault());
+			break;
+		default:
+			break;
+		}
+
 		data.WriteBits(this.Subject.GetByteCount(), 8);
 		data.WriteBits(this.Body.GetByteCount(), 13);
 		data.FlushBits();
@@ -54,14 +78,6 @@ public class MailListEntry
 		{
 			p.Write(data);
 		});
-		if (this.SenderCharacter != null)
-		{
-			data.WritePackedGuid128(this.SenderCharacter);
-		}
-		if (this.AltSenderID.HasValue)
-		{
-			data.WriteUInt32(this.AltSenderID.Value);
-		}
 		data.WriteString(this.Subject);
 		data.WriteString(this.Body);
 	}

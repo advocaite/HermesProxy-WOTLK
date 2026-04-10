@@ -46,6 +46,9 @@ public class GameSessionData
 	public byte GlyphsEnabled;
 	public ushort[] ActiveGlyphs = new ushort[6];
 
+	// Known spells tracking for mount collection
+	public HashSet<uint> KnownSpells = new HashSet<uint>();
+
 
 	// Login update buffering (moved from UpdateObject [ThreadStatic] to fix thread-switching issues)
 	public bool PlayerObjectSent;

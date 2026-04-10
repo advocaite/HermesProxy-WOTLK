@@ -72,6 +72,8 @@ public static class GameData
 
 	public static HashSet<uint> MountAuras = new HashSet<uint>();
 
+	public static HashSet<uint> MountSpells = new HashSet<uint>();
+
 	public static HashSet<uint> NextMeleeSpells = new HashSet<uint>();
 
 	public static HashSet<uint> AutoRepeatSpells = new HashSet<uint>();
@@ -656,6 +658,7 @@ public static class GameData
 		GameData.LoadSpellEffectPoints();
 		GameData.LoadStackableAuras();
 		GameData.LoadMountAuras();
+		GameData.LoadMountSpells();
 		GameData.LoadMeleeSpells();
 		GameData.LoadAutoRepeatSpells();
 		GameData.LoadAuraSpells();
@@ -1375,6 +1378,25 @@ public static class GameData
 			uint spellId = uint.Parse(fields[0]);
 			GameData.MountAuras.Add(spellId);
 		}
+	}
+
+	public static void LoadMountSpells()
+	{
+		string path = Path.Combine("CSV", $"MountSpells{ModernVersion.ExpansionVersion}.csv");
+		if (!System.IO.File.Exists(path))
+			return;
+		using TextFieldParser csvParser = new TextFieldParser(path);
+		csvParser.CommentTokens = new string[1] { "#" };
+		csvParser.SetDelimiters(",");
+		csvParser.HasFieldsEnclosedInQuotes = false;
+		csvParser.ReadLine();
+		while (!csvParser.EndOfData)
+		{
+			string[] fields = csvParser.ReadFields();
+			uint spellId = uint.Parse(fields[0].Trim());
+			GameData.MountSpells.Add(spellId);
+		}
+		Log.Print(LogType.Storage, $"Loaded {GameData.MountSpells.Count} mount spells.", "LoadMountSpells", "");
 	}
 
 	public static void LoadMeleeSpells()

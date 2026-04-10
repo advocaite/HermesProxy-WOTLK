@@ -27,11 +27,11 @@ public class MailAttachedItem
 	public void Write(WorldPacket data)
 	{
 		data.WriteUInt8(this.Position);
-		data.WriteInt32(this.AttachID);
-		data.WriteUInt32(this.Count);
+		data.WriteUInt64((ulong)this.AttachID);
+		data.WriteInt32((int)this.Count);
 		data.WriteInt32(this.Charges);
 		data.WriteUInt32(this.MaxDurability);
-		data.WriteUInt32(this.Durability);
+		data.WriteInt32((int)this.Durability);
 		this.Item.Write(data);
 		data.WriteBits(this.Enchants.Count, 4);
 		data.WriteBits(this.Gems.Count, 2);

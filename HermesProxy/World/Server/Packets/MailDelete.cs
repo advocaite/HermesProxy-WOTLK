@@ -13,7 +13,7 @@ public class MailDelete : ClientPacket
 
 	public override void Read()
 	{
-		this.MailID = base._worldPacket.ReadUInt32();
+		this.MailID = (uint)base._worldPacket.ReadUInt64();
 		this.DeleteReason = base._worldPacket.ReadInt32();
 	}
 }

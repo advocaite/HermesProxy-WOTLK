@@ -7323,12 +7323,18 @@ public class WorldClient
 			replyA.Data = reply.Hotfixes[0].HotfixContent;
 			this.SendPacketToClient(replyA);
 		}
-		for (byte i = 0; i < 5; i++)
+		// Skip ItemEffect hotfix for mount items (class 15, subclass 5) — the DB2 already has
+		// the correct mount summon spell; overwriting with the learn spell (55884) breaks the
+		// 3.4.3 client's mount item recognition.
+		if (item.Class != 15 || item.SubClass != 5)
 		{
-			reply = GameData.GenerateItemEffectUpdateIfNeeded(item, i);
-			if (reply != null)
+			for (byte i = 0; i < 5; i++)
 			{
-				this.SendPacketToClient(reply);
+				reply = GameData.GenerateItemEffectUpdateIfNeeded(item, i);
+				if (reply != null)
+				{
+					this.SendPacketToClient(reply);
+				}
 			}
 		}
 		if (GameData.ItemCanHaveModel(item))
@@ -8095,10 +8101,13 @@ public class WorldClient
 			if (!packet.CanRead()) break;
 			uint spellId = ((!LegacyVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) ? packet.ReadUInt16() : packet.ReadUInt32());
 			spells.KnownSpells.Add(spellId);
+			this.GetSession().GameState.KnownSpells.Add(spellId);
 			if (!packet.CanRead()) break;
 			packet.ReadInt16();
 		}
 		this.SendPacketToClient(spells);
+		// Send mount collection based on known mount spells
+		this.SendAccountMountUpdate();
 		if (!packet.CanRead())
 			return;
 		ushort cooldownCount = packet.ReadUInt16();
@@ -8159,7 +8168,27 @@ public class WorldClient
 			IsFavorite = false,
 			Superceded = null
 		});
+		this.GetSession().GameState.KnownSpells.Add(spellId);
 		this.SendPacketToClient(spells);
+		// If this is a mount spell, update the mount collection
+		if (GameData.MountSpells.Contains(spellId))
+			this.SendAccountMountUpdate();
+	}
+
+	/// <summary>
+	/// Sends SMSG_ACCOUNT_MOUNT_UPDATE with all known mount spells.
+	/// TC343 format: WriteBit IsFullUpdate, uint32 count, then (int32 spellId + 4-bit flags) per mount.
+	/// </summary>
+	private void SendAccountMountUpdate()
+	{
+		AccountMountUpdate update = new AccountMountUpdate();
+		foreach (uint spellId in this.GetSession().GameState.KnownSpells)
+		{
+			if (GameData.MountSpells.Contains(spellId))
+				update.MountSpellIDs.Add(spellId);
+		}
+		this.SendPacketToClient(update);
+		Log.Print(LogType.Debug, $"[MountUpdate] Sent {update.MountSpellIDs.Count} mounts to client", "SendAccountMountUpdate", "");
 	}
 
 	[PacketHandler(Opcode.SMSG_SEND_UNLEARN_SPELLS)]

@@ -13,7 +13,7 @@ public class MailReturnToSender : ClientPacket
 
 	public override void Read()
 	{
-		this.MailID = base._worldPacket.ReadUInt32();
+		this.MailID = (uint)base._worldPacket.ReadUInt64();
 		this.SenderGUID = base._worldPacket.ReadPackedGuid128();
 	}
 }
