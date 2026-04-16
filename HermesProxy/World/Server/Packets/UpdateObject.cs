@@ -99,24 +99,15 @@ public class UpdateObject : ServerPacket
 					Log.Print(LogType.Debug, $"[Transport] {upd.Guid} Type={upd.Type} Entry={od?.EntryID} GO: DisplayID={go?.DisplayID} TypeID={go?.TypeID} State={go?.State} Flags={go?.Flags} Level={go?.Level} MoveInfo: Pos={mi?.Position} Rot={mi?.Rotation} PathTimer={mi?.TransportPathTimer}", "Write", "");
 				}
 			}
-			// Allow known elevators + boats with known periods; filter unknown entries
+			// All old-style Transport GUIDs (TypeID=11 elevators and TypeID=15 boats) crash the
+			// WotLK Classic 3.4.3 client - the transport system was completely redesigned in that version.
 			this.ObjectUpdates.RemoveAll((ObjectUpdate u) =>
 			{
 				if (u.Guid.GetHighType() != HighGuidType.Transport && u.Guid.GetHighType() != HighGuidType.MOTransport)
 					return false;
-				sbyte typeId = u.GameObjectData?.TypeID ?? 0;
 				uint entry = u.ObjectData?.EntryID.HasValue == true ? (uint)u.ObjectData.EntryID.Value : 0;
-				if (typeId == 11 && !GameData.TransportAnimationEntries.Contains(entry))
-				{
-					Log.Print(LogType.Debug, $"[Transport] FILTERED elevator entry {entry} — not in TransportAnimation DB2", "Write", "");
-					return true;
-				}
-				if (typeId == 15 && GameData.GetTransportPeriod(entry) == 0)
-				{
-					Log.Print(LogType.Debug, $"[Transport] FILTERED boat entry {entry} — not in Transports CSV", "Write", "");
-					return true;
-				}
-				return false;
+				Log.Print(LogType.Debug, $"[Transport] FILTERED old-style transport entry {entry} — not compatible with 3.4.3 client", "Write", "");
+				return true;
 			});
 		}
 		this.NumObjUpdates = (uint)this.ObjectUpdates.Count;

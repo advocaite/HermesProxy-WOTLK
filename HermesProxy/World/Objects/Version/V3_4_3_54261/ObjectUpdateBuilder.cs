@@ -3225,7 +3225,10 @@ public class ObjectUpdateBuilder
 		this.m_createBits.Clear();
 		this.m_createBits.PlayHoverAnim = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && this.m_updateData.CreateData.MoveInfo.Hover;
 		this.m_createBits.MovementUpdate = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && this.m_objectTypeMask.HasAnyFlag(ObjectTypeMask.Unit);
-		this.m_createBits.MovementTransport = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && this.m_updateData.CreateData.MoveInfo.TransportGuid != null && this.m_objectType == ObjectTypeBCC.GameObject;
+		// Never set MovementTransport for 3.4.3: old-style transports (elevators/boats) are
+		// filtered out entirely, and sending passengers with a transport reference causes a
+		// client crash because the referenced transport object was never sent.
+		this.m_createBits.MovementTransport = false;
 		this.m_createBits.Stationary = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && !this.m_objectTypeMask.HasAnyFlag(ObjectTypeMask.Unit);
 		this.m_createBits.ServerTime = ((this.m_updateData.CreateData != null) & (this.m_updateData.CreateData.MoveInfo != null)) && (this.m_updateData.Guid.GetHighType() == HighGuidType.Transport || this.m_updateData.Guid.GetHighType() == HighGuidType.MOTransport);
 		this.m_createBits.CombatVictim = this.m_updateData.CreateData != null && this.m_updateData.CreateData.AutoAttackVictim != null;

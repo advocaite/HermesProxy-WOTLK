@@ -6048,7 +6048,13 @@ public class WorldClient
 		this.SendPacketToClient(info);
 	}
 
-	[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_BACK_SPEED)]
+	[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED)]
+	private void HandleMoveSplineSetWalkBackSpeed(WorldPacket packet)
+	{
+		// Walk back speed does not exist in WotLK Classic 3.4.3 - silently drop
+	}
+
+		[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_BACK_SPEED)]
 	[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
 	[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_PITCH_RATE)]
 	[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
@@ -6056,7 +6062,6 @@ public class WorldClient
 	[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_BACK_SPEED)]
 	[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
 	[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_TURN_RATE)]
-	[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED)]
 	[PacketHandler(Opcode.SMSG_MOVE_SPLINE_SET_WALK_SPEED)]
 	private void HandleMoveSplineSetSpeed(WorldPacket packet)
 	{
