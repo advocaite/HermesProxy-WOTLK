@@ -618,7 +618,11 @@ public class WorldSocket : SocketBase, BnetServices.INetwork
 	[PacketHandler(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
 	private void HandleLoadScreen(LoadingScreenNotify loadingScreenNotify)
 	{
-		if (loadingScreenNotify.MapID >= 0)
+		// Only update CurrentMapId when the loading screen is appearing (Showing=true).
+		// When it dismisses (Showing=false) the client may send MapID=0, which would
+		// incorrectly reset CurrentMapId and cause all subsequent UpdateObject packets
+		// to advertise MapID=0 instead of the player's actual map.
+		if (loadingScreenNotify.Showing && loadingScreenNotify.MapID > 0)
 		{
 			this.GetSession().GameState.CurrentMapId = loadingScreenNotify.MapID;
 		}
