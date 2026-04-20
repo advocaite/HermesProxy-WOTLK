@@ -19,7 +19,9 @@ public class PartyUpdate : ServerPacket
 
 	public int SequenceNum;
 
-	public List<PartyPlayerInfo> PlayerList = new List<PartyPlayerInfo>();
+    public byte LeaderFactionGroup;
+
+    public List<PartyPlayerInfo> PlayerList = new List<PartyPlayerInfo>();
 
 	public PartyLFGInfo LfgInfos;
 
@@ -39,9 +41,13 @@ public class PartyUpdate : ServerPacket
 		base._worldPacket.WriteUInt8((byte)this.PartyType);
 		base._worldPacket.WriteInt32(this.MyIndex);
 		base._worldPacket.WritePackedGuid128(this.PartyGUID);
-		base._worldPacket.WriteInt32(this.SequenceNum);
+		base._worldPacket.WriteUInt32((uint)this.SequenceNum);
 		base._worldPacket.WritePackedGuid128(this.LeaderGUID);
-		base._worldPacket.WriteInt32(this.PlayerList.Count);
+        if (ModernVersion.ExpansionVersion == 3)
+        {
+            base._worldPacket.WriteUInt8(this.LeaderFactionGroup);
+        }
+        base._worldPacket.WriteUInt32((uint)this.PlayerList.Count);
 		base._worldPacket.WriteBit(this.LfgInfos != null);
 		base._worldPacket.WriteBit(this.LootSettings != null);
 		base._worldPacket.WriteBit(this.DifficultySettings != null);

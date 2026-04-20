@@ -21,26 +21,47 @@ public struct PartyPlayerInfo
 
 	public byte RolesAssigned;
 
-	public bool FromSocialQueue;
+    public byte FactionGroup; // Unhandled, not sure what it's for
+
+    public bool FromSocialQueue;
 
 	public bool VoiceChatSilenced;
 
-	public void Write(WorldPacket data)
-	{
-		data.WriteBits(this.Name.GetByteCount(), 6);
-		data.WriteBits(this.VoiceStateID.GetByteCount() + 1, 6);
-		data.WriteBit(this.FromSocialQueue);
-		data.WriteBit(this.VoiceChatSilenced);
-		data.WritePackedGuid128(this.GUID);
-		data.WriteUInt8((byte)this.Status);
-		data.WriteUInt8(this.Subgroup);
-		data.WriteUInt8((byte)this.Flags);
-		data.WriteUInt8(this.RolesAssigned);
-		data.WriteUInt8((byte)this.ClassId);
-		data.WriteString(this.Name);
-		if (!this.VoiceStateID.IsEmpty())
-		{
-			data.WriteString(this.VoiceStateID);
-		}
-	}
+    public bool Connected;
+
+    public void Write(WorldPacket data)
+    {
+        data.WriteBits(this.Name.GetByteCount(), 6);
+        data.WriteBits(this.VoiceStateID.GetByteCount() + 1, 6);
+        if (ModernVersion.ExpansionVersion == 3)
+        {
+            bool isConnected = this.Connected || this.Status != GroupMemberOnlineStatus.Offline;
+            data.WriteBit(isConnected);
+            data.WriteBit(this.VoiceChatSilenced);
+            data.WriteBit(this.FromSocialQueue);
+        }
+        else
+        {
+            data.WriteBit(this.FromSocialQueue);
+            data.WriteBit(this.VoiceChatSilenced);
+        }
+        data.WritePackedGuid128(this.GUID);
+        if (ModernVersion.ExpansionVersion < 3)
+        {
+            data.WriteUInt8((byte)this.Status);
+        }
+        data.WriteUInt8(this.Subgroup);
+        data.WriteUInt8((byte)this.Flags);
+        data.WriteUInt8(this.RolesAssigned);
+        data.WriteUInt8((byte)this.ClassId);
+        if (ModernVersion.ExpansionVersion == 3)
+        {
+            data.WriteUInt8(this.FactionGroup);
+        }
+        data.WriteString(this.Name);
+        if (!this.VoiceStateID.IsEmpty())
+        {
+            data.WriteString(this.VoiceStateID);
+        }
+    }
 }
