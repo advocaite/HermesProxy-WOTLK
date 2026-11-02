@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -78,6 +79,16 @@ internal class Server
 			bindIp = IPAddress.Any;
 		}
 		Log.Print(LogType.Network, "External IP: " + Settings.ExternalAddress, "ServerMain", "Server.cs");
+		try
+		{
+			X509Certificate2 certificate = BnetServerCertificate.Certificate;
+			Log.Print(LogType.Server, $"BNet TLS certificate: '{certificate.Subject}' issued by '{certificate.Issuer}', expires {certificate.NotAfter:yyyy-MM-dd}" + (string.IsNullOrEmpty(Settings.CertificatePfxPath) ? "" : $" (from {Settings.CertificatePfxPath})"), "ServerMain", "Server.cs");
+		}
+		catch (TypeInitializationException e)
+		{
+			Log.Print(LogType.Error, $"Could not load the BNet TLS certificate: {e.InnerException?.Message ?? e.Message}", "ServerMain", "Server.cs");
+			return;
+		}
 		Singleton<LoginServiceManager>.Instance.Initialize();
 		SocketManager<BnetTcpSession> bnetSocketServer = Server.StartServer<BnetTcpSession>(new IPEndPoint(bindIp, Settings.BNetPort));
 		SocketManager<BnetRestApiSession> restSocketServer = Server.StartServer<BnetRestApiSession>(new IPEndPoint(bindIp, Settings.RestPort));

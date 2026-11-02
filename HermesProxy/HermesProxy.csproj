@@ -59,6 +59,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Certificates\*.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="CSV\Hotfix\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

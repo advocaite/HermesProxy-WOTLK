@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Framework.Logging;
 using HermesProxy;
 using HermesProxy.Configuration;
@@ -23,6 +24,10 @@ public static class Settings
 	public static string ReportedPlatform;
 
 	public static string ExternalAddress;
+
+	public static string CertificatePfxPath;
+
+	public static string CertificatePfxPassword;
 
 	public static int RestPort;
 
@@ -58,6 +63,8 @@ public static class Settings
 		Settings.ReportedOS = config.GetString("ReportedOS", "OSX");
 		Settings.ReportedPlatform = config.GetString("ReportedPlatform", "x86");
 		Settings.ExternalAddress = config.GetString("ExternalAddress", "127.0.0.1");
+		Settings.CertificatePfxPath = config.GetString("CertificatePfxPath", "");
+		Settings.CertificatePfxPassword = config.GetString("CertificatePfxPassword", "");
 		Settings.RestPort = config.GetInt("RestPort", 8081);
 		Settings.BNetPort = config.GetInt("BNetPort", 1119);
 		Settings.RealmPort = config.GetInt("RealmPort", 8084);
@@ -84,6 +91,11 @@ public static class Settings
 		if (!VersionChecker.IsSupportedLegacyVersion(Settings.ServerBuild))
 		{
 			Log.Print(LogType.Server, $"Unsupported ServerBuild '{Settings.ServerBuild}', use 'auto' to select best", "VerifyConfig", "Settings.cs");
+			return false;
+		}
+		if (!string.IsNullOrEmpty(Settings.CertificatePfxPath) && !File.Exists(Settings.CertificatePfxPath))
+		{
+			Log.Print(LogType.Server, $"CertificatePfxPath file not found: '{Settings.CertificatePfxPath}'", "VerifyConfig", "Settings.cs");
 			return false;
 		}
 		if (!IsValidPortNumber(Settings.RestPort))
