@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using Framework;
 
 namespace BNetServer;
 
@@ -13,6 +14,12 @@ public static class BnetServerCertificate
 
 	static BnetServerCertificate()
 	{
+		// CertificatePfxPath picks another certificate, such as Certificates/TrinityCore.pfx; unset, the embedded one
+		if (!string.IsNullOrEmpty(Settings.CertificatePfxPath))
+		{
+			BnetServerCertificate.Certificate = new X509Certificate2(Settings.CertificatePfxPath, string.IsNullOrEmpty(Settings.CertificatePfxPassword) ? null : Settings.CertificatePfxPassword);
+			return;
+		}
 		Assembly currentAsm = Assembly.GetExecutingAssembly();
 		using Stream stream = currentAsm.GetManifestResourceStream("HermesProxy.BNetServer.pfx");
 		if (stream == null)
