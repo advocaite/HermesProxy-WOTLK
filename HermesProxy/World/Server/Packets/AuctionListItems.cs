@@ -48,22 +48,29 @@ internal class AuctionListItems : ClientPacket
 			this.KnownPets.Add(base._worldPacket.ReadUInt8());
 		}
 
-		// 3.4.3: TaintedBy bit is present when an addon initiates the search.
-		// Detect by peeking the first bit byte's MSB — if set, TaintedBy is present
-		// (search names are always < 128 chars so nameLength MSB would be 0 in old format).
-		byte peekByte = base._worldPacket.PeekByte();
-		bool hasTaintedBy = (peekByte & 0x80) != 0;
-
-		if (hasTaintedBy)
-			base._worldPacket.HasBit(); // consume TaintedBy bit
-
+		// 3.4.3.54261 client writer (verified in IDA): {bit TaintedBy, 8 bits name length, flush},
+		// name, {3 bits class filter count, bit OnlyUsable, bit ExactMatch, flush}, [AddOnInfo if
+		// TaintedBy], class filters, sorts. The previous "peek the MSB" heuristic grouped all bits
+		// before the name and read AddOnInfo after the filters, which rejected real searches.
+		bool hasTaintedBy = base._worldPacket.HasBit();
 		uint nameLength = base._worldPacket.ReadBits<uint>(8);
+		base._worldPacket.ResetBitPos();
+		this.Name = base._worldPacket.ReadString(nameLength);
 		uint classFiltersCount = base._worldPacket.ReadBits<uint>(3);
 		this.OnlyUsable = base._worldPacket.HasBit();
 		this.ExactMatch = base._worldPacket.HasBit();
 		base._worldPacket.ResetBitPos();
-
-		this.Name = base._worldPacket.ReadString(nameLength);
+		if (hasTaintedBy)
+		{
+			uint taintNameLen = base._worldPacket.ReadBits<uint>(10);
+			uint taintVersionLen = base._worldPacket.ReadBits<uint>(10);
+			base._worldPacket.HasBit(); // Loaded
+			base._worldPacket.HasBit(); // Disabled
+			if (taintNameLen > 0)
+				base._worldPacket.ReadBytes(taintNameLen);
+			if (taintVersionLen > 0)
+				base._worldPacket.ReadBytes(taintVersionLen);
+		}
 
 		for (int j = 0; j < classFiltersCount; j++)
 		{
@@ -80,20 +87,6 @@ internal class AuctionListItems : ClientPacket
 				classFilter.SubClassFilters.Add(filter);
 			}
 			this.ClassFilters.Add(classFilter);
-		}
-
-		// Skip TaintedBy (AddOnInfo) if present
-		if (hasTaintedBy)
-		{
-			base._worldPacket.ResetBitPos();
-			uint taintNameLen = base._worldPacket.ReadBits<uint>(10);
-			uint taintVersionLen = base._worldPacket.ReadBits<uint>(10);
-			base._worldPacket.HasBit(); // Loaded
-			base._worldPacket.HasBit(); // Disabled
-			if (taintNameLen > 0)
-				base._worldPacket.ReadBytes(taintNameLen);
-			if (taintVersionLen > 0)
-				base._worldPacket.ReadBytes(taintVersionLen);
 		}
 
 		uint size = base._worldPacket.ReadUInt32();

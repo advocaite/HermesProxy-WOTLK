@@ -20,18 +20,13 @@ public class AuctionListItemsResult : ServerPacket
 
 	public override void Write()
 	{
+		// 3.4.3.54261 client reader (verified in IDA): u32 count, u32 TotalCount, u32 DesiredDelay,
+		// bit HasMoreResults, flush, items. No Unknown830 / ListType / AuctionBucketKey: those are
+		// the retail layout and shifted every item by 6 bytes (the client listed nothing).
 		base._worldPacket.WriteInt32(this.Items.Count);
-		base._worldPacket.WriteUInt32(0u); // Unknown830
 		base._worldPacket.WriteInt32(this.TotalItemsCount);
 		base._worldPacket.WriteUInt32(this.DesiredDelay);
-		base._worldPacket.WriteBits(0, 2); // ListType
 		base._worldPacket.WriteBit(this.HasMoreResults);
-		base._worldPacket.FlushBits();
-		// Empty AuctionBucketKey: ItemID=0, no optional fields
-		base._worldPacket.WriteBits(0, 20); // ItemID
-		base._worldPacket.WriteBit(false); // no BattlePetSpeciesID
-		base._worldPacket.WriteBits(0, 11); // ItemLevel
-		base._worldPacket.WriteBit(false); // no SuffixItemNameDescriptionID
 		base._worldPacket.FlushBits();
 		foreach (AuctionItem item in this.Items)
 		{
