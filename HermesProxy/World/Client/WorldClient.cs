@@ -204,7 +204,7 @@ public class WorldClient
 		AuctionHelloResponse auction = new AuctionHelloResponse();
 		auction.Guid = packet.ReadGuid().To128(this.GetSession().GameState);
 		this.GetSession().GameState.CurrentInteractedWithNPC = auction.Guid;
-		packet.ReadUInt32(); // AuctionHouseID - not used by modern client
+		auction.AuctionHouseID = packet.ReadUInt32();
 		if (LegacyVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
 		{
 			auction.OpenForBusiness = packet.ReadBool();
@@ -282,6 +282,7 @@ public class WorldClient
 		{
 			auction.DesiredDelay = packet.ReadUInt32();
 		}
+		auction.TotalItemsCount = totalCount;
 		auction.HasMoreResults = totalCount > (int)count;
 		this.SendPacketToClient(auction);
 	}
@@ -6352,6 +6353,9 @@ public class WorldClient
 				moveSpline?.SplinePoints.Add(vec);
 			}
 			moveSpline.SplineFlags |= SplineFlagModern.UncompressedPath;
+			// Legacy Flying implies a Catmull-Rom curve (isSmooth = Flying | CatmullRom); the modern
+			// client only smooths with CatmullRom set, else taxi flights fly straight segments.
+			moveSpline.SplineFlags |= SplineFlagModern.CatmullRom;
 		}
 		else
 		{

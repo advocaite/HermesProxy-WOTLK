@@ -9,6 +9,8 @@ public class AuctionListMyItemsResult : ServerPacket
 
 	public List<AuctionItem> SoldItems = new List<AuctionItem>();
 
+	public int TotalItemsCount;
+
 	public uint DesiredDelay = 300u;
 
 	public bool HasMoreResults;
@@ -20,16 +22,13 @@ public class AuctionListMyItemsResult : ServerPacket
 
 	public override void Write()
 	{
+		// 3.4.3.54261 client (verified in IDA, owner and bidder list handlers): u32 count,
+		// u32 TotalCount, u32 DesiredDelay, items. No SoldItems list and no HasMoreResults bit
+		// (that is the retail layout); this is also what mainline HermesProxy writes.
 		base._worldPacket.WriteInt32(this.Items.Count);
-		base._worldPacket.WriteInt32(this.SoldItems.Count);
+		base._worldPacket.WriteInt32(this.TotalItemsCount);
 		base._worldPacket.WriteUInt32(this.DesiredDelay);
-		base._worldPacket.WriteBit(this.HasMoreResults);
-		base._worldPacket.FlushBits();
 		foreach (AuctionItem item in this.Items)
-		{
-			item.Write(base._worldPacket);
-		}
-		foreach (AuctionItem item in this.SoldItems)
 		{
 			item.Write(base._worldPacket);
 		}

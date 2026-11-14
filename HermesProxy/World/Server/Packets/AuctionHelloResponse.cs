@@ -10,6 +10,8 @@ internal class AuctionHelloResponse : ServerPacket
 
 	public uint CancelledItemDeliveryDelay;
 
+	public uint AuctionHouseID;
+
 	public bool OpenForBusiness = true;
 
 	public AuctionHelloResponse()
@@ -22,6 +24,10 @@ internal class AuctionHelloResponse : ServerPacket
 		base._worldPacket.WritePackedGuid128(this.Guid);
 		base._worldPacket.WriteUInt32(this.PurchasedItemDeliveryDelay);
 		base._worldPacket.WriteUInt32(this.CancelledItemDeliveryDelay);
+		// 3.4.3.54261 reads a third u32 (verified in IDA; the hello handler passes it into the
+		// auctioneer interaction). Without it the client reads past the end, drops the hello and
+		// never refreshes the lists after sell/cancel nor computes the deposit.
+		base._worldPacket.WriteUInt32(this.AuctionHouseID);
 		base._worldPacket.WriteBit(this.OpenForBusiness);
 		base._worldPacket.FlushBits();
 	}

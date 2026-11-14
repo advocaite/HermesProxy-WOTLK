@@ -4461,7 +4461,10 @@ public class WorldSocket : SocketBase, BnetServices.INetwork
 			}
 			WorldPacket packet2 = new WorldPacket(Opcode.CMSG_ACTIVATE_TAXI_EXPRESS);
 			packet2.WriteGuid(taxi.FlightMaster.To64());
-			packet2.WriteUInt32(0u);
+			// Vanilla/TBC CMSG_ACTIVATETAXIEXPRESS carries a total cost; 3.x (TC/AC 3.3.5a
+			// HandleActivateTaxiExpressOpcode: guid, node count, nodes) does not.
+			if (!LegacyVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
+				packet2.WriteUInt32(0u);
 			packet2.WriteUInt32((uint)path.Count);
 			foreach (uint itr in path)
 			{
