@@ -1481,20 +1481,55 @@ public class ObjectUpdateBuilder
 			data.WriteUInt64(0uL);
 			data.WriteUInt8(0);
 		}
+		uint[] gems = this.GetSocketedGems();
+		data.WriteUInt32(0u); // ArtifactPowers.size
+		data.WriteUInt32((uint)gems.Length); // Gems.size
+		if (this.IsOwner)
+		{
+			data.WriteUInt32(0u); // DynamicFlags2
+		}
+		// ItemBonusKey: i32 ItemID, u32 BonusListIDs.size, BonusListIDs
 		data.WriteUInt32(0u);
 		data.WriteUInt32(0u);
 		if (this.IsOwner)
 		{
-			data.WriteUInt32(0u);
+			data.WriteUInt16(0); // DEBUGItemLevel
 		}
-		data.WriteUInt32(0u);
-		data.WriteUInt32(0u);
-		data.WriteUInt32(0u);
-		if (this.IsOwner)
+		// Gems: SocketedGem { i32 ItemID, u16 BonusListIDs[16], u8 Context }
+		foreach (uint gem in gems)
 		{
-			data.WriteUInt16(0);
+			data.WriteUInt32(gem);
+			for (int k = 0; k < 16; k++)
+			{
+				data.WriteUInt16(0);
+			}
+			data.WriteUInt8(0);
 		}
-		data.WriteInt32(0);
+		// Modifiers (ItemModList): 6-bit count, flushed
+		data.WriteBits(0, 6);
+		data.FlushBits();
+	}
+
+	// 3.3.5 keeps a socketed gem only as an enchantment (socket slots 2-4); the client draws
+	// the socket contents from ItemData.Gems. Size = last filled socket + 1.
+	private uint[] GetSocketedGems()
+	{
+		uint[] gems = this.m_gameState.GetGemsForItem(this.m_updateData.Guid);
+		if (gems == null)
+		{
+			return Array.Empty<uint>();
+		}
+		int count = 0;
+		for (int i = 0; i < gems.Length; i++)
+		{
+			if (gems[i] != 0)
+			{
+				count = i + 1;
+			}
+		}
+		uint[] result = new uint[count];
+		Array.Copy(gems, result, count);
+		return result;
 	}
 
 	private void WriteEmptyItemCreate(WorldPacket data)
@@ -1541,14 +1576,14 @@ public class ObjectUpdateBuilder
 		{
 			data.WriteUInt32(0u);
 		}
-		data.WriteUInt32(0u);
-		data.WriteUInt32(0u);
-		data.WriteUInt32(0u);
+		data.WriteUInt32(0u); // ItemBonusKey.ItemID
+		data.WriteUInt32(0u); // ItemBonusKey.BonusListIDs.size
 		if (this.IsOwner)
 		{
-			data.WriteUInt16(0);
+			data.WriteUInt16(0); // DEBUGItemLevel
 		}
-		data.WriteInt32(0);
+		data.WriteBits(0, 6); // Modifiers
+		data.FlushBits();
 	}
 
 	private void WriteUpdateItemData(WorldPacket data)
@@ -1591,6 +1626,8 @@ public class ObjectUpdateBuilder
 		if (item.Context.HasValue) { SetBit(0); SetBit(15); }
 		if (item.ArtifactXP.HasValue) { SetBit(0); SetBit(17); }
 		if (item.ItemAppearanceModID.HasValue) { SetBit(0); SetBit(18); }
+		uint[] gems = item.HasGemsUpdate ? this.GetSocketedGems() : null;
+		if (gems != null) { SetBit(0); SetBit(2); }
 		for (int i = 0; i < 5; i++)
 			if (item.SpellCharges[i].HasValue) { SetBit(23); SetBit(24 + i); }
 		for (int i = 0; i < 13; i++)
@@ -1605,8 +1642,31 @@ public class ObjectUpdateBuilder
 			if ((blocksMask & (1 << b)) != 0)
 				data.WriteBits(blocks[b], 32);
 
-		// No dynamic fields (ArtifactPowers/Gems not used)
+		// Gems dynamic field mask (TC WriteDynamicFieldUpdateMask): u32 size, then one
+		// changed bit per element, in the same bit stream before the flush.
+		if (gems != null)
+		{
+			data.WriteBits((uint)gems.Length, 32);
+			if (gems.Length > 0)
+				data.WriteBits((1u << gems.Length) - 1, gems.Length);
+		}
 		data.FlushBits();
+
+		// Gems elements (SocketedGem::WriteUpdate): 1-bit blocks mask, 32-bit block with all
+		// 20 bits (0, ItemID 1, Context 2, BonusListIDs group 3 / 4-19), flush, fields.
+		if (gems != null)
+		{
+			foreach (uint gem in gems)
+			{
+				data.WriteBits(1u, 1);
+				data.WriteBits(0xFFFFFu, 32);
+				data.FlushBits();
+				data.WriteUInt32(gem);
+				data.WriteUInt8(0);
+				for (int k = 0; k < 16; k++)
+					data.WriteUInt16(0);
+			}
+		}
 
 		// Group 0 scalar fields (bits 3-22)
 		if ((blocks[0] & 1) != 0)
@@ -1643,17 +1703,25 @@ public class ObjectUpdateBuilder
 			{
 				if (item.Enchantment[i] != null)
 				{
-					// ItemEnchantment WriteUpdate: 4-bit mask + fields
+					// ItemEnchantment WriteUpdate: 6-bit mask (0 any, 1 ID, 2 Duration, 3 Charges,
+					// 4 Field_A, 5 Field_B), flush, fields. The client reads 6 bits.
+					// Field_A/Field_B are the two bytes that the create path writes as Inactive.
 					uint enchMask = 0;
 					if (item.Enchantment[i].ID.HasValue) enchMask |= 2;
 					if (item.Enchantment[i].Duration.HasValue) enchMask |= 4;
 					if (item.Enchantment[i].Charges.HasValue) enchMask |= 8;
+					if (item.Enchantment[i].Inactive.HasValue) enchMask |= 0x10 | 0x20;
 					if (enchMask != 0) enchMask |= 1;
-					data.WriteBits(enchMask, 4);
+					data.WriteBits(enchMask, 6);
 					data.FlushBits();
 					if (item.Enchantment[i].ID.HasValue) data.WriteInt32(item.Enchantment[i].ID.Value);
 					if (item.Enchantment[i].Duration.HasValue) data.WriteUInt32(item.Enchantment[i].Duration.Value);
 					if (item.Enchantment[i].Charges.HasValue) data.WriteUInt16(item.Enchantment[i].Charges.Value);
+					if (item.Enchantment[i].Inactive.HasValue)
+					{
+						data.WriteUInt8((byte)(item.Enchantment[i].Inactive.Value & 0xFF));
+						data.WriteUInt8((byte)(item.Enchantment[i].Inactive.Value >> 8));
+					}
 				}
 			}
 		}

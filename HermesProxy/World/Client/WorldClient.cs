@@ -12040,10 +12040,29 @@ public class WorldClient
 				int offset2 = 2;
 				for (int i20 = 0; i20 < 19; i20++)
 				{
-					if (updateMaskArray[PLAYER_VISIBLE_ITEM_1_ENTRYID + i20 * offset2])
+					int entryIndex = PLAYER_VISIBLE_ITEM_1_ENTRYID + i20 * offset2;
+					int enchantIndex = entryIndex + 1; // PLAYER_VISIBLE_ITEM_n_ENCHANTMENT
+					bool enchantChanged = ModernVersion.ExpansionVersion >= 3 && enchantIndex < updateMaskArray.Length && updateMaskArray[enchantIndex];
+					if (updateMaskArray[entryIndex] || enchantChanged)
 					{
 						updateData.PlayerData.VisibleItems[i20] = new VisibleItem();
-						updateData.PlayerData.VisibleItems[i20].ItemID = updates[PLAYER_VISIBLE_ITEM_1_ENTRYID + i20 * offset2].Int32Value;
+						if (updates.ContainsKey(entryIndex))
+						{
+							updateData.PlayerData.VisibleItems[i20].ItemID = updates[entryIndex].Int32Value;
+						}
+						// 3.3.5 packs the permanent enchant (low 16 bits) and the temporary
+						// enchant (high 16 bits) into one field. The visual comes from the
+						// permanent enchant, else from the temporary one.
+						if (ModernVersion.ExpansionVersion >= 3 && updates.ContainsKey(enchantIndex))
+						{
+							uint visibleEnchant = updates[enchantIndex].UInt32Value;
+							uint visual = GameData.GetItemEnchantVisual(visibleEnchant & 0xFFFF);
+							if (visual == 0)
+							{
+								visual = GameData.GetItemEnchantVisual(visibleEnchant >> 16);
+							}
+							updateData.PlayerData.VisibleItems[i20].ItemVisual = (ushort)visual;
+						}
 						if (i20 >= 15 && i20 <= 18)
 							Log.Print(LogType.Debug, $"[VisibleItem] Slot {i20} ItemID={updateData.PlayerData.VisibleItems[i20].ItemID}", "HandleUpdateObject", "");
 					}
