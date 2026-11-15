@@ -2,6 +2,8 @@ namespace HermesProxy.World.Server.Packets;
 
 public struct PVPBracketData
 {
+	public int Unused3;
+
 	public int Rating;
 
 	public int Rank;
@@ -26,6 +28,14 @@ public struct PVPBracketData
 
 	public int Unused2;
 
+	public int RoundsSeasonPlayed;
+
+	public int RoundsSeasonWon;
+
+	public int RoundsWeeklyPlayed;
+
+	public int RoundsWeeklyWon;
+
 	public byte Bracket;
 
 	public bool Disqualified;
@@ -33,6 +43,12 @@ public struct PVPBracketData
 	public void Write(WorldPacket data)
 	{
 		data.WriteUInt8(this.Bracket);
+		// 3.4.3.54261 reads 17 x i32 (IDA PVPBracketData reader 0x140715AE0), as TC 3.4.3.
+		bool wotlkClassic = ModernVersion.IsVersion(3, 4, 3);
+		if (wotlkClassic)
+		{
+			data.WriteInt32(this.Unused3);
+		}
 		data.WriteInt32(this.Rating);
 		data.WriteInt32(this.Rank);
 		data.WriteInt32(this.WeeklyPlayed);
@@ -50,6 +66,13 @@ public struct PVPBracketData
 		{
 			data.WriteInt32(this.Unused1);
 			data.WriteInt32(this.Unused2);
+		}
+		if (wotlkClassic)
+		{
+			data.WriteInt32(this.RoundsSeasonPlayed);
+			data.WriteInt32(this.RoundsSeasonWon);
+			data.WriteInt32(this.RoundsWeeklyPlayed);
+			data.WriteInt32(this.RoundsWeeklyWon);
 		}
 		data.WriteBit(this.Disqualified);
 		data.FlushBits();

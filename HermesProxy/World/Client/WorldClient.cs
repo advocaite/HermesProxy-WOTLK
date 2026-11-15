@@ -1364,17 +1364,112 @@ public class WorldClient
 		}
 		if (packet.GetUniversalOpcode(isModern: false) == Opcode.SMSG_INSPECT_TALENT)
 		{
-			uint talentsCount = packet.ReadUInt32();
-			for (uint i3 = 0u; i3 < talentsCount; i3++)
+			if (LegacyVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
 			{
-				byte talent = packet.ReadUInt8();
-				if (i3 < 25)
+				this.ReadInspectTalentWotLK(packet, inspect, updates);
+			}
+			else
+			{
+				uint talentsCount = packet.ReadUInt32();
+				for (uint i3 = 0u; i3 < talentsCount; i3++)
 				{
-					inspect.Talents.Add(talent);
+					byte talent = packet.ReadUInt8();
+					if (i3 < 25)
+					{
+						inspect.Talents.Add(talent);
+					}
 				}
 			}
 		}
 		this.SendPacketToClient(inspect);
+	}
+
+	// AC/TC 3.3.5 SMSG_INSPECT_TALENT after the packed guid (Player::BuildPlayerTalentsInfoData and
+	// Player::BuildEnchantmentsInfoData):
+	//   u32 unspent, u8 specCount, u8 activeSpec,
+	//   per spec {u8 n, n x (u32 talentId, u8 rank), u8 glyphCount, glyphCount x u16},
+	//   u32 slotUsedMask, per set bit {u32 entry, u16 enchantMask, u16 enchant per set bit
+	//   (legacy enchantment slots 0-11), i16 random property, packed creator guid, u32 suffix factor}.
+	private void ReadInspectTalentWotLK(WorldPacket packet, InspectResult inspect, Dictionary<int, UpdateField> updates)
+	{
+		inspect.UnspentTalentPoints = packet.ReadUInt32();
+		byte specsCount = packet.ReadUInt8();
+		inspect.ActiveTalentGroup = packet.ReadUInt8();
+		for (byte spec = 0; spec < specsCount; spec++)
+		{
+			TalentGroupInfoData group = new TalentGroupInfoData();
+			group.SpecID = 4; // MAX_SPECIALIZATIONS - sentinel for "no spec" in WotLK
+			byte talentCount = packet.ReadUInt8();
+			for (byte t = 0; t < talentCount; t++)
+			{
+				TalentInfoData talent = new TalentInfoData();
+				talent.TalentID = packet.ReadUInt32();
+				talent.Rank = packet.ReadUInt8();
+				group.Talents.Add(talent);
+			}
+			byte glyphCount = packet.ReadUInt8();
+			for (byte g = 0; g < glyphCount; g++)
+			{
+				group.GlyphIDs.Add(packet.ReadUInt16());
+			}
+			inspect.TalentGroups.Add(group);
+		}
+
+		int UNIT_FIELD_LEVEL = LegacyVersion.GetUpdateField(UnitField.UNIT_FIELD_LEVEL);
+		if (updates != null && UNIT_FIELD_LEVEL >= 0 && updates.ContainsKey(UNIT_FIELD_LEVEL))
+		{
+			inspect.TraitLevel = updates[UNIT_FIELD_LEVEL].Int32Value;
+		}
+
+		// The equipment block carries the enchants and gems that the visible item fields lack.
+		if (packet.CanRead())
+		{
+			uint slotUsedMask = packet.ReadUInt32();
+			List<InspectItemData> items = new List<InspectItemData>();
+			for (byte slot = 0; slot < 19; slot++)
+			{
+				if ((slotUsedMask & (1u << slot)) == 0)
+				{
+					continue;
+				}
+				InspectItemData itemData = new InspectItemData();
+				itemData.Index = slot;
+				itemData.Usable = true;
+				itemData.Item.ItemID = packet.ReadUInt32();
+				ushort enchantMask = packet.ReadUInt16();
+				for (byte e = 0; e < 12; e++)
+				{
+					if ((enchantMask & (1 << e)) == 0)
+					{
+						continue;
+					}
+					ushort enchantId = packet.ReadUInt16();
+					if (enchantId == 0)
+					{
+						continue;
+					}
+					// legacy slots 0-6 keep their index, legacy PROP 7-11 -> modern 8-12
+					itemData.Enchants.Add(new InspectEnchantData(enchantId, (byte)(e < 7 ? e : e + 1)));
+					if (e >= HermesProxy.World.Enums.WotLK.EnchantmentSlot.Sock1 && e <= HermesProxy.World.Enums.WotLK.EnchantmentSlot.Sock3)
+					{
+						uint gemItemId = GameData.GetGemFromEnchantId(enchantId);
+						if (gemItemId != 0)
+						{
+							ItemGemData gem = new ItemGemData();
+							gem.Slot = (byte)(e - HermesProxy.World.Enums.WotLK.EnchantmentSlot.Sock1);
+							gem.Item.ItemID = gemItemId;
+							itemData.Gems.Add(gem);
+						}
+					}
+				}
+				itemData.Item.RandomPropertiesID = (uint)(int)packet.ReadInt16();
+				WowGuid64 creator = packet.ReadPackedGuid();
+				itemData.CreatorGUID = creator.IsEmpty() ? WowGuid128.Empty : creator.To128(this.GetSession().GameState);
+				itemData.Item.RandomPropertiesSeed = packet.ReadUInt32();
+				items.Add(itemData);
+			}
+			inspect.DisplayInfo.Items = items;
+		}
 	}
 
 	[PacketHandler(Opcode.MSG_INSPECT_HONOR_STATS, ClientVersionBuild.Zero, ClientVersionBuild.V2_0_1_6180)]
